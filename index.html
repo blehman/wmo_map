@@ -16,10 +16,10 @@ path {
 }
 
 .voronoi {
-  fill: none;
+  fill: red;
   stroke: red;
   stroke-width: 0.5px;
-  opacity: 0.30;
+  fill-opacity: 0.0;
 }
 
 .voronoi:hover .voroni{
@@ -29,6 +29,8 @@ path {
 
 
 </style>
+<div >
+</div>
 <svg width="960" height="600"></svg>
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script src="//d3js.org/topojson.v1.min.js"></script>
@@ -46,14 +48,37 @@ var path = d3.geoPath()
     .projection(projection)
     .pointRadius(1.5);
 
+var voronoi = d3.voronoi()
+    .x( d => +d.screen_long)
+    .y( d => +d.screen_lat);
+var wmo = [];
+
 d3.queue()
     .defer(d3.json, "us.json")
     //.defer(d3.json, "http://bl.ocks.org/mbostock/raw/4090846/us.json")
-    .defer(d3.tsv, "wmo_latlon.tsv")
+    //.defer(d3.tsv, "wmo_latlon.tsv")
+    .defer(d3.csv,"wmo2latlon.csv")
+    .defer(d3.csv,"postalcode2wmo.csv")
     .await(ready);
 
-function ready(error, us, wmo) {
+function ready(error, us, usaf,postalcode2wmo) {
   if (error) throw error;
+  //console.log(wmo)
+  //console.log(usaf)
+  usaf.forEach(function(d) {
+    //console.log(d)
+    //console.log(projection([+d.usaf_longitude,+d.usaf_latitude]))
+    d['screen_coords']=projection([+d.usaf_longitude,+d.usaf_latitude])
+    d['screen_long']=d['screen_coords'][0]
+    d['screen_lat']=d['screen_coords'][1]
+    wmo.push([+d.usaf_longitude,+d.usaf_latitude])
+  })
+
+  var zip2wmo = {}
+  postalcode2wmo.map(function(d){
+    zip2wmo[d.zipcode]=d.wmo
+  })
+  console.log(zip2wmo)
 
   svg.append("path")
       .datum(topojson.feature(us, us.objects.land))
@@ -69,27 +94,42 @@ function ready(error, us, wmo) {
       .datum({type: "MultiPoint", coordinates: wmo})
       .attr("class", "points")
       .attr("d", path);
-/*
-  airport.append("path")
-      .data(voronoi.polygons(airports.map(projection)))
-      .attr("class", "airport-cell")
-      .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; });
-*/
+
+  var v = voronoi(usaf)
+     poly = v.polygons();
+
+  var vData = v.cells.map(function(d,i){
+    element = {
+      'geo':[d.site[0],d.site[1]]
+     ,'wmo':d.site.data.usaf
+     ,'poly':poly[d.site.index]
+     ,'click':0
+  }
+    return element;
+  })
+  console.log(vData)
   var myData = d3.voronoi()
           .extent([[-1, -1], [width + 1, height + 1]])
           .polygons(wmo.map(projection));
+          //.polygons(wmo_data.map(d => d.coords));
 
+  //console.log(myData)
   var polygons = svg.append("g")
       .classed("polygon_container",true)
       .selectAll("path")
-      .data(myData)
+      .data(vData)
      .enter().append("path")
       .attr("class", "voronoi")
+      .attr("id", d => d.wmo)
       .attr("d", function(d) {
-        var value = "M" + d.join("L") + "Z";
-        //console.log(value)
-        return value
+            var polygon_coords = d.poly.filter(function(d) { return d != null; })
+            return polygon_coords ? "M" + polygon_coords.join("L") + "Z" : null;
       });
+  polygons.on("click",function(d){
+        var click = d.click ? 0: 1;
+        var opacity =  d3.select(this).style("fill-opacity", click)
+        d.click = click
+  })
 /*      .attr("d", function(d) {
         console.log(d)
         var value =  "M" + d
