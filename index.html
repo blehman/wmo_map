@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+path {
+  stroke-linejoin: round;
+}
+
+.land {
+  fill: #ddd;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+}
+
+.voronoi {
+  fill: none;
+  stroke: red;
+  stroke-width: 0.5px;
+  opacity: 0.30;
+}
+
+.voronoi:hover .voroni{
+  fill: red;
+  opacity: 0.30;
+}
+
+
+</style>
+<svg width="960" height="600"></svg>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var projection = d3.geoAlbers()
+    .scale(1280)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geoPath()
+    .projection(projection)
+    .pointRadius(1.5);
+
+d3.queue()
+    .defer(d3.json, "us.json")
+    //.defer(d3.json, "http://bl.ocks.org/mbostock/raw/4090846/us.json")
+    .defer(d3.tsv, "wmo_latlon.tsv")
+    .await(ready);
+
+function ready(error, us, wmo) {
+  if (error) throw error;
+
+  svg.append("path")
+      .datum(topojson.feature(us, us.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
+
+  svg.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("class", "states")
+      .attr("d", path);
+
+  svg.append("path")
+      .datum({type: "MultiPoint", coordinates: wmo})
+      .attr("class", "points")
+      .attr("d", path);
+/*
+  airport.append("path")
+      .data(voronoi.polygons(airports.map(projection)))
+      .attr("class", "airport-cell")
+      .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; });
+*/
+  var myData = d3.voronoi()
+          .extent([[-1, -1], [width + 1, height + 1]])
+          .polygons(wmo.map(projection));
+
+  var polygons = svg.append("g")
+      .classed("polygon_container",true)
+      .selectAll("path")
+      .data(myData)
+     .enter().append("path")
+      .attr("class", "voronoi")
+      .attr("d", function(d) {
+        var value = "M" + d.join("L") + "Z";
+        //console.log(value)
+        return value
+      });
+/*      .attr("d", function(d) {
+        console.log(d)
+        var value =  "M" + d
+            .filter(function(d) { return d != null; })
+            .map(function(d) { return d.join("L"); })
+            .join("ZM") + "Z";
+        console.log(value)
+        return value
+      });
+*/
+}
+
+</script>
