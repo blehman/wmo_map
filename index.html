@@ -126,7 +126,7 @@ function ready(error, us, usaf,postalcode2wmo) {
             return polygon_coords ? "M" + polygon_coords.join("L") + "Z" : null;
       });
   polygons.on("click",function(d){
-        var click = d.click ? 0: 1;
+        var click = d.click ? 0: 0.50;
         var opacity =  d3.select(this).style("fill-opacity", click)
         d.click = click
   })
