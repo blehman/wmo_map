@@ -13,6 +13,12 @@ function NewMap(){
 
   function chart(selection) {
     selection.each(function(map_data) {
+      d3.select("svg").append("rect")
+        .attr("x",680)
+        .attr("y",420)
+        .classed("rect",true)
+        .attr("height",20)
+        .attr("width",40)
       // set data vars
       var us = map_data["us"]
         , usaf = map_data["usaf"]
@@ -63,7 +69,7 @@ function NewMap(){
           .attr("d", path);
 
       // set voronoi to new map size
-      voronoi.extent([[-10, -10], [width + 10, height + 15]])
+      voronoi.extent([[-15, -10], [width + 15, height + 15]])
 
       var v = voronoi(usaf)
         , poly = v.polygons();

@@ -43,3 +43,8 @@ form {
   top: 10px;
   background: transparent;
 }
+
+.rect {
+  fill: white;
+  stroke: none;
+}
