@@ -1,0 +1,45 @@
+
+path {
+  stroke-linejoin: round;
+}
+
+.land {
+  fill: #ddd;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+}
+
+.voronoi {
+  fill: red;
+  stroke: red;
+  stroke-width: 0.5px;
+  fill-opacity: 0.0;
+  stroke-opacity: 0.3;
+}
+
+.voronoi:hover .voroni{
+  fill: red;
+  opacity: 0.30;
+}
+
+input {
+  border: 1px dotted #ccc;
+  background: white;
+  font-family: monospace;
+  padding: 10px 20px;
+  font-size: 18px;
+  margin: 20px 10px 0px 0;
+  color: black;
+  opacity:0.7;
+}
+
+form {
+  display: block;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  background: transparent;
+}

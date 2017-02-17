@@ -1,145 +1,51 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <title>Project Redfin</title>
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>-->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <style>
+    /* inline css */
+    </style>
+    <script>
+  /*
+      window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+          t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
 
-path {
-  stroke-linejoin: round;
-}
+        t._e = [];
+        t.ready = function(f) {
+          t._e.push(f);
+        };
+        return t;
+      }(document, "script", "twitter-wjs"));
+  */
+    </script>
 
-.land {
-  fill: #ddd;
-}
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="//d3js.org/d3-queue.v3.min.js"></script>
+    <script src="js/map.js"></script>
+  </head>
 
-.states {
-  fill: none;
-  stroke: #fff;
-}
+  <div id="non-svg-elements">
+    <form name="myform" onSubmit="return zipcodeReview()">
+      <input name="Submit" id="zip" type="text" placeholder="zipcode" />
+      <!--<input type="text" id="myRadius" maxlength="" />-->
+    </form>
+  </div>
+  <body>
+    <!-- Run App -->
+    <script src="js/app.js"></script>
 
-.voronoi {
-  fill: red;
-  stroke: red;
-  stroke-width: 0.5px;
-  fill-opacity: 0.0;
-}
-
-.voronoi:hover .voroni{
-  fill: red;
-  opacity: 0.30;
-}
-
-
-</style>
-<div >
-</div>
-<svg width="960" height="600"></svg>
-<script src="//d3js.org/d3.v4.min.js"></script>
-<script src="//d3js.org/topojson.v1.min.js"></script>
-<script>
-
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
-
-var projection = d3.geoAlbers()
-    .scale(1280)
-    .translate([width / 2, height / 2]);
-
-var path = d3.geoPath()
-    .projection(projection)
-    .pointRadius(1.5);
-
-var voronoi = d3.voronoi()
-    .x( d => +d.screen_long)
-    .y( d => +d.screen_lat);
-var wmo = [];
-
-d3.queue()
-    .defer(d3.json, "us.json")
-    //.defer(d3.json, "http://bl.ocks.org/mbostock/raw/4090846/us.json")
-    //.defer(d3.tsv, "wmo_latlon.tsv")
-    .defer(d3.csv,"wmo2latlon.csv")
-    .defer(d3.csv,"postalcode2wmo.csv")
-    .await(ready);
-
-function ready(error, us, usaf,postalcode2wmo) {
-  if (error) throw error;
-  //console.log(wmo)
-  //console.log(usaf)
-  usaf.forEach(function(d) {
-    //console.log(d)
-    //console.log(projection([+d.usaf_longitude,+d.usaf_latitude]))
-    d['screen_coords']=projection([+d.usaf_longitude,+d.usaf_latitude])
-    d['screen_long']=d['screen_coords'][0]
-    d['screen_lat']=d['screen_coords'][1]
-    wmo.push([+d.usaf_longitude,+d.usaf_latitude])
-  })
-
-  var zip2wmo = {}
-  postalcode2wmo.map(function(d){
-    zip2wmo[d.zipcode]=d.wmo
-  })
-  console.log(zip2wmo)
-
-  svg.append("path")
-      .datum(topojson.feature(us, us.objects.land))
-      .attr("class", "land")
-      .attr("d", path);
-
-  svg.append("path")
-      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-      .attr("class", "states")
-      .attr("d", path);
-
-  svg.append("path")
-      .datum({type: "MultiPoint", coordinates: wmo})
-      .attr("class", "points")
-      .attr("d", path);
-
-  var v = voronoi(usaf)
-     poly = v.polygons();
-
-  var vData = v.cells.map(function(d,i){
-    element = {
-      'geo':[d.site[0],d.site[1]]
-     ,'wmo':d.site.data.usaf
-     ,'poly':poly[d.site.index]
-     ,'click':0
-  }
-    return element;
-  })
-  console.log(vData)
-  var myData = d3.voronoi()
-          .extent([[-1, -1], [width + 1, height + 1]])
-          .polygons(wmo.map(projection));
-          //.polygons(wmo_data.map(d => d.coords));
-
-  //console.log(myData)
-  var polygons = svg.append("g")
-      .classed("polygon_container",true)
-      .selectAll("path")
-      .data(vData)
-     .enter().append("path")
-      .attr("class", "voronoi")
-      .attr("id", d => d.wmo)
-      .attr("d", function(d) {
-            var polygon_coords = d.poly.filter(function(d) { return d != null; })
-            return polygon_coords ? "M" + polygon_coords.join("L") + "Z" : null;
-      });
-  polygons.on("click",function(d){
-        var click = d.click ? 0: 0.50;
-        var opacity =  d3.select(this).style("fill-opacity", click)
-        d.click = click
-  })
-/*      .attr("d", function(d) {
-        console.log(d)
-        var value =  "M" + d
-            .filter(function(d) { return d != null; })
-            .map(function(d) { return d.join("L"); })
-            .join("ZM") + "Z";
-        console.log(value)
-        return value
-      });
-*/
-}
-
-</script>
+    <div id="svg-container">
+      <svg id="viz-container" width="960" height="600"></svg>
+    </div>
+  </body>
+</html>
