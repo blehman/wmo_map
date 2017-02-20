@@ -76,7 +76,7 @@ function NewMap(){
       var vData = v.cells.map(function(d,i){
         element = {
           'geo':[d.site[0],d.site[1]]
-         ,'wmo_id':d.site.data.usaf
+         ,'wmo_id':"wmo_id_"+d.site.data.usaf
          ,'poly':poly[d.site.index]
          ,'click':0
       }

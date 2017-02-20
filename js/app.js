@@ -17,13 +17,32 @@
 
   function runApp(error, us, usaf,postalcode2wmo){
     if (error) throw error;
-    // constructor for each new viz
+
+    var zip2wmo = {}
+
+    postalcode2wmo.map(function(d){
+        zip2wmo[d.zipcode]=d.wmo
+    })
+    // map meta data
     var map_data = [{
       "us":us
       ,"usaf":usaf
       ,"postalcode2wmo":postalcode2wmo
-      , "map_size":map_size
+      ,"map_size":map_size
+      ,"zip2wmo":zip2wmo
     }]
+
+    // create non-svg elements
+    var input = NewInput();
+
+    d3.select("#"+input.div_id())
+      .selectAll("div")
+      .data(map_data)
+     .enter().append("div")
+      .attr("id",input.container_id)
+      .call(input)
+    ;
+
     // create an instance of NewMap
     var vMap = NewMap()
     // update map settings
