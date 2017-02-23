@@ -1,30 +1,35 @@
 
 path {
   stroke-linejoin: round;
+  stroke-width: 0.25px;
+  stroke-opacity: 0.50;
 }
 
 .land {
   fill: #ddd;
+  /*fill: white;*/
+  stroke: black;
 }
 
 .states {
   fill: none;
-  stroke: #fff;
+  stroke: white;
+  stroke-width: 2px;
 }
 
 .voronoi {
-  fill: red;
-  stroke: red;
-  stroke-width: 0.5px;
+  fill: blue;
+  stroke: #999;
+  stroke-width: 0.0px;
   fill-opacity: 0.0;
-  stroke-opacity: 0.3;
+  stroke-opacity: 0.9;
 }
-
+/*
 .voronoi:hover .voroni{
   fill: red;
   opacity: 0.30;
 }
-
+*/
 input {
   border: 1px dotted #ccc;
   background: white;
@@ -34,6 +39,7 @@ input {
   margin: 20px 10px 0px 0;
   color: black;
   opacity:0.7;
+  text-align: center;
 }
 
 form {
@@ -48,3 +54,4 @@ form {
   fill: white;
   stroke: none;
 }
+

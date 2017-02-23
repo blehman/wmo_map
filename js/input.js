@@ -6,7 +6,7 @@ function NewInput(){
   var old_wmo;
   function chart(selection) {
     selection.each(function(data){
-      console.log(data)
+      //console.log(data)
 /*
       var form = d3.select(this)
        .append("form")
@@ -25,23 +25,25 @@ function NewInput(){
         .on("cut", function() { setTimeout(color_map, 10); })
         .on("paste", function() { setTimeout(color_map, 10); });
 
-    function color_map(d,i){
-        d3.event.preventDefault()
-        console.log(d)
-        console.log("INPUT TEXT SUBMITTED")
-        var zip = text_input.property("value")
-        if (zip.length ==5){
-          var wmo = d.zip2wmo[zip];
-          console.log(zip)
-          console.log(wmo)
-          d3.selectAll("#"+"wmo_id_"+wmo).style("fill-opacity",0.50)
-          console.log(old_wmo)
-          if (old_wmo != wmo && old_wmo){
-            d3.selectAll("#"+"wmo_id_"+old_wmo).style("fill-opacity",0.0)
+      function color_map(d,i){
+          d3.event.preventDefault()
+          console.log(d)
+          console.log("INPUT TEXT SUBMITTED")
+          var zip = text_input.property("value")
+          if (zip.length ==5){
+            var wmo = d.zip2wmo[zip];
+            console.log(zip)
+            console.log(wmo)
+            d3.selectAll("#"+"wmo_id_"+wmo).style("stroke-width","2.0px")
+            console.log(old_wmo)
+            if (old_wmo != wmo && old_wmo){
+              d3.selectAll("#"+"wmo_id_"+old_wmo).style("stroke-width","0.25px")
+            }
+            old_wmo = wmo;
+          }else{
+            d3.selectAll("#"+"wmo_id_"+old_wmo).style("stroke-width","0.25px")
           }
-          old_wmo = wmo;
-        }
-
+      // end color_map
       }
 
 

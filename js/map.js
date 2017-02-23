@@ -11,8 +11,11 @@ function NewMap(){
 
   var wmo = [];
 
+  var colorScale = d3.scaleLinear();
+
   function chart(selection) {
     selection.each(function(map_data) {
+      console.log(map_data)
       d3.select("svg").append("rect")
         .attr("x",680)
         .attr("y",420)
@@ -22,8 +25,34 @@ function NewMap(){
       // set data vars
       var us = map_data["us"]
         , usaf = map_data["usaf"]
-        , postalcode2wmo = map_data["postalcode2wmo"];
+        , postalcode2wmo = map_data["postalcode2wmo"]
+        , zip2wmo = map_data["zip2wmo"]
+        , wmoVintage2energy = map_data["wmoVintage2energy"]
+        , vintage2nationalTotal = map_data["vintage2nationalTotal"];
 
+      // find extent of total consumption by wmo
+      var filterYear = "1980"
+        , consumption = [];
+      Object.keys(wmoVintage2energy).map(function(d){
+        year = d.slice(9,13);
+        //console.log(wmoVintage2energy[d].total_consumption_KWH)
+        if (filterYear == year){
+          consumption.push(wmoVintage2energy[d].total_consumption_KWH)
+        }
+      })
+      //console.log(consumption)
+      //console.log(d3.extent(consumption))
+      var consumption_extent = d3.extent(consumption)
+      , consumption_min = consumption_extent[0]
+      , consumption_max = consumption_extent[1]
+      , consumption_mid = (consumption_min+consumption_max) / 2.0
+      , consumption_domain = [consumption_min,consumption_mid, consumption_max];
+      var choroplethScale = d3.scaleLinear()
+          .domain(consumption_domain)
+          .range(["green","yellow","red"]);
+      var choroplethOpacityScale = d3.scaleLinear()
+          .domain(d3.extent(consumption))
+          .range([0.20,0.50]);
       // build map projection
       var projection = d3.geoAlbers()
         .scale(700)
@@ -66,22 +95,43 @@ function NewMap(){
       viz_g.append("path")
           .datum({type: "MultiPoint", coordinates: wmo})
           .attr("class", "points")
-          .attr("d", path);
+          .style("fill","none")
+          .style("stroke-width","0.0px")
+          .style("stroke","none")
+          .transition()
+          .duration(1000)
+          .style("stroke-width","0.2px")
+          .style("stroke","black")
+          //.style("fill","none")
+          .style("opacity","1")
+          .attr("d", path)
+          .attr("r",5);
 
       // set voronoi to new map size
       voronoi.extent([[-15, -10], [width + 15, height + 15]])
 
       var v = voronoi(usaf)
-        , poly = v.polygons();
+        , poly = v.polygons()
+        , polygon_opacity = 0.50;
+
       var vData = v.cells.map(function(d,i){
+        //console.log(d)
+        var key = "("+d.site.data.usaf+", "+filterYear+")"
+        //console.log(wmoVintage2energy)
+        //var key = (+d.site.data.usaf,+filterYear)
+        var wmo_consumption = wmoVintage2energy[key].total_consumption_KWH
+        //console.log(wmo_consumption)
         element = {
           'geo':[d.site[0],d.site[1]]
          ,'wmo_id':"wmo_id_"+d.site.data.usaf
          ,'poly':poly[d.site.index]
-         ,'click':0
+         ,'opacity':choroplethOpacityScale(wmo_consumption)
+         ,'click':choroplethOpacityScale(wmo_consumption)
+         ,'color': choroplethScale(wmo_consumption)
       }
         return element;
       })
+
       var polygons = viz_g.append("g")
           .classed("polygon_container",true)
           .selectAll("path")
@@ -92,10 +142,31 @@ function NewMap(){
           .attr("d", function(d) {
                 var polygon_coords = d.poly.filter(function(d) { return d != null; })
                 return polygon_coords ? "M" + polygon_coords.join("L") + "Z" : null;
-          });
+          })
+
+
+      polygons.transition()
+          .delay(3000)
+          .duration(3000)
+          .style("stroke-width","1px")
+          .style("stroke","red")
+         .transition()
+          .delay(2000)
+          .duration(4000)
+          .style("stroke-width","0.5px")
+          .style("stroke","#999")
+         .transition()
+          .delay(1000)
+          .duration(5000)
+          .style("fill", d => d.color)
+          .style("fill-opacity", 0.20)
+         .transition()
+          .duration(2000)
+          .style("fill-opacity", d => d.opacity)
+
       polygons.on("click",function(d){
-            var click = d.click ? 0: 0.50;
-            var opacity =  d3.select(this).style("fill-opacity", click)
+            var click = d.click==d.opacity ? 0:d.opacity;
+            d3.select(this).style("fill-opacity", click)
             d.click = click
       })
     /*      .attr("d", function(d) {
@@ -108,9 +179,6 @@ function NewMap(){
             return value
           });
     */
-      function zipcodeReview(){
-        console.log(zip2wmo[d3.select("#zip").attr("value")])
-      }
     //end selection
     })
   // end chart
