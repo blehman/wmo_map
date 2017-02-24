@@ -31,7 +31,7 @@ function NewMap(){
         , vintage2nationalTotal = map_data["vintage2nationalTotal"];
 
       // find extent of total consumption by wmo
-      var filterYear = "1980"
+      var filterYear = "1950"
         , consumption = [];
       Object.keys(wmoVintage2energy).map(function(d){
         year = d.slice(9,13);
@@ -46,13 +46,37 @@ function NewMap(){
       , consumption_min = consumption_extent[0]
       , consumption_max = consumption_extent[1]
       , consumption_mid = (consumption_min+consumption_max) / 2.0
-      , consumption_domain = [consumption_min,consumption_mid, consumption_max];
+      , consumption_domain = [consumption_min,consumption_mid, consumption_max]
+      , consumption_delta = (consumption_max-consumption_min)/6;
       var choroplethScale = d3.scaleLinear()
-          .domain(consumption_domain)
-          .range(["green","yellow","red"]);
+          .domain([
+             consumption_min
+            , consumption_min+consumption_delta
+            , consumption_min+(consumption_delta*2)
+            , consumption_min+(consumption_delta*3)
+            , consumption_min+(consumption_delta*4)
+            , consumption_min+(consumption_delta*5)
+            , consumption_min+(consumption_delta*6)
+          ]
+          )
+          //.range(["#31a354","#a1d99b","#e34a33"]); green to red
+          //.range(["#fff7bc","#fec44f","#d95f0e"]);
+          .range(["#1a9850","#91cf60","#d9ef8b","#fee08b","#fc8d59","#d73027"])
+
+/*
+ RED
+#d73027
+#fc8d59
+#fee08b
+#d9ef8b
+#91cf60
+#1a9850
+ Green
+*/
+          //.range(["white","red"]);
       var choroplethOpacityScale = d3.scaleLinear()
           .domain(d3.extent(consumption))
-          .range([0.20,0.50]);
+          .range([0.40,0.50]);
       // build map projection
       var projection = d3.geoAlbers()
         .scale(700)
@@ -105,7 +129,10 @@ function NewMap(){
           //.style("fill","none")
           .style("opacity","1")
           .attr("d", path)
-          .attr("r",5);
+          .attr("r",5)
+          .transition()
+          .duration(2000)
+          .style("stroke-width","0px");
 
       // set voronoi to new map size
       voronoi.extent([[-15, -10], [width + 15, height + 15]])
@@ -145,7 +172,9 @@ function NewMap(){
           })
 
 
-      polygons.transition()
+      polygons
+/*
+          .transition()
           .delay(3000)
           .duration(3000)
           .style("stroke-width","1px")
@@ -153,16 +182,22 @@ function NewMap(){
          .transition()
           .delay(2000)
           .duration(4000)
-          .style("stroke-width","0.5px")
+*/
+          .style("stroke-width","0.15px")
           .style("stroke","#999")
-         .transition()
+/*
+          .transition()
           .delay(1000)
           .duration(5000)
+*/
           .style("fill", d => d.color)
-          .style("fill-opacity", 0.20)
-         .transition()
+/*
+          .style("fill-opacity", 0.10)
+          .transition()
           .duration(2000)
-          .style("fill-opacity", d => d.opacity)
+*/
+          .style("fill-opacity",0.60);
+          //.style("fill-opacity", d => d.opacity)
 
       polygons.on("click",function(d){
             var click = d.click==d.opacity ? 0:d.opacity;

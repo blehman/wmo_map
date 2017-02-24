@@ -15,6 +15,7 @@ function NewInput(){
 */
       var text_input = d3.select(this).append("input")
         .attr("id",input_id)
+        .attr("x",100)
         .attr("type","text")
         .attr("placeholder","type a zipcode")
         .attr("maxlength",5)
@@ -26,23 +27,29 @@ function NewInput(){
         .on("paste", function() { setTimeout(color_map, 10); });
 
       function color_map(d,i){
-          d3.event.preventDefault()
-          console.log(d)
-          console.log("INPUT TEXT SUBMITTED")
-          var zip = text_input.property("value")
-          if (zip.length ==5){
-            var wmo = d.zip2wmo[zip];
-            console.log(zip)
-            console.log(wmo)
-            d3.selectAll("#"+"wmo_id_"+wmo).style("stroke-width","2.0px")
-            console.log(old_wmo)
-            if (old_wmo != wmo && old_wmo){
-              d3.selectAll("#"+"wmo_id_"+old_wmo).style("stroke-width","0.25px")
-            }
-            old_wmo = wmo;
-          }else{
-            d3.selectAll("#"+"wmo_id_"+old_wmo).style("stroke-width","0.25px")
+        d3.event.preventDefault()
+        //console.log(d)
+        //console.log("INPUT TEXT SUBMITTED")
+        var zip = text_input.property("value")
+        if (zip.length ==5){
+          var wmo = d.zip2wmo[zip];
+          console.log(zip)
+          console.log(wmo)
+          d3.selectAll("#"+"wmo_id_"+wmo)
+            .style("stroke-width","4.0px")
+            .style("stroke","BLACK")
+          console.log(old_wmo)
+          if (old_wmo != wmo && old_wmo){
+            d3.selectAll("#"+"wmo_id_"+old_wmo)
+              .style("stroke-width","0.15px")
+              .style("stroke","#999")
           }
+          old_wmo = wmo;
+        }else{
+          d3.selectAll("#"+"wmo_id_"+old_wmo)
+            .style("stroke-width","0.15px")
+            .style("stroke","#999")
+        }
       // end color_map
       }
 
