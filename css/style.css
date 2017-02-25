@@ -35,7 +35,7 @@ input {
   font-family: monospace;
   padding: 10px 20px;
   font-size: 18px;
-  margin: 20px 0px 0px 200px;
+  margin: 10px 0px 0px 200px;
   color: black;
   opacity:0.7;
   text-align: center;
@@ -50,7 +50,7 @@ form {
   background: transparent;
 }
 
-.rect {
+.fudge {
   fill: white;
   stroke: none;
 }

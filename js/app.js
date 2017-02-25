@@ -16,6 +16,7 @@
   , svg_height = 600
   , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5};
 
+  var polygon_fill_opacity = 0.60;
 
   function runApp(error, us, usaf,postalcode2wmo,energy,vintage2nationalTotal){
     //console.log(vintage2nationalTotal)
@@ -43,7 +44,7 @@
     //console.log(energy["(722010, 1900)"])
     // create non-svg elements
     var input = NewInput();
-
+    // insert input
     d3.select("#"+input.div_id())
       .selectAll("div")
       .data(map_data)
@@ -53,19 +54,38 @@
     ;
 
     // create an instance of NewMap
-    var vMap = NewMap()
+    var vMap = NewMap();
     // update map settings
+    vMap.polygon_opacity(polygon_fill_opacity)
     vMap.height(map_size.height)
     vMap.width(map_size.width)
+
+    // create an instance of GradientLegend
+    var gLegend = GradientLegend();
+    // update legend settings
+    gLegend.stop_opacity(polygon_fill_opacity)
     // a container nested under svg
     var svg = d3.select("#viz-container")
-      .attr("height",svg_height)
-      .attr("width",svg_width)
-    // creat container for each viz
-    svg.selectAll("g")
+        .attr("height",svg_height)
+        .attr("width",svg_width)
+
+    // create a new container for each viz
+    // gradient legend
+
+    var legend = svg.selectAll("#"+gLegend.id())
+        .data(map_data)
+       .enter().append("g")
+        .attr("id",gLegend.id());
+
+    // map
+    var map = svg.selectAll("#"+vMap.id())
         .data(map_data)
        .enter().append("g")
         .attr("id",vMap.id())
-        .call(vMap)
+        .call(vMap);
+
+    gLegend.domain(vMap.choroplethScale().domain())
+    console.log(gLegend.domain())
+    legend.call(gLegend)
   }
 }())

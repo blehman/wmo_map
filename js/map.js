@@ -10,18 +10,31 @@ function NewMap(){
       .y( d => +d.screen_lat)
 
   var wmo = [];
-
+  var polygon_opacity = 0.60;
   var colorScale = d3.scaleLinear();
+
+  var consumption_extent,
+      choroplethScale;
 
   function chart(selection) {
     selection.each(function(map_data) {
       console.log(map_data)
       d3.select("svg").append("rect")
+        .classed("fudge",true)
         .attr("x",680)
-        .attr("y",420)
+        .attr("y",430)
         .classed("rect",true)
         .attr("height",20)
         .attr("width",40)
+
+      d3.select("svg").append("rect")
+        .classed("fudge",true)
+        .attr("x",65)
+        .attr("y",0)
+        .classed("rect",true)
+        .attr("height",20)
+        .attr("width",40);
+
       // set data vars
       var us = map_data["us"]
         , usaf = map_data["usaf"]
@@ -42,13 +55,14 @@ function NewMap(){
       })
       //console.log(consumption)
       //console.log(d3.extent(consumption))
-      var consumption_extent = d3.extent(consumption)
-      , consumption_min = consumption_extent[0]
+      consumption_extent = d3.extent(consumption)
+
+      var consumption_min = consumption_extent[0]
       , consumption_max = consumption_extent[1]
       , consumption_mid = (consumption_min+consumption_max) / 2.0
       , consumption_domain = [consumption_min,consumption_mid, consumption_max]
       , consumption_delta = (consumption_max-consumption_min)/6;
-      var choroplethScale = d3.scaleLinear()
+      choroplethScale = d3.scaleLinear()
           .domain([
              consumption_min
             , consumption_min+consumption_delta
@@ -103,7 +117,7 @@ function NewMap(){
       })
       // create container for map elements
       var viz_g = d3.select("#"+id)
-          .attr("transform","translate(100,90)");
+          .attr("transform","translate(100,100)");
 
       // build map elements
       viz_g.append("path")
@@ -138,8 +152,7 @@ function NewMap(){
       voronoi.extent([[-15, -10], [width + 15, height + 15]])
 
       var v = voronoi(usaf)
-        , poly = v.polygons()
-        , polygon_opacity = 0.50;
+        , poly = v.polygons();
 
       var vData = v.cells.map(function(d,i){
         //console.log(d)
@@ -196,7 +209,7 @@ function NewMap(){
           .transition()
           .duration(2000)
 */
-          .style("fill-opacity",0.60);
+          .style("fill-opacity",polygon_opacity);
           //.style("fill-opacity", d => d.opacity)
 
       polygons.on("click",function(d){
@@ -233,6 +246,22 @@ function NewMap(){
     height = h;
     return chart;
   };
+  chart.polygon_opacity = function(p) {
+    if (!arguments.length) { return polygon_opacity; }
+    polygon_opacity = p;
+    return chart;
+  };
+  chart.consumption_extent = function(c) {
+    if (!arguments.length) { return consumption_extent; }
+    consumption_extent = c;
+    return chart;
+  };
+  chart.choroplethScale= function(c) {
+    if (!arguments.length) { return choroplethScale; }
+    choroplethScale = c;
+    return chart;
+  };
+
 // end NewMap
   return chart
 }
