@@ -69,6 +69,8 @@
         .attr("height",svg_height)
         .attr("width",svg_width)
 
+    // create an instance of YearSlider
+    var ySlider = YearSlider()
     // create a new container for each viz
     // gradient legend
 
@@ -77,6 +79,11 @@
        .enter().append("g")
         .attr("id",gLegend.id());
 
+    var slider = svg.selectAll("#"+ySlider.id())
+        .data(map_data)
+       .enter().append("g")
+        .attr("id",ySlider.id());
+
     // map
     var map = svg.selectAll("#"+vMap.id())
         .data(map_data)
@@ -84,8 +91,11 @@
         .attr("id",vMap.id())
         .call(vMap);
 
+    // update domain from Map for both legend
     gLegend.domain(vMap.choroplethScale().domain())
-    console.log(gLegend.domain())
     legend.call(gLegend)
+
+    ySlider.width(gLegend.width())
+    slider.call(ySlider)
   }
 }())
