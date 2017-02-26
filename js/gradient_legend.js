@@ -6,11 +6,13 @@ function GradientLegend(){
     , width = 510;
   var stop_opacity = 0.60
 
+  var choroplethScale;
+
   var domain;
 
   function chart(selection) {
     selection.each(function(data) {
-      //console.log(data)
+      console.log(choroplethScale)
       var legend = d3.select(this)
           .attr("transform","translate(85,65)");
 
@@ -62,6 +64,30 @@ function GradientLegend(){
           .attr("id","xAxis")
           .call(d3.axisBottom(x))
 
+      var canvas = d3.select("canvas").node(),
+          context = canvas.getContext("2d"),
+          canvasWidth = canvas.width;
+/*
+      var x0 = d3.scaleQuantize()
+          .domain([0, 1])
+          .range(["#8e0152", "#c51b7d", "#de77ae", "#f1b6da", "#fde0ef", "#f7f7f7", "#e6f5d0", "#b8e186", "#7fbc41", "#4d9221", "#276419"]); // PiYG
+*/
+      var range = ["#8e0152", "#c51b7d", "#de77ae", "#f1b6da", "#fde0ef", "#f7f7f7", "#e6f5d0", "#b8e186", "#7fbc41", "#4d9221", "#276419"];
+      var delta = (50000-10000)/range.length
+          , min = domain[0]
+          , choroplethScale_range = range.map((d,i) => choroplethScale(min+(i*delta)))
+      var image = context.createImageData(canvasWidth, 1),
+          interpolate = d3.interpolateRgbBasis(choroplethScale_range);
+
+      for (var i = 0, k = 0; i < canvasWidth; ++i, k += 4) {
+        var c = d3.rgb(interpolate(i / (canvasWidth - 1)));
+        image.data[k] = c.r;
+        image.data[k + 1] = c.g;
+        image.data[k + 2] = c.b;
+        image.data[k + 3] = 255;
+      }
+
+context.putImageData(image, 0, 0);
 
       // legend axis
     //end selection
@@ -93,6 +119,13 @@ function GradientLegend(){
     domain = d;
     return chart;
   };
+  chart.choroplethScale = function(c) {
+    if (!arguments.length) { return choroplethScale; }
+    choroplethScale = c;
+    return chart;
+  };
+
+
 // end GradientLegend
   return chart
 }

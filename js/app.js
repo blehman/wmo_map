@@ -92,7 +92,8 @@
         .call(vMap);
 
     // update domain from Map for both legend
-    gLegend.domain(vMap.choroplethScale().domain())
+    gLegend.domain(vMap.consumption_extent())
+    gLegend.choroplethScale(vMap.choroplethScale())
     legend.call(gLegend)
 
     ySlider.width(gLegend.width())

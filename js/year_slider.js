@@ -42,7 +42,7 @@ function YearSlider(){
     }
 
     function dragged(d) {
-      d3.select(this).attr("cx", d.x = d3.event.x);
+      d3.select(this).attr("cx", d.x = d3.max([0, d3.min([d3.event.x,width])]));
     }
 
     function dragended(d) {

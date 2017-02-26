@@ -62,6 +62,8 @@ function NewMap(){
       , consumption_mid = (consumption_min+consumption_max) / 2.0
       , consumption_domain = [consumption_min,consumption_mid, consumption_max]
       , consumption_delta = (consumption_max-consumption_min)/6;
+
+/*
       choroplethScale = d3.scaleLinear()
           .domain([
              consumption_min
@@ -69,15 +71,23 @@ function NewMap(){
             , consumption_min+(consumption_delta*2)
             , consumption_min+(consumption_delta*3)
             , consumption_min+(consumption_delta*4)
-            , consumption_min+(consumption_delta*5)
-            , consumption_min+(consumption_delta*6)
+            //, consumption_min+(consumption_delta*5)
+            //, consumption_min+(consumption_delta*6)
           ]
           )
           //.range(["#31a354","#a1d99b","#e34a33"]); green to red
           //.range(["#fff7bc","#fec44f","#d95f0e"]);
           .range(["#1a9850","#91cf60","#d9ef8b","#fee08b","#fc8d59","#d73027"])
+*/
+     console.log(consumption_extent)
+     e = [10000, 50000]
+     s1 = d3.scaleLinear()
+          .domain(e)
+          .range([0,1])
 
-/*
+     //choroplethScale = function(d){return d3.interpolateYlOrRd(s1(d)); }
+     choroplethScale = function(d){return d3.interpolateRdBu(s1(d)); }
+        /*
  RED
 #d73027
 #fc8d59
