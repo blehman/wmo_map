@@ -70,7 +70,11 @@
         .attr("width",svg_width)
 
     // create an instance of YearSlider
-    var ySlider = YearSlider()
+    var ySlider = YearSlider();
+
+    // create an instance of YearSlider
+    var iHomes = Homes();
+
     // create a new container for each viz
     // gradient legend
 
@@ -83,6 +87,12 @@
         .data(map_data)
        .enter().append("g")
         .attr("id",ySlider.id());
+
+    var home = svg.selectAll("#"+iHomes.id())
+        .data(map_data)
+       .enter().append("g")
+        .attr("id",iHomes.id())
+        .call(iHomes);
 
     // map
     var map = svg.selectAll("#"+vMap.id())
