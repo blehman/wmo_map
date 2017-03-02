@@ -3,6 +3,8 @@
   // get data
   d3.queue()
     .defer(d3.json, "data/us.json")
+    //.defer(d3.json, "data/us-10m.v1.json")
+    //.defer(d3.json, "data/10m.json")
     //.defer(d3.json, "http://bl.ocks.org/mbostock/raw/4090846/us.json")
     //.defer(d3.tsv, "wmo_latlon.tsv")
     .defer(d3.csv,"data/wmo2latlon.csv")
@@ -14,7 +16,8 @@
   var margin = { top: 0.10, right: 0.10, bottom: 0.10, left: 0.10 }
   , svg_width = 960
   , svg_height = 600
-  , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5};
+  , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5}
+  , startYear = "1980";
 
   var polygon_fill_opacity = 0.60;
 
@@ -59,6 +62,7 @@
     vMap.polygon_opacity(polygon_fill_opacity)
     vMap.height(map_size.height)
     vMap.width(map_size.width)
+    vMap.filterYear(startYear)
 
     // create an instance of GradientLegend
     var gLegend = GradientLegend();
@@ -71,6 +75,7 @@
 
     // create an instance of YearSlider
     var ySlider = YearSlider();
+    ySlider.filterYear(startYear)
 
     // create an instance of YearSlider
     var iHomes = Homes();

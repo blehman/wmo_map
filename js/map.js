@@ -16,6 +16,8 @@ function NewMap(){
   var consumption_extent,
       choroplethScale;
 
+  var filterYear="1980";
+
   function chart(selection) {
     selection.each(function(map_data) {
       console.log(map_data)
@@ -41,11 +43,9 @@ function NewMap(){
         , postalcode2wmo = map_data["postalcode2wmo"]
         , zip2wmo = map_data["zip2wmo"]
         , wmoVintage2energy = map_data["wmoVintage2energy"]
-        , vintage2nationalTotal = map_data["vintage2nationalTotal"];
-
-      // find extent of total consumption by wmo
-      var filterYear = "1950"
+        , vintage2nationalTotal = map_data["vintage2nationalTotal"]
         , consumption = [];
+      // find extent of total consumption by wmo
       Object.keys(wmoVintage2energy).map(function(d){
         year = d.slice(9,13);
         //console.log(wmoVintage2energy[d].total_consumption_KWH)
@@ -62,6 +62,10 @@ function NewMap(){
       , consumption_mid = (consumption_min+consumption_max) / 2.0
       , consumption_domain = [consumption_min,consumption_mid, consumption_max]
       , consumption_delta = (consumption_max-consumption_min)/6;
+
+      var legendAxisScale =d3.scaleLinear()
+          .domain(d3.extent(consumption_extent))
+          .range([0,510])
 
 /*
       choroplethScale = d3.scaleLinear()
@@ -110,6 +114,8 @@ function NewMap(){
         .projection(projection)
         .pointRadius(1.5);
 
+      //var path = d3.geoPath();
+
       // pack meta_data
       usaf.forEach(function(d) {
         //console.log(d)
@@ -130,8 +136,24 @@ function NewMap(){
           .attr("transform","translate(100,100)");
 
       // build map elements
+      /*
+       var path = d3.geoPath()
+  viz_g.append("path")
+      .attr("stroke", "#aaa")
+      .attr("stroke-width", 0.5)
+      .attr("d", path(topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b && (a.id / 1000 | 0) === (b.id / 1000 | 0); })));
+
+  viz_g.append("path")
+      .attr("stroke-width", 0.5)
+      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+  viz_g.append("path")
+      .attr("d", path(topojson.feature(us, us.objects.nation)));
+
+*/
       viz_g.append("path")
           .datum(topojson.feature(us, us.objects.land))
+          //.datum(topojson.feature(us, us.objects.nation))
           .attr("class", "land")
           .attr("d", path);
 
@@ -164,6 +186,9 @@ function NewMap(){
       var v = voronoi(usaf)
         , poly = v.polygons();
 
+      //var test = poly.map(d => );
+      //console.log()
+
       var vData = v.cells.map(function(d,i){
         //console.log(d)
         var key = "("+d.site.data.usaf+", "+filterYear+")"
@@ -194,39 +219,45 @@ function NewMap(){
                 return polygon_coords ? "M" + polygon_coords.join("L") + "Z" : null;
           })
 
-
       polygons
-/*
-          .transition()
-          .delay(3000)
-          .duration(3000)
-          .style("stroke-width","1px")
-          .style("stroke","red")
-         .transition()
-          .delay(2000)
-          .duration(4000)
-*/
           .style("stroke-width","0.15px")
           .style("stroke","#999")
-/*
-          .transition()
-          .delay(1000)
-          .duration(5000)
-*/
           .style("fill", d => d.color)
-/*
-          .style("fill-opacity", 0.10)
-          .transition()
-          .duration(2000)
-*/
           .style("fill-opacity",polygon_opacity);
-          //.style("fill-opacity", d => d.opacity)
 
       polygons.on("click",function(d){
-            var click = d.click==d.opacity ? 0:d.opacity;
-            d3.select(this).style("fill-opacity", click)
-            d.click = click
+          var click = d.click==d.opacity ? 0:d.opacity;
+          d3.select(this).style("fill-opacity", click)
+          d.click = click
       })
+
+      polygons.on('mouseout', function(d){
+          console.log(d)
+          d3.select("#legend_pointer")
+            .style("opacity",1)
+            .style("fill-opacity",1)
+            .style("fill","none")
+            .style("stroke","none")
+
+      })
+      polygons.on('mouseover', function(d){
+          d3.select("#legend_pointer")
+            .style("opacity",1)
+            .style("fill-opacity",1)
+            .style("fill","#000")
+            .style("stroke","#000")
+
+          var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
+          var wmo_consumption = wmoVintage2energy[key].total_consumption_KWH;
+          var xValue = legendAxisScale(wmo_consumption);
+          console.log(wmo_consumption)
+          d3.select("#pointer_line")
+            .attr("x1",xValue)
+            .attr("x2",xValue)
+
+      })
+
+
     /*      .attr("d", function(d) {
             console.log(d)
             var value =  "M" + d
@@ -271,7 +302,13 @@ function NewMap(){
     choroplethScale = c;
     return chart;
   };
+  chart.filterYear= function(y) {
+    if (!arguments.length) { return filterYear; }
+    filterYear = y;
+    return chart;
+  };
 
 // end NewMap
   return chart
 }
+

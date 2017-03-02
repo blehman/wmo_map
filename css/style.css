@@ -56,9 +56,17 @@ form {
 }
 
 .active {
-  stroke: #000;
-  stroke-width: 2px;
+  fill: none;
+  fill-opacity: 0.10;
+  stroke-width: 4px;
+  stroke: green;
+  stroke-opacity:0.50
 }
+
+#legend_pointer{
+  fill:#000;
+}
+
 
 /*
 #yearSlider path.domain{

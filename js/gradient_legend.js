@@ -12,12 +12,36 @@ function GradientLegend(){
 
   function chart(selection) {
     selection.each(function(data) {
-      console.log(choroplethScale)
+      console.log(data)
+      var wmoVintage2energy = data["wmoVintage2energy"]
+      console.log(wmoVintage2energy)
+
       var legend = d3.select(this)
           .attr("transform","translate(85,65)");
 
-    // create some definitions
-    var defs = legend.append("defs");
+      // create some definitions
+      var defs = legend.append("defs");
+      // create arrow marker
+      defs.append("marker")
+      .attr("id", "legend_pointer")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 15)
+      .attr("refY", -1.5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+    .append("path")
+      .attr("d", "M0,-5L10,0L0,5")
+      .attr("fill","none");
+      // create arrow
+      legend.append("line")// attach a line
+      .attr("id","pointer_line")
+      .style("stroke", "none")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", 1)
+      .attr("marker-end","url(#legend_pointer)");
       /*
        RED
       #d73027
@@ -29,6 +53,7 @@ function GradientLegend(){
        Green
       */
     // define a linear gradient
+/*
     var linearGradient = defs.append("linearGradient")
           .attr("id","map-color-gradient")
           //.attr("gradientUnits", "userSpaceOnUse")
@@ -54,7 +79,7 @@ function GradientLegend(){
           .attr("width",width)
           .attr("height",height)
           .style("fill","url(#map-color-gradient)");
-
+*/
       // legend scale
       var x = d3.scaleLinear()
           .domain(d3.extent(domain))
@@ -73,7 +98,7 @@ function GradientLegend(){
           .range(["#8e0152", "#c51b7d", "#de77ae", "#f1b6da", "#fde0ef", "#f7f7f7", "#e6f5d0", "#b8e186", "#7fbc41", "#4d9221", "#276419"]); // PiYG
 */
       var range = ["#8e0152", "#c51b7d", "#de77ae", "#f1b6da", "#fde0ef", "#f7f7f7", "#e6f5d0", "#b8e186", "#7fbc41", "#4d9221", "#276419"];
-      var delta = (50000-10000)/range.length
+      var delta = (domain[1]-domain[0])/range.length
           , min = domain[0]
           , choroplethScale_range = range.map((d,i) => choroplethScale(min+(i*delta)))
       var image = context.createImageData(canvasWidth, 1),

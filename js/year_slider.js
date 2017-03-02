@@ -11,32 +11,34 @@ function YearSlider(){
   var years = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
 
   var parseDate = d3.timeParse("%Y")
-  var consumption_extent,
-      choroplethScale;
+  var consumption_extent
+    , choroplethScale;
+  var filterYear;
 
   function chart(selection) {
     selection.each(function(map_data) {
-      //console.log(map_data)
+
     var slider = d3.select(this)
-        .append("g")
-        .attr("id","yearSlider")
         .attr("transform","translate(85,450)");
 
     var dates = years.map(d => parseDate(d));
     //console.log(dates)
-    var x = d3.scaleTime()
+    var xScale = d3.scaleTime()
         .domain(d3.extent(dates))
-        .range([0,width])
-    var ticks = x.ticks(5);
-    console.log(ticks)
-    var xAxis = d3.axisBottom(x)
+        .range([0,width]);
+
+    var ticks = xScale.ticks(5);
+
+    var xStart = xScale(filterYear);
+
+    var xAxis = d3.axisBottom(xScale)
         .tickValues(ticks)
 
     slider.call(xAxis)
 
     slider.append("rect")
         .classed("dragger",true)
-        //.attr("x",xPos)
+        .attr("x",xStart)
         .attr("y",-rectHeight)
         .attr("height",rectHeight)
         .attr("width",rectWidth)
@@ -47,27 +49,35 @@ function YearSlider(){
             .on("drag", dragged)
             .on("end", dragended))
 
+    slider.insert("circle",":first-child")
+        .attr("id","slider_highlight")
+        .attr("r",5)
+        .attr("cx",xStart+15)
+        .attr("cy",-11)
+        .attr("width",0)
+        //.style("opacity",0.0)
 
     slider.insert("image",":first-child")
         .attr("id","slider_img")
         .attr("xlink:href","img/slider.png")
-        .attr("x",0)
+        .attr("x",xStart)
         .attr("y",-15)
-        .attr("opacity",0.90)
+        .attr("opacity",1)
         .attr("width","30px")
     function dragstarted(d) {
-      d3.select(this).raise().classed("active", true);
+      d3.select("#slider_highlight").raise().classed("active", true);
     }
 
     function dragged(d) {
       d3.select(this).attr("x", d.x = d3.max([0, d3.min([d3.event.x,width - rectWidth])]));
       d3.selectAll("#slider_img").attr("x", d3.max([0, d3.min([d3.event.x,width - rectWidth])]));
-      var year = x.invert(d3.event.x).getFullYear()
+      d3.selectAll("#slider_highlight").attr("cx", 15 + d3.max([0, d3.min([d3.event.x,width - rectWidth])]));
+      var year = xScale.invert(d3.event.x).getFullYear()
       console.log(Math.round(year/10)*10)
     }
 
     function dragended(d) {
-      d3.select(this).classed("active", false);
+      d3.select("#slider_highlight").classed("active", false);
     }
 
 
@@ -106,6 +116,12 @@ function YearSlider(){
     years = y;
     return chart;
   };
+  chart.filterYear = function(y) {
+    if (!arguments.length) { return filterYear; }
+    filterYear = y;
+    return chart;
+  };
+
 // end NewMap
   return chart
 }
