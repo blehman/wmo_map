@@ -20,7 +20,8 @@ function NewMap(){
 
   function chart(selection) {
     selection.each(function(map_data) {
-      console.log(map_data)
+      //console.log(map_data)
+/*
       d3.select("svg").append("rect")
         .classed("fudge",true)
         .attr("x",680)
@@ -36,7 +37,7 @@ function NewMap(){
         .classed("rect",true)
         .attr("height",20)
         .attr("width",40);
-
+*/
       // set data vars
       var us = map_data["us"]
         , usaf = map_data["usaf"]
@@ -63,10 +64,9 @@ function NewMap(){
       , consumption_domain = [consumption_min,consumption_mid, consumption_max]
       , consumption_delta = (consumption_max-consumption_min)/6;
 
-      var legendAxisScale =d3.scaleLinear()
+      var legendAxisScale = d3.scaleLinear()
           .domain(d3.extent(consumption_extent))
           .range([0,510])
-
 /*
       choroplethScale = d3.scaleLinear()
           .domain([
@@ -83,7 +83,7 @@ function NewMap(){
           //.range(["#fff7bc","#fec44f","#d95f0e"]);
           .range(["#1a9850","#91cf60","#d9ef8b","#fee08b","#fc8d59","#d73027"])
 */
-     console.log(consumption_extent)
+     //console.log(consumption_extent)
      e = [10000, 50000]
      s1 = d3.scaleLinear()
           .domain(e)
@@ -105,10 +105,12 @@ function NewMap(){
       var choroplethOpacityScale = d3.scaleLinear()
           .domain(d3.extent(consumption))
           .range([0.40,0.50]);
+
       // build map projection
       var projection = d3.geoAlbers()
         .scale(700)
-        .translate([width / 2, height / 2]);
+        .translate([width / 2, height / 2])
+        .clipExtent([[-20, -10], [width+20, height+50]]);
 
       var path = d3.geoPath()
         .projection(projection)
@@ -133,7 +135,7 @@ function NewMap(){
       })
       // create container for map elements
       var viz_g = d3.select("#"+id)
-          .attr("transform","translate(100,100)");
+          .attr("transform","translate(100,150)");
 
       // build map elements
       /*
@@ -147,10 +149,13 @@ function NewMap(){
       .attr("stroke-width", 0.5)
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
 
-  viz_g.append("path")
+  viz_g.append("path")path({type: "Point", coordinates: [d]}))
       .attr("d", path(topojson.feature(us, us.objects.nation)));
 
 */
+
+// BUILD MAP
+
       viz_g.append("path")
           .datum(topojson.feature(us, us.objects.land))
           //.datum(topojson.feature(us, us.objects.nation))
@@ -186,6 +191,67 @@ function NewMap(){
       var v = voronoi(usaf)
         , poly = v.polygons();
 
+      var land = topojson.feature(us, us.objects.land);
+      console.log(land)
+      max_len = 0
+      /*
+      land.geometry.coordinates.forEach(function(arrayOfArrays,i){
+        arrayOfArrays.forEach(function(d,i){
+          var len = d.length;
+          if (max_len<d.length){
+            max_len = len
+            //console.log([max_len,i])
+          }
+        })
+      })
+      */
+      //console.log(land.geometry.coordinates[0][0])
+      var mainland_points = land.geometry.coordinates[0][0]
+      console.log(mainland_points[0])
+      mainland_points.push(mainland_points[0])
+
+      //mainland_points.forEach(d => console.log(d))
+      //mainland_points.forEach(d => console.log(path({type: "Point", coordinates: [d]})))
+      //console.log("TEST")
+      var projected_mainland_points = mainland_points.map(function(d,i){
+        var value = projection(d);
+        //console.log(value)
+        if (value){return value}else{console.log(d)}
+      })
+// draw mainlaind points
+/*
+      var mainland_map = viz_g.append("g")
+          .classed("mainland",true)
+          .selectAll("path")
+          .data([projected_mainland_points])
+         .enter().append("path")
+          .attr("class", "mainland")
+          .attr("d",d => "M" + d.join("L"))
+          .style("stroke-width","3px")
+          .style("stroke","#999")
+          .style("fill", "red")
+          .style("fill-opacity",1)
+          //.attr("transform","translate(500,0)");
+*/
+      var mainland =  turf.polygon([projected_mainland_points])
+      console.log(mainland)
+      //var rings = land.geometry.coordinates.map(function(rings) { if (rings[0]!==undefined){return rings[0];} });
+      //console.log(rings)
+
+      var sects = []
+/*
+      poly.map(function(v1){
+        // adding v1[0] to the array to close the polygon
+        v1.push(v1[0])
+        var v1_poly = turf.polygon([v1])
+        console.log(v1_poly)
+        var intersection  = turf.intersect(mainland,v1_poly);
+        if (intersection !== undefined){
+          sects.push(intersection)
+        }
+      })
+      console.log(sects)
+*/
       //var test = poly.map(d => );
       //console.log()
 
@@ -206,6 +272,7 @@ function NewMap(){
       }
         return element;
       })
+
 
       var polygons = viz_g.append("g")
           .classed("polygon_container",true)
@@ -232,7 +299,7 @@ function NewMap(){
       })
 
       polygons.on('mouseout', function(d){
-          console.log(d)
+          //console.log(d)
           d3.select("#legend_pointer")
             .style("opacity",1)
             .style("fill-opacity",1)
@@ -250,13 +317,30 @@ function NewMap(){
           var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
           var wmo_consumption = wmoVintage2energy[key].total_consumption_KWH;
           var xValue = legendAxisScale(wmo_consumption);
-          console.log(wmo_consumption)
+          //console.log(wmo_consumption)
           d3.select("#pointer_line")
             .attr("x1",xValue)
             .attr("x2",xValue)
 
       })
 
+/*
+      var defs = viz_g.append("defs");
+
+      defs.append("path")
+          .datum(topojson.feature(us, us.objects.land))
+          .attr("id", "land")
+          .attr("d", path);
+
+      defs.append("clipPath")
+          .attr("id", "clip")
+        .append("use")
+          .attr("xlink:href", "#land");
+
+      viz_g.append("use")
+          .attr("xlink:href", "#land")
+          .attr("class", "land");
+*/
 
     /*      .attr("d", function(d) {
             console.log(d)

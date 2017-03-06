@@ -17,7 +17,7 @@ function GradientLegend(){
       console.log(wmoVintage2energy)
 
       var legend = d3.select(this)
-          .attr("transform","translate(85,65)");
+          .attr("transform","translate(85,115)");
 
       // create some definitions
       var defs = legend.append("defs");
@@ -112,7 +112,7 @@ function GradientLegend(){
         image.data[k + 3] = 255;
       }
 
-context.putImageData(image, 0, 0);
+      context.putImageData(image, 0, 0);
 
       // legend axis
     //end selection

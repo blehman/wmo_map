@@ -1,7 +1,6 @@
 function NewInput(){
   var div_id = "non-svg-elements"
-    , container_id = "zipcode-form"
-    , form_id = "zipForm"
+    , container_id = "zipcode-input"
     , input_id = "zip"
   var old_wmo;
   function chart(selection) {
@@ -52,9 +51,6 @@ function NewInput(){
         }
       // end color_map
       }
-
-
-
   // selection end
     })
   // chart end
@@ -62,11 +58,6 @@ function NewInput(){
   chart.div_id = function(d) {
     if (!arguments.length) { return div_id; }
     div_id = d;
-    return chart;
-  };
-  chart.form_id = function(f) {
-    if (!arguments.length) { return form_id; }
-    form_id = f;
     return chart;
   };
   chart.input_id = function(i) {

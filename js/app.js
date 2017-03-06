@@ -49,11 +49,21 @@
     var input = NewInput();
     // insert input
     d3.select("#"+input.div_id())
-      .selectAll("div")
+      .selectAll("#"+input.container_id())
       .data(map_data)
      .enter().append("div")
-      .attr("id",input.container_id)
+      .attr("id",input.container_id())
       .call(input)
+    ;
+    // create toggle for consumption
+    var cToggle = ConsumptionToggle();
+    // insert toggle
+    d3.select("#"+cToggle.div_id())
+      .selectAll("#"+cToggle.container_id())
+      .data(map_data)
+     .enter().append("div")
+      .attr("id",cToggle.container_id())
+      .call(cToggle)
     ;
 
     // create an instance of NewMap
