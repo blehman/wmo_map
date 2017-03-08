@@ -8,6 +8,7 @@ function ConsumptionToggle(){
   var div_id = "non-svg-elements"
     , container_id = "toggle-container"
     , toggle_id = "consumption-toggle"
+    , change;
   function chart(selection) {
     selection.each(function(map_data) {
       var toggle = d3.select(this);
@@ -45,14 +46,14 @@ function ConsumptionToggle(){
           .attr("transform","translate(2,1.8)");
 
       var kWh = viz_g.append("text")
-          .attr("id","kWh")
+          .attr("id","KWH")
           .classed("toggles active-toggle",true)
           .attr("x",7)
           .attr("y",15)
           .text("kWh");
 
       var Thm = viz_g.append("text")
-          .attr("id","Thm")
+          .attr("id","THM")
           .classed("toggles inactive-toggle",true)
           .attr("x",42)
           .attr("y",15)
@@ -63,11 +64,11 @@ function ConsumptionToggle(){
           .attr("width","76px")
           .attr("height","30px")
           .attr("transform","translate(-3,-3)")
-          .attr("units","kWh");
+          .attr("units","KWH");
 
       face_rect.on("click",function(){
-          active_units = (face_rect.attr("units")=="kWh")? "Thm":"kWh";
-          var inactive_units = (active_units=="Thm")? "kWh":"Thm";
+          active_units = (face_rect.attr("units")=="KWH")? "THM":"KWH";
+          var inactive_units = (active_units=="THM")? "KWH":"THM";
           face_rect.attr("units",active_units)
           d3.select("#"+active_units)
             .classed("inactive-toggle",false)
@@ -80,12 +81,8 @@ function ConsumptionToggle(){
             .duration(300)
             .attr("x",_x)
 
+          change.call("unit_change",this,active_units)
       })
-
-/*
-    var slider = d3.select(this)
-        .attr("transform","translate(85,450)");
-*/
     })
   // end chart
   }
@@ -104,7 +101,6 @@ function ConsumptionToggle(){
     toggle_id = t;
     return chart;
   };
-
   chart.width = function(w) {
     if (!arguments.length) { return width; }
     width = w;
@@ -130,6 +126,11 @@ function ConsumptionToggle(){
     active_units = a;
     return chart;
   };
-// end NewMap
+  chart.change = function(c) {
+    if (!arguments.length) { return change; }
+    change = c;
+    return chart;
+  };
+  // end ConsumptionToggle
   return chart
 }

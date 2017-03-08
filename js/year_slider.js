@@ -14,84 +14,90 @@ function YearSlider(){
   var consumption_extent
     , choroplethScale;
   var filterYear;
-  var title = "YEAR's Average Home Energy Consumption by WMO region"
+  var title = "YEAR's Average Home Energy Consumption by WMO Region";
+
+  var change;
+  var previous_year = filterYear;
 
   function chart(selection) {
     selection.each(function(map_data) {
 
-    var slider = d3.select(this)
-        .attr("transform","translate(85,490)");
+      var slider = d3.select(this)
+          .attr("transform","translate(85,490)");
 
-    var dates = years.map(d => parseDate(d));
-    //console.log(dates)
-    var xScale = d3.scaleTime()
-        .domain(d3.extent(dates))
-        .range([0,width]);
+      var dates = years.map(d => parseDate(d));
+      //console.log(dates)
+      var xScale = d3.scaleTime()
+          .domain(d3.extent(dates))
+          .range([0,width]);
 
-    var ticks = xScale.ticks(5);
+      var ticks = xScale.ticks(5);
 
-    var xStart = xScale(parseDate(filterYear))-14;
+      var xStart = xScale(parseDate(filterYear))-14;
 
-    var xAxis = d3.axisBottom(xScale)
-        .tickValues(ticks)
+      var xAxis = d3.axisBottom(xScale)
+          .tickValues(ticks)
 
-    slider.call(xAxis)
+      slider.call(xAxis)
 
-    slider.append("rect")
-        .classed("dragger",true)
-        .attr("x",xStart)
-        .attr("y",-rectHeight)
-        .attr("height",rectHeight)
-        .attr("width",rectWidth)
-        .style("fill","blue")
-        .style("opacity",0.0)
-        .call(d3.drag()
-            .on("start",dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended))
+      slider.append("rect")
+          .classed("dragger",true)
+          .attr("x",xStart)
+          .attr("y",-rectHeight)
+          .attr("height",rectHeight)
+          .attr("width",rectWidth)
+          .style("fill","blue")
+          .style("opacity",0.0)
+          .call(d3.drag()
+              .on("start",dragstarted)
+              .on("drag", dragged)
+              .on("end", dragended))
 
-    slider.insert("circle",":first-child")
-        .attr("id","slider_highlight")
-        .attr("r",5)
-        .attr("cx",xStart+15)
-        .attr("cy",-11)
-        .attr("width",0)
-        //.style("opacity",0.0)
+      slider.insert("circle",":first-child")
+          .attr("id","slider_highlight")
+          .attr("r",5)
+          .attr("cx",xStart+15)
+          .attr("cy",-11)
+          .attr("width",0)
+          //.style("opacity",0.0)
 
-    slider.insert("image",":first-child")
-        .attr("id","slider_img")
-        .attr("xlink:href","img/slider.png")
-        .attr("x",xStart)
-        .attr("y",-15)
-        .attr("opacity",1)
-        .attr("width","30px")
+      slider.insert("image",":first-child")
+          .attr("id","slider_img")
+          .attr("xlink:href","img/slider.png")
+          .attr("x",xStart)
+          .attr("y",-15)
+          .attr("opacity",1)
+          .attr("width","30px")
 
-    slider.append("text")
-        .attr("id","chart-title")
-        .classed("slider text",true)
-        .attr("x",-28)
-        .attr("y",-460)
-        .text(title.replace("YEAR",filterYear));
+      slider.append("text")
+          .attr("id","chart-title")
+          .classed("slider text",true)
+          .attr("x",-28)
+          .attr("y",-460)
+          .text(title.replace("YEAR",filterYear));
 
-    function dragstarted(d) {
-      d3.select("#slider_highlight").raise().classed("active", true);
-    }
+      function dragstarted(d) {
+        d3.select("#slider_highlight").raise().classed("active", true);
+      }
 
-    function dragged(d) {
-      d3.select(this).attr("x", d.x = d3.max([0, d3.min([d3.event.x,width - rectWidth])]));
-      d3.selectAll("#slider_img").attr("x", d3.max([0, d3.min([d3.event.x,width - rectWidth])]));
-      d3.selectAll("#slider_highlight").attr("cx", 15 + d3.max([0, d3.min([d3.event.x,width - rectWidth])]));
-      var year = xScale.invert(d3.event.x).getFullYear();
-      var rounded_year = Math.round(year/10)*10;
-      d3.select("#chart-title")
-        .text(title.replace("YEAR",rounded_year));
-    }
+      function dragged(d) {
+        var x_value = d3.max([0, d3.min([d3.event.x,width - rectWidth])]);
+        d3.select(this).attr("x", d.x = x_value);
+        d3.selectAll("#slider_img").attr("x", x_value);
+        d3.selectAll("#slider_highlight").attr("cx", 15 + x_value);
+        var year = xScale.invert(x_value).getFullYear();
+        var rounded_year = Math.round(year/10)*10;
+        d3.select("#chart-title")
+          .text(title.replace("YEAR",rounded_year));
+        if (previous_year != rounded_year){
+          change.call("year_change",this,rounded_year)
+          previous_year = rounded_year;
+        }
+      }
 
-    function dragended(d) {
-      d3.select("#slider_highlight").classed("active", false);
-    }
-
-
+      function dragended(d) {
+        d3.select("#slider_highlight").classed("active", false);
+      }
 
     //end selection
     })
@@ -132,7 +138,11 @@ function YearSlider(){
     filterYear = y;
     return chart;
   };
-
-// end NewMap
+  chart.change = function(c) {
+    if (!arguments.length) { return change; }
+    change = c;
+    return chart;
+  };
+  // end YearSlider
   return chart
 }

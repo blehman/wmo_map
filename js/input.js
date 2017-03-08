@@ -5,13 +5,6 @@ function NewInput(){
   var old_wmo;
   function chart(selection) {
     selection.each(function(data){
-      //console.log(data)
-/*
-      var form = d3.select(this)
-       .append("form")
-        .attr("id",form_id)
-        .attr("onSubmit","return false;");
-*/
       var text_input = d3.select(this).append("input")
         .attr("id",input_id)
         .attr("x",100)
@@ -27,17 +20,12 @@ function NewInput(){
 
       function color_map(d,i){
         d3.event.preventDefault()
-        //console.log(d)
-        //console.log("INPUT TEXT SUBMITTED")
         var zip = text_input.property("value")
         if (zip.length ==5){
           var wmo = d.zip2wmo[zip];
-          console.log(zip)
-          console.log(wmo)
           d3.selectAll("#"+"wmo_id_"+wmo)
             .style("stroke-width","4.0px")
             .style("stroke","BLACK")
-          console.log(old_wmo)
           if (old_wmo != wmo && old_wmo){
             d3.selectAll("#"+"wmo_id_"+old_wmo)
               .style("stroke-width","0.15px")
@@ -73,8 +61,3 @@ function NewInput(){
 // NewInput end
   return chart
 }
-/*
-    <form name="myform" onSubmit="return zipcodeReview()">
-      <input name="Submit" id="zip" type="text" placeholder="zipcode" />
-      <!--<input type="text" id="myRadius" maxlength="" />-->
-*/

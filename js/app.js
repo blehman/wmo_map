@@ -17,12 +17,15 @@
   , svg_width = 960
   , svg_height = 600
   , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5}
-  , startYear = "1980";
+  , startYear = "1980"
+  , consumption_extent = {"THM":[118,2000],"KWH":[5152,30454]};
 
   var polygon_fill_opacity = 0.60;
 
+  var change = d3.dispatch("year_change","unit_change");
+  var units = "KWH";
+
   function runApp(error, us, usaf,postalcode2wmo,energy,vintage2nationalTotal){
-    //console.log(vintage2nationalTotal)
     if (error) throw error;
 
     var zip2wmo = {}
@@ -32,7 +35,6 @@
         zip2wmo[d.zipcode]=d.wmo
     })
 
-    //console.log(energy1990)
     // map meta data
     var map_data = [{
       "us":us
@@ -42,9 +44,12 @@
       ,"zip2wmo":zip2wmo
       ,"wmoVintage2energy":energy
       ,"vintage2nationalTotal":vintage2nationalTotal
+      ,"consumption_extent":consumption_extent
     }]
 
-    //console.log(energy["(722010, 1900)"])
+    // insert zip
+    map_data[0]["zip2wmo"] = zip2wmo
+
     // create non-svg elements
     var input = NewInput();
     // insert input
@@ -57,6 +62,7 @@
     ;
     // create toggle for consumption
     var cToggle = ConsumptionToggle();
+    cToggle.change(change)
     // insert toggle
     d3.select("#"+cToggle.div_id())
       .selectAll("#"+cToggle.container_id())
@@ -73,7 +79,8 @@
     vMap.height(map_size.height)
     vMap.width(map_size.width)
     vMap.filterYear(startYear)
-
+    vMap.change(change)
+    vMap.consumption_extent(consumption_extent)
     // create an instance of GradientLegend
     var gLegend = GradientLegend();
     // update legend settings
@@ -86,6 +93,7 @@
     // create an instance of YearSlider
     var ySlider = YearSlider();
     ySlider.filterYear(startYear)
+    ySlider.change(change)
 
     // create an instance of YearSlider
     var iHomes = Homes();
@@ -117,11 +125,24 @@
         .call(vMap);
 
     // update domain from Map for both legend
-    gLegend.domain(vMap.consumption_extent())
+    gLegend.consumption_extent(consumption_extent)
     gLegend.choroplethScale(vMap.choroplethScale())
     legend.call(gLegend)
-
     ySlider.width(gLegend.width())
     slider.call(ySlider)
+
+
+      change.on("year_change",function(year){
+        //update map color
+        vMap.filterYear(year)
+    })
+      change.on("unit_change",function(units){
+        //update map color
+        vMap.units(units)
+        //update legend scale
+        gLegend.units(units)
+        //update legend color?
+    })
+
   }
 }())

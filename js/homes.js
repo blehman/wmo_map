@@ -47,6 +47,6 @@ function Homes(){
     height = h;
     return chart;
   };
-// end NewMap
+// end Homes
   return chart
 }
