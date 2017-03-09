@@ -121,6 +121,20 @@ text.toggles.inactive-toggle {
   position: absolute;
   text-anchor: start;
 }
+
+.pointPlots{
+  opacity:0.50;
+}
+.smartDefaultText{
+  stroke: black;
+  stroke-width:0.25px;
+  font-family: monospace;
+  font-size: 11px;
+  fill: black;
+  opacity:0.50;
+  text-align: center;
+  position: absolute;
+}
 /*
 #yearSlider path.domain{
   stroke: none;

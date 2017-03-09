@@ -15,6 +15,7 @@ function GradientLegend(){
   function chart(selection) {
     selection.each(function(data) {
       var wmoVintage2energy = data["wmoVintage2energy"]
+      var wmoVintage2smartDefaults = data["wmoVintage2smartDefaults"]
 
       var legend = d3.select(this)
           .attr("transform","translate(85,115)");
@@ -58,7 +59,7 @@ function GradientLegend(){
         x.domain(consumption_extent[units])
           .range([0,width]);
 
-        xAxis.call(d3.axisBottom(x));
+        xAxis.call(d3.axisBottom(x).ticks(5));
 
         var range = ["#8e0152", "#c51b7d", "#de77ae", "#f1b6da", "#fde0ef", "#f7f7f7", "#e6f5d0", "#b8e186", "#7fbc41", "#4d9221", "#276419"];
         var delta = (consumption_extent[units][1]-consumption_extent[units][0])/range.length
@@ -77,12 +78,7 @@ function GradientLegend(){
 
         context.putImageData(image, 0, 0);
       }
-
-
       dispatch_updateLegendScale.on("updateLegendScale",updateLegendScale)
-
-
-
       // MOVE POINTER ON LEGEND
       updateLegendScale()
       d3.selectAll(".voronoi").on('mouseover', function(d){
@@ -92,8 +88,10 @@ function GradientLegend(){
             .style("fill","#000")
             .style("stroke","#000")
           var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
-          var wmo_consumption = wmoVintage2energy[key][units]; // needs to be set based on units
-          var xValue = x(wmo_consumption); // gets updated based on new units
+          var wmo_consumption = wmoVintage2energy[key][units];
+          var xValue = x(wmo_consumption);
+          var smartDefaults = wmoVintage2smartDefaults[key];
+        //console.log(smartDefaults)
           d3.select("#pointer_line")
             .attr("x1",xValue)
             .attr("x2",xValue)

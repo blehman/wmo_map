@@ -1,0 +1,61 @@
+{
+    "floorConstructionName": [
+        "BeOpt_Floor_BasementUnfinished_R19",
+        "BeOpt_Floor_BasementFinished_R15",
+        "BeOpt_Floor_BasementFinished_R10",
+        "L200EX_Floor",
+        "BeOpt_Floor_Crawlspace_R19",
+        "BeOpt_Floor_Crawlspace_R13",
+        "BeOpt_Floor_BasementFinished_Uninsulated",
+        "BeOpt_Floor_BasementUnfinished_Uninsulated",
+        "BeOpt_Floor_Crawlspace_Uninsulated",
+        "BeOpt_Floor_Slab_Uninsulated"
+    ],
+    "hvac-cooling-age": [
+        "5",
+        "6",
+        "7",
+        "9",
+        "10",
+        "12",
+        "14"
+    ],
+    "hvac-heating-age": [
+        "6",
+        "9",
+        "10",
+        "12",
+        "13",
+        "15",
+        "18",
+        "20",
+        "25"
+    ],
+    "infiltration": [
+        "0.25",
+        "0.3",
+        "0.4",
+        "0.5",
+        "0.75",
+        "1.0"
+    ],
+    "roofConstructionName": [
+        "BeOpt_Roof_R49",
+        "BeOpt_Roof_R38",
+        "BeOpt_Roof_R30"
+    ],
+    "wallConstructionName": [
+        "BeOpt_Wall_R19",
+        "Composite_2x4_Wood_Stud_R11",
+        "BeOpt_Wall_R11",
+        "BeOpt_Wall_R7",
+        "L200EX_Wall",
+        "BeOpt_Wall_Uninsulated"
+    ],
+    "windowConstructionName": [
+        "BeOpt_Window_LowE_Double",
+        "BeOpt_Window_ClearDoubleNonMetalAir",
+        "BeOpt_Window_ClearDoubleMetalAir",
+        "BeOpt_Window_ClearSingleMetal"
+    ]
+}

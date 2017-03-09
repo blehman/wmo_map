@@ -11,6 +11,8 @@
     .defer(d3.csv,"data/postalcode2wmo.csv")
     .defer(d3.json,"data/wmoVintage2energy.json")
     .defer(d3.json,"data/vintage2nationalTotal.json")
+    .defer(d3.json,"data/wmoVintage2smartDefaults_slimest.json")
+    .defer(d3.json,"data/smartDefaults.json")
     .await(runApp);
 
   var margin = { top: 0.10, right: 0.10, bottom: 0.10, left: 0.10 }
@@ -25,7 +27,7 @@
   var change = d3.dispatch("year_change","unit_change");
   var units = "KWH";
 
-  function runApp(error, us, usaf,postalcode2wmo,energy,vintage2nationalTotal){
+  function runApp(error, us, usaf,postalcode2wmo,energy,vintage2nationalTotal,wmoVintage2smartDefaults, smartDefaults){
     if (error) throw error;
 
     var zip2wmo = {}
@@ -45,6 +47,8 @@
       ,"wmoVintage2energy":energy
       ,"vintage2nationalTotal":vintage2nationalTotal
       ,"consumption_extent":consumption_extent
+      ,"wmoVintage2smartDefaults":wmoVintage2smartDefaults
+      ,"smartDefaults":smartDefaults
     }]
 
     // insert zip
@@ -111,12 +115,6 @@
        .enter().append("g")
         .attr("id",ySlider.id());
 
-    var home = svg.selectAll("#"+iHomes.id())
-        .data(map_data)
-       .enter().append("g")
-        .attr("id",iHomes.id())
-        .call(iHomes);
-
     // map
     var map = svg.selectAll("#"+vMap.id())
         .data(map_data)
@@ -124,12 +122,18 @@
         .attr("id",vMap.id())
         .call(vMap);
 
+    var home = svg.selectAll("#"+iHomes.id())
+        .data(map_data)
+       .enter().append("g")
+        .attr("id",iHomes.id());
+
     // update domain from Map for both legend
     gLegend.consumption_extent(consumption_extent)
     gLegend.choroplethScale(vMap.choroplethScale())
     legend.call(gLegend)
     ySlider.width(gLegend.width())
     slider.call(ySlider)
+    home.call(iHomes)
 
 
       change.on("year_change",function(year){
