@@ -11,7 +11,7 @@
     .defer(d3.csv,"data/postalcode2wmo.csv")
     .defer(d3.json,"data/wmoVintage2energy.json")
     .defer(d3.json,"data/vintage2nationalTotal.json")
-    .defer(d3.json,"data/wmoVintage2smartDefaults_slimest.json")
+    .defer(d3.json,"data/wmoVintage2smartDefaults_slimest_v2.json")
     .defer(d3.json,"data/smartDefaults.json")
     .await(runApp);
 
@@ -133,12 +133,14 @@
     legend.call(gLegend)
     ySlider.width(gLegend.width())
     slider.call(ySlider)
+    iHomes.filterYear(startYear)
     home.call(iHomes)
-
 
       change.on("year_change",function(year){
         //update map color
         vMap.filterYear(year)
+        //upadate smart default lines
+        iHomes.filterYear(year)
     })
       change.on("unit_change",function(units){
         //update map color

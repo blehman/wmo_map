@@ -9,6 +9,9 @@ function Homes(){
   var posX = 85
     , posY = 450;
 
+  var filterYear="1980"
+  , dispatch_updateSmartDefaultLines = d3.dispatch("updateSmartDefaultLines");
+
   function chart(selection) {
     selection.each(function(map_data) {
       console.log(map_data)
@@ -68,7 +71,7 @@ function Homes(){
 
         smartDefaultScales[d] = {"ordinal":s1,"linear":s2};
       })
-
+      // add axes
       homes.selectAll(".pointPlots")
         .data(smartDefaultNames)
        .enter().append("g")
@@ -80,8 +83,9 @@ function Homes(){
           var gScale = smartDefaultScales[d]["linear"]
             gAxis.call(d3.axisBottom(gScale).ticks(3))
         });
-      // remove all the ticks & labels
+      // remove all the axes ticks & labels
       d3.selectAll("#homes .tick").style("opacity",0)
+      // add text to axes
       homes.selectAll(".pointPlotLabels")
         .data(smartDefaultLabels)
        .enter().append("text")
@@ -89,35 +93,40 @@ function Homes(){
         .attr("id",d => "text_"+d)
         .attr("transform",function(d,i){return "translate(205,"+((i*20)+6)+")";})
         .text(d=>d)
+      // add circels to axes
+        // tbd
+      // add lines to axes
+      function updateSmartDefaultLines(){
+        homes.selectAll("#lines").remove();
+        var homeLines = homes.append("g").attr("id","lines");
+        Object.keys(wmoVintage2smartDefaults).filter(d=>+d.split(", ")[1].replace(")","")==filterYear).map(function(key){
+          var s = key.split(", ")
+            , wmo = s[0].replace("(","")
+            , year = s[1].replace(")","");
+          var sd = wmoVintage2smartDefaults[key];
+          var line = d3.line()
+              .x(function(d,i){
+                var ordinal_value = smartDefaultScales[d.name]["ordinal"](d.value);
+                var linear_value =  smartDefaultScales[d.name]["linear"](ordinal_value);
+                return linear_value;
+              })
+              .y(function(d,i){return i*20});
 
-      // add notes to graph
-      var homeNodes = homes.append("g").attr("id","nodes");
-      Object.keys(wmoVintage2smartDefaults).forEach(function(key){
-        var s = key.split(", ")
-          , wmo = s[0].replace("(","")
-          , year = s[1].replace(")","");
-        var sd = wmoVintage2smartDefaults[key];
-        homeNodes.selectAll(".sd_points_"+wmo+"_"+year)
-          .data(sd)
-          .enter().append("circle")
-          .classed("sd_points_"+wmo+"_"+year,true)
-          .attr("cy",function(d,i){
-            return i*20
-          })
-          .attr("cx",d => smartDefaultScales[d.name]["linear"](smartDefaultScales[d.name]["ordinal"](d.value)))
-          .attr("fill","none")
-          .attr("stroke","black")
-          .attr("opacity",0.50)
-          .attr("r",2);
-      })
-
-/*
-      smartDefaultNames.forEach(function(d,i){
-      })
-      var pointArray = d3.select("#floorConstructionName")
-        .call(d3.axisBottom(smartDefaultScales["floorConstructionName"]));
-*/
-        //.call(d => d3.axisBottom(smartDefaultScales[d]))
+          homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
+            .data([sd])
+            .enter().append("path")
+            .classed("sd_lines_"+wmo+"_"+year,true)
+            .attr("d",line)
+            .attr("fill","none")
+            .attr("stroke","red")
+            .attr("stroke-width",0.25)
+            .attr("opacity",0.30)
+        // end forEach
+        })
+      // end updateSmartDefaultLines
+      }
+      updateSmartDefaultLines()
+      dispatch_updateSmartDefaultLines.on('updateSmartDefaultLines',updateSmartDefaultLines)
 
     //end selection
     })
@@ -136,6 +145,12 @@ function Homes(){
   chart.height = function(h) {
     if (!arguments.length) { return height; }
     height = h;
+    return chart;
+  };
+  chart.filterYear = function(y) {
+    if (!arguments.length) { return filterYear; }
+    filterYear = y;
+    dispatch_updateSmartDefaultLines.call("updateSmartDefaultLines")
     return chart;
   };
 // end Homes
