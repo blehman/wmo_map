@@ -77,33 +77,44 @@ function GradientLegend(){
         }
 
         context.putImageData(image, 0, 0);
+
+        d3.selectAll(".voronoi").on('mouseover', function(d){
+            d3.select("#legend_pointer")
+              .style("opacity",1)
+              .style("fill-opacity",1)
+              .style("fill","#000")
+              .style("stroke","#000")
+            var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
+            var wmo_consumption = wmoVintage2energy[key][units];
+            var xValue = x(wmo_consumption);
+            var smartDefaults = wmoVintage2smartDefaults[key];
+          //console.log(smartDefaults)
+            d3.select("#pointer_line")
+              .attr("x1",xValue)
+              .attr("x2",xValue)
+          // sd lines expand
+            d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
+              .style("stroke-width",4.0)
+              .style("opacity",1.0);
+        })
+        // REMOVE POINTER FROM LEGEND
+        d3.selectAll(".voronoi").on('mouseout', function(d){
+            d3.select("#legend_pointer")
+              .style("opacity",1)
+              .style("fill-opacity",1)
+              .style("fill","none")
+              .style("stroke","none")
+            //sd lines go back to normal
+            d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
+              .style("stroke-width",0.25)
+              .style("opacity",0.6);
+        })
+      //end updateLegendScale
       }
       dispatch_updateLegendScale.on("updateLegendScale",updateLegendScale)
       // MOVE POINTER ON LEGEND
       updateLegendScale()
-      d3.selectAll(".voronoi").on('mouseover', function(d){
-          d3.select("#legend_pointer")
-            .style("opacity",1)
-            .style("fill-opacity",1)
-            .style("fill","#000")
-            .style("stroke","#000")
-          var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
-          var wmo_consumption = wmoVintage2energy[key][units];
-          var xValue = x(wmo_consumption);
-          var smartDefaults = wmoVintage2smartDefaults[key];
-        //console.log(smartDefaults)
-          d3.select("#pointer_line")
-            .attr("x1",xValue)
-            .attr("x2",xValue)
-      })
-      // REMOVE POINTER FROM LEGEND
-      d3.selectAll(".voronoi").on('mouseout', function(d){
-          d3.select("#legend_pointer")
-            .style("opacity",1)
-            .style("fill-opacity",1)
-            .style("fill","none")
-            .style("stroke","none")
-      })
+
     //end selection
     })
   // end chart
@@ -146,7 +157,7 @@ function GradientLegend(){
   };
   chart.filterYear = function(f) {
     if (!arguments.length) { return filterYeart; }
-    filterYear;
+    filterYear=f;
     dispatch_updateLegendScale.call("updateLegendScale")
     return chart;
   };

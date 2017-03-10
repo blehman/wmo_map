@@ -10,7 +10,10 @@ function Homes(){
     , posY = 450;
 
   var filterYear="1980"
+  , units = "KWH"
   , dispatch_updateSmartDefaultLines = d3.dispatch("updateSmartDefaultLines");
+
+  var choroplethScale;
 
   function chart(selection) {
     selection.each(function(map_data) {
@@ -18,6 +21,7 @@ function Homes(){
       var smart_default_domains = map_data["smartDefaults"];
       console.log(smart_default_domains)
       var wmoVintage2smartDefaults = map_data["wmoVintage2smartDefaults"];
+      var wmoVintage2energy = map_data["wmoVintage2energy"];
 
       var homes = d3.select("#"+id)
           .attr("transform","translate(650,140)");
@@ -118,9 +122,9 @@ function Homes(){
             .classed("sd_lines_"+wmo+"_"+year,true)
             .attr("d",line)
             .attr("fill","none")
-            .attr("stroke","red")
+            .attr("stroke",choroplethScale(wmoVintage2energy[key][units]))
             .attr("stroke-width",0.25)
-            .attr("opacity",0.30)
+            .attr("opacity",0.60)
         // end forEach
         })
       // end updateSmartDefaultLines
@@ -153,6 +157,17 @@ function Homes(){
     dispatch_updateSmartDefaultLines.call("updateSmartDefaultLines")
     return chart;
   };
-// end Homes
+  chart.units = function(u) {
+    if (!arguments.length) { return units; }
+    units = u;
+    dispatch_updateSmartDefaultLines.call("updateSmartDefaultLines")
+    return chart;
+  };
+  chart.choroplethScale = function(c) {
+    if (!arguments.length) { return choroplethScale; }
+    choroplethScale = c;
+    return chart;
+  };
+  // end Homes
   return chart
 }

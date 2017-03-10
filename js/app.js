@@ -129,11 +129,12 @@
 
     // update domain from Map for both legend
     gLegend.consumption_extent(consumption_extent)
-    gLegend.choroplethScale(vMap.choroplethScale())
+    gLegend.choroplethScale(vMap.choroplethScale())//Does this need to update w/ year and units??????????
     legend.call(gLegend)
     ySlider.width(gLegend.width())
     slider.call(ySlider)
     iHomes.filterYear(startYear)
+    iHomes.choroplethScale(vMap.choroplethScale())//Does this need to update w/ year and units??????????
     home.call(iHomes)
 
       change.on("year_change",function(year){
@@ -141,13 +142,17 @@
         vMap.filterYear(year)
         //upadate smart default lines
         iHomes.filterYear(year)
+        //update hover year
+        gLegend.filterYear(year)
     })
       change.on("unit_change",function(units){
         //update map color
         vMap.units(units)
         //update legend scale
         gLegend.units(units)
-        //update legend color?
+        //update legend color??????????????????
+        //update home lines
+        iHomes.units(units)
     })
 
   }
