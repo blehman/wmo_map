@@ -4,7 +4,8 @@ function Homes(){
 
   var height = 10
     , width = 500
-    , lineWidth = 200;
+    , lineWidth = 200
+    , multiplier=54;
 
   var posX = 85
     , posY = 450;
@@ -83,7 +84,7 @@ function Homes(){
         .attr("class","pointPlots")
         .each(function(d,i){
           var gAxis = d3.select("#"+"scale_"+d)
-            .attr("transform","translate(0,"+i*20+")")
+            .attr("transform","translate(0,"+i*multiplier+")")
           var gScale = smartDefaultScales[d]["linear"]
             gAxis.call(d3.axisBottom(gScale).ticks(3))
         });
@@ -95,7 +96,7 @@ function Homes(){
        .enter().append("text")
         .classed("smartDefaultText",true)
         .attr("id",d => "text_"+d)
-        .attr("transform",function(d,i){return "translate(205,"+((i*20)+6)+")";})
+        .attr("transform",function(d,i){return "translate(205,"+((i*multiplier)+6)+")";})
         .text(d=>d)
       // add circels to axes
         // tbd
@@ -114,7 +115,8 @@ function Homes(){
                 var linear_value =  smartDefaultScales[d.name]["linear"](ordinal_value);
                 return linear_value;
               })
-              .y(function(d,i){return i*20});
+              .y(function(d,i){return i*multiplier})
+              .curve(d3.curveCardinal.tension(0.5));
 
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])
