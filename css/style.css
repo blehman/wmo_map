@@ -40,7 +40,7 @@ input#zip{
   font-family: monospace;
   padding: 10px 20px;
   font-size: 18px;
-  margin: 50px 0px 0px 200px;
+  margin: 50px 0px 0px 670px;
   color: black;
   opacity:0.7;
   text-align: center;
@@ -112,7 +112,7 @@ text.toggles.inactive-toggle {
   fill:#000;
 }
 
-.slider.text{
+.slider.text {
   font-family: monospace;
   font-size: 18px;
   fill: black;

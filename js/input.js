@@ -7,7 +7,6 @@ function NewInput(){
     selection.each(function(data){
       var text_input = d3.select(this).append("input")
         .attr("id",input_id)
-        .attr("x",100)
         .attr("type","text")
         .attr("placeholder","type a zipcode")
         .attr("maxlength",5)

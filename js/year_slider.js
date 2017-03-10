@@ -14,7 +14,7 @@ function YearSlider(){
   var consumption_extent
     , choroplethScale;
   var filterYear;
-  var title = "YEAR's Average Home Energy Consumption by WMO Region";
+  var title = "YEAR's Average Home Energy Consumption by WMO Region".split("Energy");
 
   var change;
   var previous_year = filterYear;
@@ -26,9 +26,10 @@ function YearSlider(){
           .attr("transform","translate(85,490)");
 
       var dates = years.map(d => parseDate(d));
+      var date_range = d3.extent(dates);
       //console.log(dates)
       var xScale = d3.scaleTime()
-          .domain(d3.extent(dates))
+          .domain([parseDate("1896"),parseDate("2014")])
           .range([0,width]);
 
       var ticks = xScale.ticks(5);
@@ -73,9 +74,15 @@ function YearSlider(){
           .attr("id","chart-title")
           .classed("slider text",true)
           .attr("x",-28)
-          .attr("y",-460)
-          .text(title.replace("YEAR",filterYear));
+          .attr("y",-415)
+          .text(title[0].replace("YEAR",filterYear));
 
+      slider.append("text")
+          .attr("id","chart-title")
+          .classed("slider text",true)
+          .attr("x",270)
+          .attr("y",-415)
+          .text(title[1]);
       function dragstarted(d) {
         d3.select("#slider_highlight").raise().classed("active", true);
       }
@@ -88,7 +95,7 @@ function YearSlider(){
         var year = xScale.invert(x_value).getFullYear();
         var rounded_year = Math.round(year/10)*10;
         d3.select("#chart-title")
-          .text(title.replace("YEAR",rounded_year));
+          .text(title[0].replace("YEAR",rounded_year));
         if (previous_year != rounded_year){
           change.call("year_change",this,rounded_year)
           previous_year = rounded_year;

@@ -25,7 +25,7 @@ function ConsumptionToggle(){
       var viz_g = d3.select("#viz-container")
           .append("g")
           .classed(container_id,true)
-          .attr("transform","translate(525,80)");
+          .attr("transform","translate(275,58)");
 
       var background_rect = viz_g.append("rect")
           .classed("toggles background-rect",true)
