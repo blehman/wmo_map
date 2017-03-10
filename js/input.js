@@ -8,7 +8,7 @@ function NewInput(){
       var text_input = d3.select(this).append("input")
         .attr("id",input_id)
         .attr("type","text")
-        .attr("placeholder","type a zipcode")
+        .attr("placeholder","find wmo by zipcode")
         .attr("maxlength",5)
         .attr("autofocus","autofocus")
         .attr("autocomplete","off")
