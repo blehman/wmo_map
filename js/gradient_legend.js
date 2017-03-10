@@ -94,7 +94,7 @@ function GradientLegend(){
               .attr("x2",xValue)
           // sd lines expand
             d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
-              .style("stroke-width",4.0)
+              .style("stroke-width",6.0)
               .style("opacity",1.0);
         })
         // REMOVE POINTER FROM LEGEND
