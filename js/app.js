@@ -9,9 +9,8 @@
     //.defer(d3.tsv, "wmo_latlon.tsv")
     .defer(d3.csv,"data/wmo2latlon.csv")
     .defer(d3.csv,"data/postalcode2wmo.csv")
-    .defer(d3.json,"data/wmoVintage2energy.json")
-    .defer(d3.json,"data/vintage2nationalTotal.json")
-    .defer(d3.json,"data/wmoVintage2smartDefaults_slimest_v2.json")
+    .defer(d3.json,"data/wmoVintage2energy.json_v2016")
+    .defer(d3.json,"data/wmoVintage2smartDefaults_slimest_v2016.json")
     .defer(d3.json,"data/smartDefaults.json")
     .await(runApp);
 
@@ -20,14 +19,14 @@
   , svg_height = 600
   , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5}
   , startYear = "1980"
-  , consumption_extent = {"THM":[118,2000],"KWH":[5152,30454]};
+  , consumption_extent = {"THM":[118,2000],"KWH":[5152,20454], "THERMS_JOULES":[118,2000]};
 
   var polygon_fill_opacity = 0.60;
 
   var change = d3.dispatch("year_change","unit_change");
   var units = "KWH";
 
-  function runApp(error, us, usaf,postalcode2wmo,energy,vintage2nationalTotal,wmoVintage2smartDefaults, smartDefaults){
+  function runApp(error,us,usaf,postalcode2wmo,energy,wmoVintage2smartDefaults,smartDefaults){
     if (error) throw error;
 
     var zip2wmo = {}
@@ -45,7 +44,6 @@
       ,"map_size":map_size
       ,"zip2wmo":zip2wmo
       ,"wmoVintage2energy":energy
-      ,"vintage2nationalTotal":vintage2nationalTotal
       ,"consumption_extent":consumption_extent
       ,"wmoVintage2smartDefaults":wmoVintage2smartDefaults
       ,"smartDefaults":smartDefaults

@@ -53,7 +53,7 @@ function ConsumptionToggle(){
           .text("kWh");
 
       var Thm = viz_g.append("text")
-          .attr("id","THM")
+          .attr("id","THERMS_JOULES")
           .classed("toggles inactive-toggle",true)
           .attr("x",42)
           .attr("y",15)
@@ -67,8 +67,8 @@ function ConsumptionToggle(){
           .attr("units","KWH");
 
       face_rect.on("click",function(){
-          active_units = (face_rect.attr("units")=="KWH")? "THM":"KWH";
-          var inactive_units = (active_units=="THM")? "KWH":"THM";
+          active_units = (face_rect.attr("units")=="KWH")? "THERMS_JOULES":"KWH";
+          var inactive_units = (active_units=="THERMS_JOULES")? "KWH":"THERMS_JOULES";
           face_rect.attr("units",active_units)
           d3.select("#"+active_units)
             .classed("inactive-toggle",false)

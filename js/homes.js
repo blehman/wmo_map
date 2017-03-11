@@ -116,7 +116,9 @@ function Homes(){
                 return linear_value;
               })
               .y(function(d,i){return i*multiplier})
-              .curve(d3.curveCardinal.tension(0.5));
+              //.curve(d3.curveCardinal.tension(0.5));
+              //.curve(d3.curveBundle.beta(1));
+              .curve(d3.curveCatmullRom.alpha(1));
 
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])

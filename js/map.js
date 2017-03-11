@@ -30,7 +30,6 @@ function NewMap(){
         , postalcode2wmo = map_data["postalcode2wmo"]
         , zip2wmo = map_data["zip2wmo"]
         , wmoVintage2energy = map_data["wmoVintage2energy"]
-        , vintage2nationalTotal = map_data["vintage2nationalTotal"]
         , consumption = [];
       // build map projection
       var projection = d3.geoAlbers()
@@ -125,7 +124,7 @@ function NewMap(){
       })
 
       function updateVoronoiColor(){
-        subdomain = {"KWH":[5000, 20000], "THM": [100, 2000]}
+        subdomain = {"KWH":[5000, 20000], "THM": [100, 2000], "THERMS_JOULES": [100, 2000]}
         s1 = d3.scaleLinear()
           .domain(subdomain[units])
           .range([0,1]);
