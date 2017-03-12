@@ -10,7 +10,7 @@ function NewMap(){
       .y( d => +d.screen_lat)
 
   var wmo = [];
-  var polygon_opacity = 0.60;
+  var polygon_opacity = 0.00;
   var colorScale = d3.scaleLinear();
 
   var consumption_extent,
@@ -49,6 +49,20 @@ function NewMap(){
       // create container for map elements
       var viz_g = d3.select("#"+id)
           .attr("transform","translate(100,150)");
+      // BUILD DEFS FOR CLIPING
+
+      //var tVoronoi = geoVoronoi(wmo, geoDelaunay(wmo)).geometries;
+      var defs = viz_g.append("defs");
+      defs.append("path")
+          .datum(topojson.feature(us, us.objects.land))
+          .attr("id", "land")
+          .attr("d", path);
+
+      defs.append("clipPath")
+          .attr("id", "clip")
+        .append("use")
+          .attr("xlink:href", "#land");
+
       // BUILD MAP
       // DRAW US
       viz_g.append("path")
@@ -100,6 +114,7 @@ function NewMap(){
       })
       // DRAW VORONOI POLYGONS
       var polygons = viz_g.append("g")
+          .attr("clip-path", "url(#clip)")
           .classed("polygon_container",true)
           .selectAll("path")
           .data(vData)
@@ -118,16 +133,17 @@ function NewMap(){
       updateVoronoiColor()
       // DECIDE WHAT TO DO ON CLICK
       polygons.on("click",function(d){
-          var click = d.click==d.opacity ? 0:d.opacity;
-          d3.select(this).style("fill-opacity", click)
-          d.click = click
+          //var click = d.click==d.opacity ? 0:d.opacity;
+          //d3.select(this).style("fill-opacity", click)
+          //d.click = click
+          console.log("CLICK")
       })
 
       function updateVoronoiColor(){
-        subdomain = {"KWH":[5000, 20000], "THM": [100, 2000], "THERMS_JOULES": [100, 2000]}
+        subdomain = {"KWH":[6000, 13000], "THM": [100, 2000], "THERMS_JOULES": [100, 1000]}
         s1 = d3.scaleLinear()
           .domain(subdomain[units])
-          .range([0,1]);
+          .range([1,0]);
         choroplethScale = function(d){return d3.interpolateRdBu(s1(d))};
 
         polygons

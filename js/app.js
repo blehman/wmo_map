@@ -19,7 +19,7 @@
   , svg_height = 600
   , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5}
   , startYear = "1980"
-  , consumption_extent = {"THM":[118,2000],"KWH":[5152,20454], "THERMS_JOULES":[118,2000]};
+  , consumption_extent = {"THM":[118,2000],"KWH":[5152,15454], "THERMS_JOULES":[118,1300]};
 
   var polygon_fill_opacity = 0.60;
 
@@ -71,8 +71,7 @@
       .data(map_data)
      .enter().append("div")
       .attr("id",cToggle.container_id())
-      .call(cToggle)
-    ;
+      .call(cToggle);
 
     // create an instance of NewMap
     var vMap = NewMap();
