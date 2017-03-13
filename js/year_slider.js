@@ -41,7 +41,59 @@ function YearSlider(){
           .tickValues(ticks)
 
       slider.call(xAxis)
-
+      // create some definitions
+      var defs = slider.append("defs");
+      // create right arrow marker
+      defs.append("marker")
+        .attr("id", "slider_arrow_right")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 0)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+       .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill","none")
+        .attr("stroke-width","2px")
+        .attr("stroke","black");
+        // create right arrow
+      slider.append("line")// attach a line
+        .attr("id","arrow_right")
+        .style("opacity",1)
+        .style("fill","black")
+        .style("stroke", "black")
+        .attr("x1", xScale(parseDate(filterYear))+13.2)
+        .attr("y1", -11.3)
+        .attr("x2", xScale(parseDate(filterYear))+14.2)
+        .attr("y2", -11.3)
+        .attr("marker-end","url(#slider_arrow_right)");
+      // create left arrow marker
+      defs.append("marker")
+        .attr("id", "slider_arrow_left")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 0)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+       .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill","none")
+        .attr("stroke-width","2px")
+        .attr("stroke","black");
+        // create arrow
+      slider.append("line")// attach a line
+        .attr("id","arrow_left")
+        .style("opacity",1)
+        .style("fill","black")
+        .style("stroke", "black")
+        .attr("x1", xScale(parseDate(filterYear))-11.5)
+        .attr("y1", -11.3)
+        .attr("x2", xScale(parseDate(filterYear))-12.5)
+        .attr("y2", -11.3)
+        .attr("marker-end","url(#slider_arrow_left)");
+      // create rect for dragging
       slider.append("rect")
           .classed("dragger",true)
           .attr("x",xStart)
@@ -66,6 +118,7 @@ function YearSlider(){
           .attr("r",9)
           .attr("cx",xStart+15)
           .attr("cy",-11)
+
       slider.insert("image",":first-child")
           .attr("id","slider_img")
           .attr("xlink:href","img/slider.png")
@@ -73,7 +126,7 @@ function YearSlider(){
           .attr("y",-15)
           .attr("opacity",1)
           .attr("width","30px")
-
+      
       slider.append("text")
           .attr("id","chart-title")
           .classed("slider text",true)
@@ -93,10 +146,22 @@ function YearSlider(){
 
       function dragged(d) {
         var x_value = d3.max([0, d3.min([d3.event.x,width - rectWidth])]);
+        // change value of invisible slider rect
         d3.select(this).attr("x", d.x = x_value);
+        // change xValue of slider image
         d3.selectAll("#slider_img").attr("x", x_value);
+        // change xValue of circle behind image
         d3.selectAll("#slider_highlight").attr("cx", 15 + x_value);
+        // change xValue of large center circle
         d3.selectAll("#slider_bug").attr("cx", 15 + x_value);
+        // change slider arrows
+        d3.select("#arrow_right")
+          .attr("x1", x_value+27)
+          .attr("x2", x_value+28)
+        d3.select("#arrow_left")
+          .attr("x1", x_value+3)
+          .attr("x2", x_value+2)
+        // change title
         var year = xScale.invert(x_value).getFullYear();
         var rounded_year = Math.round(year/10)*10;
         d3.select("#chart-title")
