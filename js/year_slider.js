@@ -60,9 +60,12 @@ function YearSlider(){
           .attr("r",5)
           .attr("cx",xStart+15)
           .attr("cy",-11)
-          .attr("width",0)
           //.style("opacity",0.0)
-
+      slider.insert("circle",":first-child")
+          .attr("id","slider_bug")
+          .attr("r",9)
+          .attr("cx",xStart+15)
+          .attr("cy",-11)
       slider.insert("image",":first-child")
           .attr("id","slider_img")
           .attr("xlink:href","img/slider.png")
@@ -93,6 +96,7 @@ function YearSlider(){
         d3.select(this).attr("x", d.x = x_value);
         d3.selectAll("#slider_img").attr("x", x_value);
         d3.selectAll("#slider_highlight").attr("cx", 15 + x_value);
+        d3.selectAll("#slider_bug").attr("cx", 15 + x_value);
         var year = xScale.invert(x_value).getFullYear();
         var rounded_year = Math.round(year/10)*10;
         d3.select("#chart-title")

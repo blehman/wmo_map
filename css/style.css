@@ -108,6 +108,13 @@ text.toggles.inactive-toggle {
   stroke-opacity:0.50
 }
 
+#slider_bug{
+  fill:none;
+  stroke-width: 2px;
+  stroke: black;
+  stroke-opacity:0.50
+
+}
 #legend_pointer{
   fill:#000;
 }
