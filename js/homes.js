@@ -5,7 +5,7 @@ function Homes(){
   var height = 10
     , width = 500
     , lineWidth = 100
-    , multiplier=54;
+    , multiplier=47;
 
   var posX = 85
     , posY = 450;
@@ -25,26 +25,29 @@ function Homes(){
       var wmoVintage2energy = map_data["wmoVintage2energy"];
 
       var homes = d3.select("#"+id)
-          .attr("transform","translate(650,140)");
-
-      /*
-      homes.insert("image",":first-child")
-        .attr("class","green_home")
-        .attr("xlink:href","img/noun_379386_cc.png")
-        .attr("x",40)
-        //.attr("y",85)
-        .attr("opacity",0.90)
-        .attr("width","60px")
-      homes.insert("image",":first-child")
-        .attr("class","green_home")
-        .attr("xlink:href","img/noun_640195_cc.png")
-        .attr("x",-60)
-        .attr("y",8)
-        .attr("opacity",0.90)
-        .attr("width","48px")
-      */
+          .attr("transform","translate(640,115)");
       // create scales for each smart default
+      var legendScale = d3.scaleOrdinal()
+          .domain(["less","more"])
+          .range([0,lineWidth]);
+
+      var smartDefaultLegend = homes.append("g")
+          .classed("smartDefaultText",true);
+
+
+
+      var smartDefaulLegendText = smartDefaultLegend
+          .append("text")
+          .attr("transform","translate(167,"+5+")")
+          .classed("smartDefaulText",true)
+         //.attr("x",20)
+         //.attr("y",1)
+          .text("Feature Efficiency");
+
+      var smartDefaultLegendAxis = smartDefaultLegend
+          .call(d3.axisBottom(legendScale).ticks(1))
       var smartDefaultScales = {};
+
       var smartDefaultNames = [
         "hvac-cooling-age"
         , 'hvac-heating-age'
@@ -62,7 +65,6 @@ function Homes(){
         , 'Wall Type'
         , 'Window Type'
         , 'Infiltration'];
-
 
       smartDefaultNames.forEach(function(d,i){
 
@@ -84,19 +86,19 @@ function Homes(){
         .attr("class","pointPlots")
         .each(function(d,i){
           var gAxis = d3.select("#"+"scale_"+d)
-            .attr("transform","translate(0,"+i*multiplier+")")
-          var gScale = smartDefaultScales[d]["linear"]
-            gAxis.call(d3.axisBottom(gScale).ticks(3))
+            .attr("transform","translate(0,"+((i+1)*multiplier)+")");
+          var gScale = smartDefaultScales[d]["linear"];
+          gAxis.call(d3.axisBottom(gScale).ticks(3))
         });
       // remove all the axes ticks & labels
-      d3.selectAll("#homes .tick").style("opacity",0)
+      d3.selectAll(".pointPlots .tick").style("opacity",0)
       // add text to axes
       homes.selectAll(".pointPlotLabels")
         .data(smartDefaultLabels)
        .enter().append("text")
         .classed("smartDefaultText",true)
         .attr("id",d => "text_"+d)
-        .attr("transform",function(d,i){return "translate(108,"+((i*multiplier)+6)+")";})
+        .attr("transform",function(d,i){return "translate(108,"+(((i+1)*multiplier)+6)+")";})
         .text(d=>d)
       // add circels to axes
         // tbd
@@ -115,7 +117,7 @@ function Homes(){
                 var linear_value =  smartDefaultScales[d.name]["linear"](ordinal_value);
                 return linear_value;
               })
-              .y(function(d,i){return i*multiplier})
+              .y(function(d,i){return (i+1)*multiplier})
               //.curve(d3.curveCardinal.tension(0.5));
               //.curve(d3.curveBundle.beta(1));
               .curve(d3.curveCatmullRom.alpha(1));
