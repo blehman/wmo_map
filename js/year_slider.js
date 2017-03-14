@@ -15,20 +15,18 @@ function YearSlider(){
   var consumption_extent
     , choroplethScale;
   var filterYear;
-  var title = "YEAR's Average Home Energy Consumption by WMO Region".split("Energy");
+  var title = "Yearly Energy Consumption & Feature Ratings for a Modeled Home | by Weather Region & Vintage".split("|");
 
   var change;
   var previous_year = filterYear;
 
   function chart(selection) {
     selection.each(function(map_data) {
-
       var slider = d3.select(this)
           .attr("transform","translate(85,490)");
-
       var dates = years.map(d => parseDate(d));
       var date_range = d3.extent(dates);
-      //console.log(dates)
+      // create axis
       var xScale = d3.scaleTime()
           .domain([parseDate("1936"),parseDate("2014")])
           .range([0,width]);
@@ -106,19 +104,19 @@ function YearSlider(){
               .on("start",dragstarted)
               .on("drag", dragged)
               .on("end", dragended))
-
+      // create small inner circle.
       slider.insert("circle",":first-child")
           .attr("id","slider_highlight")
           .attr("r",5)
           .attr("cx",xStart+15)
-          .attr("cy",-11)
-          //.style("opacity",0.0)
+          .attr("cy",-11);
+      // create larger outer circle
       slider.insert("circle",":first-child")
           .attr("id","slider_bug")
           .attr("r",9)
           .attr("cx",xStart+15)
-          .attr("cy",-11)
-
+          .attr("cy",-11);
+      // insert image (doesn't seem to work in some browsers)
       slider.insert("image",":first-child")
           .attr("id","slider_img")
           .attr("xlink:href","img/slider.png")
@@ -126,20 +124,21 @@ function YearSlider(){
           .attr("y",-15)
           .attr("opacity",1)
           .attr("width","30px")
-      
+      // create main title
       slider.append("text")
           .attr("id","chart-title")
           .classed("slider text",true)
-          .attr("x",-28)
-          .attr("y",-415)
+          .attr("x",150)
+          .attr("y",-460)
           .text(title[0].replace("YEAR",filterYear));
-
+      // create sub title
       slider.append("text")
           .attr("id","chart-title")
           .classed("slider text",true)
-          .attr("x",270)
-          .attr("y",-415)
+          .attr("x",340)
+          .attr("y",-425)
           .text(title[1]);
+
       function dragstarted(d) {
         d3.select("#slider_highlight").raise().classed("active", true);
       }

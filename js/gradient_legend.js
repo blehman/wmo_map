@@ -43,6 +43,12 @@ function GradientLegend(){
         .attr("x2", 0)
         .attr("y2", 1)
         .attr("marker-end","url(#legend_pointer)");
+      // add units
+      legend.append("text")
+        .attr("x",485)
+        .attr("y",17)
+        .attr("id","legend_units")
+        .text("(kWh)");
 
       var xAxis = legend.append("g")
             .attr("id","xAxis");

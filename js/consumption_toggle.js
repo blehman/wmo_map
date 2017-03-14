@@ -25,23 +25,25 @@ function ConsumptionToggle(){
       var viz_g = d3.select("#viz-container")
           .append("g")
           .classed(container_id,true)
-          .attr("transform","translate(275,58)");
+          .attr("transform","translate(85,80)");
 
+      var added_width = 30;
+      var plus_some = 30;
       var background_rect = viz_g.append("rect")
           .classed("toggles background-rect",true)
-          .attr("width","70px")
+          .attr("width",(70+added_width+plus_some))
           .attr("height","24px");
 
       var track_rect = viz_g.append("rect")
           .classed("toggles track-rect",true)
-          .attr("width","66px")
+          .attr("width",(66+added_width+plus_some))
           .attr("height","20px")
           .attr("transform","translate(2,1.8)");
 
       var sliding_rect = viz_g.append("rect")
           .classed("toggles sliding-rect",true)
           .attr("x",0)
-          .attr("width","33px")
+          .attr("width",(33+added_width))
           .attr("height","20px")
           .attr("transform","translate(2,1.8)");
 
@@ -50,18 +52,18 @@ function ConsumptionToggle(){
           .classed("toggles active-toggle",true)
           .attr("x",7)
           .attr("y",15)
-          .text("kWh");
+          .text("Electric");
 
       var Thm = viz_g.append("text")
           .attr("id","THERMS_JOULES")
           .classed("toggles inactive-toggle",true)
-          .attr("x",42)
+          .attr("x",86)
           .attr("y",15)
-          .text("Thm");
+          .text("Gas");
 
       var face_rect = viz_g.append("rect")
           .classed("toggles face-rect",true)
-          .attr("width","76px")
+          .attr("width",(76+added_width+plus_some))
           .attr("height","30px")
           .attr("transform","translate(-3,-3)")
           .attr("units","KWH");
@@ -69,6 +71,8 @@ function ConsumptionToggle(){
       face_rect.on("click",function(){
           active_units = (face_rect.attr("units")=="KWH")? "THERMS_JOULES":"KWH";
           var inactive_units = (active_units=="THERMS_JOULES")? "KWH":"THERMS_JOULES";
+          var labeled_units = (active_units=="KWH")? "(kWh)":"(Thm)";
+          d3.select("#legend_units").text(labeled_units)
           face_rect.attr("units",active_units)
           d3.select("#"+active_units)
             .classed("inactive-toggle",false)
@@ -76,7 +80,7 @@ function ConsumptionToggle(){
           d3.select("#"+inactive_units)
             .classed("active-toggle",false)
             .classed("inactive-toggle",true)
-          var _x = (sliding_rect.attr("x")==0)? 33:0;
+          var _x = (sliding_rect.attr("x")==0)? 63:0;
           sliding_rect.transition()
             .duration(300)
             .attr("x",_x)
