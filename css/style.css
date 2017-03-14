@@ -94,6 +94,11 @@ input:focus {
   stroke: none;
   rx: 10px;
   opacity: 0.0;
+  cursor:pointer;
+}
+
+.face-rect:hover .track-rect{
+  stroke-width:20px;
 }
 text.toggles.active-toggle {
   stroke: black;
@@ -144,7 +149,18 @@ text.toggles.inactive-toggle {
   position: absolute;
   text-anchor: start;
 }
+#slider-label{
+  font-family: monospace;
+  font-size: 11px;
+  fill: black;
+  opacity:0.5;
+  position: absolute;
+  text-anchor: middle;
 
+}
+.dragger:hover{
+  cursor:pointer;
+}
 .pointPlots{
   opacity:0.50;
 }

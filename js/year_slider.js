@@ -15,7 +15,7 @@ function YearSlider(){
   var consumption_extent
     , choroplethScale;
   var filterYear;
-  var title = "Yearly Energy Consumption & Feature Ratings for a Modeled Home | by Weather Region & Vintage".split("|");
+  var title = "YEAR's Year-End Energy Consumption & Feature Ratings for a Modeled Home | by Weather Region & Vintage".split("|");
 
   var change;
   var previous_year = filterYear;
@@ -31,7 +31,7 @@ function YearSlider(){
           .domain([parseDate("1936"),parseDate("2014")])
           .range([0,width]);
 
-      var ticks = xScale.ticks(5);
+      var ticks = xScale.ticks(10);
 
       var xStart = xScale(parseDate(filterYear))-14;
 
@@ -128,7 +128,7 @@ function YearSlider(){
       slider.append("text")
           .attr("id","chart-title")
           .classed("slider text",true)
-          .attr("x",150)
+          .attr("x",100)
           .attr("y",-460)
           .text(title[0].replace("YEAR",filterYear));
       // create sub title
@@ -138,7 +138,13 @@ function YearSlider(){
           .attr("x",340)
           .attr("y",-425)
           .text(title[1]);
-
+      // label slider
+      slider.append("text")
+          .attr("id","slider-label")
+          .classed("slider text",true)
+          .attr("x",xScale(parseDate(filterYear)))
+          .attr("y",-23)
+          .text("Vintage");
       function dragstarted(d) {
         d3.select("#slider_highlight").raise().classed("active", true);
       }
@@ -149,6 +155,8 @@ function YearSlider(){
         d3.select(this).attr("x", d.x = x_value);
         // change xValue of slider image
         d3.selectAll("#slider_img").attr("x", x_value);
+        // change xValue of slider label
+        d3.selectAll("#slider-label").attr("x", x_value+15);
         // change xValue of circle behind image
         d3.selectAll("#slider_highlight").attr("cx", 15 + x_value);
         // change xValue of large center circle

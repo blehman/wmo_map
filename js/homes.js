@@ -4,7 +4,7 @@ function Homes(){
 
   var height = 10
     , width = 500
-    , lineWidth = 200
+    , lineWidth = 100
     , multiplier=54;
 
   var posX = 85
@@ -96,7 +96,7 @@ function Homes(){
        .enter().append("text")
         .classed("smartDefaultText",true)
         .attr("id",d => "text_"+d)
-        .attr("transform",function(d,i){return "translate(205,"+((i*multiplier)+6)+")";})
+        .attr("transform",function(d,i){return "translate(108,"+((i*multiplier)+6)+")";})
         .text(d=>d)
       // add circels to axes
         // tbd
