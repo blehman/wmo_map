@@ -128,7 +128,7 @@
     gLegend.consumption_extent(consumption_extent)
     gLegend.choroplethScale(vMap.choroplethScale())//Does this need to update w/ year and units??????????
     legend.call(gLegend)
-    ySlider.width(gLegend.width())
+    //ySlider.width(gLegend.width())
     slider.call(ySlider)
     iHomes.filterYear(startYear)
     iHomes.choroplethScale(vMap.choroplethScale())//Does this need to update w/ year and units??????????
