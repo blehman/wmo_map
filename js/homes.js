@@ -5,7 +5,8 @@ function Homes(){
   var height = 10
     , width = 500
     , lineWidth = 100
-    , multiplier=47;
+    , multiplier=47
+    , bar_height = multiplier *0.80;
 
   var posX = 85
     , posY = 450;
@@ -18,12 +19,16 @@ function Homes(){
 
   function chart(selection) {
     selection.each(function(map_data) {
-      console.log(map_data)
+      //console.log(map_data)
       var smart_default_domains = map_data["smartDefaults"];
-      console.log(smart_default_domains)
+      //console.log(smart_default_domains)
       var wmoVintage2smartDefaults = map_data["wmoVintage2smartDefaults"];
       var wmoVintage2energy = map_data["wmoVintage2energy"];
-
+      var vintage2defaultCounts = map_data["vintage2defaultCounts"];
+      var smartDefaultBars_yAxis = d3.scaleLinear()
+          .domain([0,220])
+          .range([1,bar_height])
+      console.log(vintage2defaultCounts)
       var homes = d3.select("#"+id)
           .attr("transform","translate(640,115)");
       // create scales for each smart default
@@ -34,18 +39,18 @@ function Homes(){
       var smartDefaultLegend = homes.append("g")
           .classed("smartDefaultText",true);
 
-
-
       var smartDefaulLegendText = smartDefaultLegend
           .append("text")
-          .attr("transform","translate(167,"+5+")")
+          .attr("transform","translate(50,"+-5+")")
           .classed("smartDefaulText",true)
          //.attr("x",20)
          //.attr("y",1)
-          .text("Feature Efficiency");
+          .attr("fill","black")
+          .text("Efficiency");
 
       var smartDefaultLegendAxis = smartDefaultLegend
           .call(d3.axisBottom(legendScale).ticks(1))
+
       var smartDefaultScales = {};
 
       var smartDefaultNames = [
@@ -77,13 +82,15 @@ function Homes(){
           .range([0,lineWidth]);
 
         smartDefaultScales[d] = {"ordinal":s1,"linear":s2};
+
       })
       // add axes
       homes.selectAll(".pointPlots")
         .data(smartDefaultNames)
        .enter().append("g")
         .attr("id",d=>"scale_"+d)
-        .attr("class","pointPlots")
+        .attr("class","pointPlots domain")
+        //.style("fill","black")
         .each(function(d,i){
           var gAxis = d3.select("#"+"scale_"+d)
             .attr("transform","translate(0,"+((i+1)*multiplier)+")");
@@ -121,7 +128,6 @@ function Homes(){
               //.curve(d3.curveCardinal.tension(0.5));
               //.curve(d3.curveBundle.beta(1));
               .curve(d3.curveCatmullRom.alpha(1));
-
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])
             .enter().append("path")
@@ -130,9 +136,42 @@ function Homes(){
             .attr("fill","none")
             .attr("stroke",choroplethScale(wmoVintage2energy[key][units]))
             .attr("stroke-width",0.25)
-            .attr("opacity",0.60)
-        // end forEach
+            .style("opacity",0.01)
+
+        // end map
         })
+
+        // BUILD BARS
+        d3.selectAll(".smartDefaultBars").remove()
+        console.log(filterYear)
+        var bars = homes.append("g")
+          .classed("bars",true);
+
+        smartDefaultNames.map(function(default_name,i){
+          console.log(["year"+filterYear,default_name])
+          var data = vintage2defaultCounts["year"+filterYear][default_name];
+          //console.log(data)
+          //console.log(default_name)
+          // make rects
+          bars.selectAll("."+default_name+"-bars")
+            .data(data)
+           .enter().append("rect")
+            .attr("class",default_name+"-bars")
+            .classed("smartDefaultBars",true)
+            .attr("x",function(d,i){
+              var ordinal_value = smartDefaultScales[default_name]["ordinal"](d.value);
+              var linear_value =  smartDefaultScales[default_name]["linear"](ordinal_value);
+              return linear_value
+            })
+            //.attr("y",d => (1+i)*multiplier)
+            .attr("y",d => (1+i)*multiplier-smartDefaultBars_yAxis(d.count))
+            .attr("width",5)
+            .attr("height",d => smartDefaultBars_yAxis(d.count))
+            .attr("fill","red")
+            .attr("stroke","red")
+            .attr("opacity",0.4);
+        })
+        //vintage2defaultCounts[year]
       // end updateSmartDefaultLines
       }
       updateSmartDefaultLines()

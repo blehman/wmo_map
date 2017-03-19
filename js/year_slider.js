@@ -9,7 +9,7 @@ function YearSlider(){
     , rectHeight = 25;
 
   //var years = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
-  var years = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
+  var years = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2009];
 
   var parseDate = d3.timeParse("%Y")
   var consumption_extent
@@ -28,10 +28,10 @@ function YearSlider(){
       var date_range = d3.extent(dates);
       // create axis
       var xScale = d3.scaleTime()
-          .domain([parseDate("1936"),parseDate("2014")])
+          .domain([parseDate("1936"),parseDate("2004")])
           .range([0,width]);
 
-      var ticks = xScale.ticks(10);
+      var ticks = xScale.ticks(5);
 
       var xStart = xScale(parseDate(filterYear))-14;
 
@@ -52,7 +52,7 @@ function YearSlider(){
         .attr("orient", "auto")
        .append("path")
         .attr("d", "M0,-5L10,0L0,5")
-        .attr("fill","none")
+        .attr("fill","black")
         .attr("stroke-width","2px")
         .attr("stroke","black");
         // create right arrow
@@ -63,7 +63,7 @@ function YearSlider(){
         .style("stroke", "black")
         .attr("x1", xScale(parseDate(filterYear))+13.2)
         .attr("y1", -11.3)
-        .attr("x2", xScale(parseDate(filterYear))+14.2)
+        .attr("x2", xScale(parseDate(filterYear))+14.3)
         .attr("y2", -11.3)
         .attr("marker-end","url(#slider_arrow_right)");
       // create left arrow marker
@@ -77,7 +77,7 @@ function YearSlider(){
         .attr("orient", "auto")
        .append("path")
         .attr("d", "M0,-5L10,0L0,5")
-        .attr("fill","none")
+        .attr("fill","black")
         .attr("stroke-width","2px")
         .attr("stroke","black");
         // create arrow
@@ -117,6 +117,7 @@ function YearSlider(){
           .attr("cx",xStart+15)
           .attr("cy",-11);
       // insert image (doesn't seem to work in some browsers)
+      /*
       slider.insert("image",":first-child")
           .attr("id","slider_img")
           .attr("xlink:href","img/slider.png")
@@ -124,6 +125,7 @@ function YearSlider(){
           .attr("y",-15)
           .attr("opacity",1)
           .attr("width","30px")
+      */
       // create main title
       slider.append("text")
           .attr("id","chart-title")
@@ -170,7 +172,7 @@ function YearSlider(){
           .attr("x2", x_value+2)
         // change title
         var year = xScale.invert(x_value).getFullYear();
-        var rounded_year = Math.round(year/10)*10;
+        var rounded_year = (year>2000)? 2000:Math.round(year/10)*10;
         d3.select("#chart-title")
           .text(title[0].replace("YEAR",rounded_year));
         if (previous_year != rounded_year){

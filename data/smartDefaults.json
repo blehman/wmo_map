@@ -5,6 +5,7 @@
         "BeOpt_Floor_BasementUnfinished_Uninsulated",
         "BeOpt_Floor_BasementFinished_Uninsulated",
         "BeOpt_Floor_Crawlspace_R13",
+        "BeOpt_Floor_BasementUnfinished_R13",
         "BeOpt_Floor_Crawlspace_R19",
         "L200EX_Floor",
         "BeOpt_Floor_BasementFinished_R10",
@@ -12,6 +13,7 @@
         "BeOpt_Floor_BasementUnfinished_R19"
     ],
     "hvac-cooling-age": [
+        "23",
         "14",
         "12",
         "10",
@@ -32,14 +34,24 @@
         "6"
     ],
     "infiltration": [
+        "1.25",
         "1.0",
         "0.75",
+        "0.7",
+        "0.6",
         "0.5",
         "0.4",
+        "0.35",
         "0.3",
-        "0.25"
+        "0.25",
+        "0.15"
     ],
     "roofConstructionName": [
+        "Attic_and_Other_R_20_Roof",
+        "Attic_and_Other_R_38_Roof",
+        "L200EX_Roof",
+        "BeOpt_Roof_R13",
+        "BeOpt_Roof_R19",
         "BeOpt_Roof_R30",
         "BeOpt_Roof_R38",
         "BeOpt_Roof_R49"
@@ -49,10 +61,14 @@
         "L200EX_Wall",
         "BeOpt_Wall_R7",
         "BeOpt_Wall_R11",
+        "BeOpt_Wall_R15",
         "Composite_2x4_Wood_Stud_R11",
         "BeOpt_Wall_R19"
     ],
     "windowConstructionName": [
+        "L200EX_Window",
+        "L250EX_Window",
+        "BeOpt_Window_ClearSingleNonMetal",
         "BeOpt_Window_ClearSingleMetal",
         "BeOpt_Window_ClearDoubleMetalAir",
         "BeOpt_Window_ClearDoubleNonMetalAir",

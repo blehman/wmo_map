@@ -5,13 +5,14 @@ function NewInput(){
   var old_wmo;
   function chart(selection) {
     selection.each(function(data){
-      var text_input = d3.select(this).append("input")
+      var text_input = d3.select(this)
+       .append("input")
+        .attr("autofocus","autofocus")
         .attr("id",input_id)
         .attr("type","text")
         .attr("placeholder","Find Region by Zipcode")
         .attr("maxlength",5)
         .attr("size",23)
-        .attr("autofocus","autofocus")
         .attr("autocomplete","off")
         .on("keyup",color_map)
         .on("change",color_map)

@@ -32,17 +32,17 @@ function GradientLegend(){
         .attr("markerHeight", 6)
         .attr("orient", "auto")
        .append("path")
-        .attr("d", "M0,-5L10,0L0,5")
-        .attr("fill","none");
+        .attr("d", "M0,-5L10,0L0,5");
         // create arrow
       legend.append("line")// attach a line
         .attr("id","pointer_line")
-        .style("stroke", "none")
+        .classed("hide",true)
         .attr("x1", 0)
         .attr("y1", 0)
         .attr("x2", 0)
         .attr("y2", 1)
-        .attr("marker-end","url(#legend_pointer)");
+        .attr("marker-end","url(#legend_pointer)")
+        .style("opacity",0);
       // add units
       legend.append("text")
         .attr("x",485)
@@ -84,12 +84,24 @@ function GradientLegend(){
 
         context.putImageData(image, 0, 0);
 
+
+        // REMOVE POINTER FROM LEGEND
+        d3.selectAll(".voronoi").on('mouseout', function(d){
+            d3.select("#pointer_line")
+              .classed("hide",true)
+              .classed("show",false)
+              .style("opacity",0);
+            //sd lines go back to normal
+            d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
+              .style("stroke-width",0.25)
+              .style("opacity",0.01);
+        })
+        // SHOW POINTER
         d3.selectAll(".voronoi").on('mouseover', function(d){
-            d3.select("#legend_pointer")
-              .style("opacity",1)
-              .style("fill-opacity",1)
-              .style("fill","#000")
-              .style("stroke","#000")
+            d3.select("#pointer_line")
+              .classed("hide",false)
+              .classed("show",true)
+              .style("opacity",1);
             var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
             var wmo_consumption = wmoVintage2energy[key][units];
             var xValue = x(wmo_consumption);
@@ -102,18 +114,6 @@ function GradientLegend(){
             d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
               .style("stroke-width",6.0)
               .style("opacity",1.0);
-        })
-        // REMOVE POINTER FROM LEGEND
-        d3.selectAll(".voronoi").on('mouseout', function(d){
-            d3.select("#legend_pointer")
-              .style("opacity",1)
-              .style("fill-opacity",1)
-              .style("fill","none")
-              .style("stroke","none")
-            //sd lines go back to normal
-            d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
-              .style("stroke-width",0.25)
-              .style("opacity",0.6);
         })
       //end updateLegendScale
       }

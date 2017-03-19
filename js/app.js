@@ -9,9 +9,11 @@
     //.defer(d3.tsv, "wmo_latlon.tsv")
     .defer(d3.csv,"data/wmo2latlon.csv")
     .defer(d3.csv,"data/postalcode2wmo.csv")
-    .defer(d3.json,"data/wmoVintage2energy.json_v2016")
-    .defer(d3.json,"data/wmoVintage2smartDefaults_slimest_v2016.json")
+    //.defer(d3.json,"data//wmoVintage2energy_v3_wy2016.json")
+    .defer(d3.json,"data/wmoVintage2energy_v5_wy2016.json")
+    .defer(d3.json,"data/wmoVintage2smartDefaults_v5_wy2016.json")
     .defer(d3.json,"data/smartDefaults.json")
+    .defer(d3.json,"data/vintage2defaultCounts_v5_wy2016.json")
     .await(runApp);
 
   var margin = { top: 0.10, right: 0.10, bottom: 0.10, left: 0.10 }
@@ -26,7 +28,7 @@
   var change = d3.dispatch("year_change","unit_change");
   var units = "KWH";
 
-  function runApp(error,us,usaf,postalcode2wmo,energy,wmoVintage2smartDefaults,smartDefaults){
+  function runApp(error,us,usaf,postalcode2wmo,energy,wmoVintage2smartDefaults,smartDefaults,vintage2defaultCounts){
     if (error) throw error;
 
     var zip2wmo = {}
@@ -47,10 +49,22 @@
       ,"consumption_extent":consumption_extent
       ,"wmoVintage2smartDefaults":wmoVintage2smartDefaults
       ,"smartDefaults":smartDefaults
+      ,"vintage2defaultCounts":vintage2defaultCounts
     }]
 
     // insert zip
     map_data[0]["zip2wmo"] = zip2wmo
+
+    // set background color
+    d3.select("#svg-container")
+      //.style("background-color",d3.hsl(66,0.72,0.85))
+      //.style("background-color","#FFFFCC")
+      //.style("background-color","#9ecae1")
+      //.style("background-color","#ebf4f9")
+      //.style("background-color",d3.rgb(158,202,225,0.10).toString())
+      //.style("background-color",d3.rgb(0,0,0,0.10).toString())
+      .style("background-color",d3.rgb(253,208,162,0.40).toString())
+      //.style("background-color",d3.hsl(56,0.53,0.75))
 
     // create non-svg elements
     var input = NewInput();
