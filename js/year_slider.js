@@ -105,7 +105,7 @@ function YearSlider(){
               .on("drag", dragged)
               .on("end", dragended))
       // create small inner circle.
-      slider.insert("circle",":first-child")
+      slider.append("circle")
           .attr("id","slider_highlight")
           .attr("r",5)
           .attr("cx",xStart+15)
@@ -113,6 +113,12 @@ function YearSlider(){
       // create larger outer circle
       slider.insert("circle",":first-child")
           .attr("id","slider_bug")
+          .attr("r",9)
+          .attr("cx",xStart+15)
+          .attr("cy",-11);
+
+      slider.insert("circle",":first-child")
+          .attr("id","slider_bug_background")
           .attr("r",9)
           .attr("cx",xStart+15)
           .attr("cy",-11);
@@ -163,6 +169,7 @@ function YearSlider(){
         d3.selectAll("#slider_highlight").attr("cx", 15 + x_value);
         // change xValue of large center circle
         d3.selectAll("#slider_bug").attr("cx", 15 + x_value);
+        d3.selectAll("#slider_bug_background").attr("cx", 15 + x_value);
         // change slider arrows
         d3.select("#arrow_right")
           .attr("x1", x_value+27)

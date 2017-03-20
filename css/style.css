@@ -137,19 +137,36 @@ text.toggles.inactive-toggle {
 }
 
 #slider_bug{
-  fill:none;
+  fill: rgba(0,0,0,0.50);
   stroke-width: 2px;
   stroke: black;
-  stroke-opacity:0.50
+  stroke-opacity:0.50;
+  opacity:0.50;
+}
+#slider_bug_background{
+  fill:white;
+  stroke-width: 2px;
+  stroke: none;
+  opacity:1;
+}
+
+#opacity-slider-box{
+  fill: white;
+  stroke: none;
+  rx: 5px;
 }
 
 #opacity-slider-drag{
-  fill: rgba(253,208,162,0.20);
+  fill: rgba(0,0,0,0.50);
   stroke-width: 2px;
   stroke: black;
-  stroke-opacity:0.50
+  stroke-opacity:0.50;
+  opacity:0.50;
+  rx: 5px;
 
 }
+
+
 .slider.text {
   font-family: monospace;
   font-size: 18px;

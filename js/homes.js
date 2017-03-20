@@ -10,7 +10,8 @@ function Homes(){
     , bar_height = multiplier *0.80;
 
   var posX = 85
-    , posY = 450;
+    , posY = 450
+    , box_side = 25;
 
   var filterYear="1980"
   , units = "KWH"
@@ -23,6 +24,7 @@ function Homes(){
 
   function chart(selection) {
     selection.each(function(map_data) {
+
       //console.log(map_data)
       var smart_default_domains = map_data["smartDefaults"];
       //console.log(smart_default_domains)
@@ -48,6 +50,24 @@ function Homes(){
       var max_y = multiplier*6,
       slider_line_points = [{"x":0,"y":0},{"x":0,"y":max_y}]
 
+      // insert curves img
+      var png_width = 50;
+      opacity_slider.insert("image",":first-child")
+          .attr("id","curves")
+          .attr("xlink:href","img/curves.png")
+          .attr("x",-png_width/2)
+          .attr("y",max_y)
+          .attr("opacity",1)
+          .attr("width",png_width)
+
+      opacity_slider.insert("image",":first-child")
+          .attr("id","curves")
+          .attr("xlink:href","img/bars.png")
+          .attr("x",-png_width/2)
+          .attr("y",-multiplier*0.52)
+          .attr("opacity",1)
+          .attr("width",png_width)
+
       var os_line = opacity_slider
           .selectAll(".opacity-slider-line")
           .data([slider_line_points])
@@ -55,15 +75,16 @@ function Homes(){
         .append("path")
           .classed("opacity-slider-line",true)
           .style("stroke","black")
+          .style("opacity","0.50")
           .style("stroke-width","0.25px")
           .attr("d",line_path);
 
       var os_curve_scale = d3.scalePow()
           .exponent(4)
-          .domain([0,max_y])
+          .domain([0,max_y-box_side])
           .range([0.01,1]);
       var os_bar_scale = d3.scaleLinear()
-          .domain([0,max_y])
+          .domain([0,max_y-box_side])
           .range([1,0.1]);
 
       opacity_y = max_y/2;
@@ -75,10 +96,37 @@ function Homes(){
       d3.selectAll(".lines path")
           .style("opacity",curve_opacity)
 
-      var box_side = 35;
+
+      var os_background_box = opacity_slider
+          .append("rect")
+          //.attr("id","opacity-slider-drag")
+          .attr("id","opacity-background-box")
+          .attr("class","slider-box")
+          .style("fill","white")
+          .attr("width",box_side)
+          .attr("height",box_side)
+          .attr("x",-box_side/2)
+          .attr("y",opacity_y);
+
+      var os_inner_box = opacity_slider
+          .append("rect")
+          //.attr("id","opacity-slider-drag")
+          .attr("id","opacity-inner-box")
+          .attr("class","slider-box")
+          .style("fill","none")
+          .style("stroke","green")
+          .style("stroke-width","6px")
+          .style("rx","1px")
+          .style("opacity",0.00)
+          .attr("width",box_side*0.60)
+          .attr("height",box_side*0.60)
+          .attr("x",(-box_side/2)*0.60)
+          .attr("y",opacity_y+5);
+
       var os_box = opacity_slider
           .append("rect")
           .attr("id","opacity-slider-drag")
+          .attr("class","slider-box")
           //.style("fill","red")
           .attr("width",box_side)
           .attr("height",box_side)
@@ -91,24 +139,33 @@ function Homes(){
 
 
       function dragstarted(d) {
-        d3.select(this).style("fill","green");
+        d3.select("#opacity-inner-box").style("opacity",0.50);
       }
 
       function dragged(d) {
-        opacity_y = d3.max([0, d3.min([d3.event.y,max_y])]);
+        opacity_y = d3.max([0, d3.min([d3.event.y,max_y-box_side])]);
         curve_opacity = os_curve_scale(opacity_y)
-          //log_y_value = Math.exp(y_value);
+        //log_y_value = Math.exp(y_value);
         // change value of invisible slider rect
         d3.select(this).attr("y", d.y = opacity_y);
+
         d3.selectAll("#lines path")
           .style("opacity",curve_opacity)
 
         d3.selectAll(".smartDefaultBars")
           .style("opacity",os_bar_scale(opacity_y))
+
+        d3.selectAll("#opacity-slider-drag")
+          .attr("y",opacity_y)
+        d3.selectAll("#opacity-background-box")
+          .attr("y",opacity_y)
+        d3.selectAll("#opacity-inner-box")
+          .attr("y",opacity_y+5)
       }
 
       function dragended(d) {
-        d3.select(this).style("fill", d3.rgb(253,208,162,0.20));
+        //d3.select(this).style("fill", d3.rgb(0,0,0,0.50));
+        d3.select("#opacity-inner-box").style("opacity",0);
       }
 
       // create scales for each smart default
