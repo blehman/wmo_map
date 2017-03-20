@@ -59,12 +59,12 @@ function Homes(){
           .attr("y",max_y)
           .attr("opacity",1)
           .attr("width",png_width)
-
+      // insert bars img
       opacity_slider.insert("image",":first-child")
           .attr("id","curves")
           .attr("xlink:href","img/bars.png")
           .attr("x",-png_width/2)
-          .attr("y",-multiplier*0.52)
+          .attr("y",-multiplier*0.55)
           .attr("opacity",1)
           .attr("width",png_width)
 
