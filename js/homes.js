@@ -167,6 +167,22 @@ function Homes(){
         //d3.select(this).style("fill", d3.rgb(0,0,0,0.50));
         d3.select("#opacity-inner-box").style("opacity",0);
       }
+      // opacity slider text
+      var opacitySliderBarsText = opacity_slider
+          .append("text")
+          .attr("transform","translate(0,"+-25+")")
+          .classed("opacitySliderText",true)
+          .attr("text-anchor","middle")
+          .style("fill",d3.rgb(0,0,0,0.50))
+          .text("National Sums");
+
+      var opacitySliderCurvesText = opacity_slider
+          .append("text")
+          .attr("transform","translate(0,"+multiplier*6.6+")")
+          .classed("opacitySliderText",true)
+          .attr("text-anchor","middle")
+          .style("fill",d3.rgb(0,0,0,0.50))
+          .text("Energy Profile");
 
       // create scales for each smart default
       var legendScale = d3.scaleOrdinal()
