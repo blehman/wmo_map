@@ -27,8 +27,8 @@ function ConsumptionToggle(){
           .classed(container_id,true)
           .attr("transform","translate(85,80)");
 
-      var added_width = 30;
-      var plus_some = 30;
+      var added_width = 35;
+      var plus_some = 35;
       var background_rect = viz_g.append("rect")
           .classed("toggles background-rect",true)
           .attr("width",(70+added_width+plus_some))
@@ -57,9 +57,9 @@ function ConsumptionToggle(){
       var Thm = viz_g.append("text")
           .attr("id","THERMS_JOULES")
           .classed("toggles inactive-toggle",true)
-          .attr("x",86)
+          .attr("x",75)
           .attr("y",15)
-          .text("Gas");
+          .text("Gas & Oil");
 
       var face_rect = viz_g.append("rect")
           .classed("toggles face-rect",true)
@@ -80,7 +80,7 @@ function ConsumptionToggle(){
           d3.select("#"+inactive_units)
             .classed("active-toggle",false)
             .classed("inactive-toggle",true)
-          var _x = (sliding_rect.attr("x")==0)? 63:0;
+          var _x = (sliding_rect.attr("x")==0)? 68:0;
           sliding_rect.transition()
             .duration(300)
             .attr("x",_x)

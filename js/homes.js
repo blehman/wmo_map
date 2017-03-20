@@ -13,7 +13,9 @@ function Homes(){
 
   var filterYear="1980"
   , units = "KWH"
-  , dispatch_updateSmartDefaultLines = d3.dispatch("updateSmartDefaultLines");
+  , dispatch_updateSmartDefaultLines = d3.dispatch("updateSmartDefaultLines")
+
+  var bar_opacity;
 
   var choroplethScale;
 
@@ -148,7 +150,7 @@ function Homes(){
           .classed("bars",true);
 
         smartDefaultNames.map(function(default_name,i){
-          console.log(["year"+filterYear,default_name])
+          //console.log(["year"+filterYear,default_name])
           var data = vintage2defaultCounts["year"+filterYear][default_name];
           //console.log(data)
           //console.log(default_name)
@@ -167,8 +169,8 @@ function Homes(){
             .attr("y",d => (1+i)*multiplier-smartDefaultBars_yAxis(d.count))
             .attr("width",5)
             .attr("height",d => smartDefaultBars_yAxis(d.count))
-            .attr("fill","red")
-            .attr("stroke","red")
+            .attr("fill","gray")
+            .attr("stroke","gray")
             .attr("opacity",0.4);
         })
         //vintage2defaultCounts[year]
@@ -211,6 +213,11 @@ function Homes(){
   chart.choroplethScale = function(c) {
     if (!arguments.length) { return choroplethScale; }
     choroplethScale = c;
+    return chart;
+  };
+  chart.bar_opacity = function(b) {
+    if (!arguments.length) { return bar_opacity; }
+    bar_opacity = b;
     return chart;
   };
   // end Homes
