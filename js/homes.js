@@ -1,6 +1,7 @@
 function Homes(){
 
   var id = "homes";
+  var change;
 
   var height = 10
     , width = 500
@@ -15,7 +16,8 @@ function Homes(){
   , units = "KWH"
   , dispatch_updateSmartDefaultLines = d3.dispatch("updateSmartDefaultLines")
 
-  var bar_opacity;
+  var opacity_y
+  , curve_opacity;
 
   var choroplethScale;
 
@@ -64,21 +66,24 @@ function Homes(){
           .domain([0,max_y])
           .range([1,0.1]);
 
-      var startpoint = max_y/2
+      opacity_y = max_y/2;
+      curve_opacity = os_curve_scale(opacity_y);
 
       d3.selectAll(".smartDefaultBars")
-          .style("opacity",os_bar_scale(startpoint))
+          .style("opacity",os_bar_scale(opacity_y))
 
       d3.selectAll(".lines path")
-          .style("opacity",os_curve_scale(startpoint))
+          .style("opacity",curve_opacity)
 
-      var os_point = opacity_slider
-          .append("circle")
+      var box_side = 35;
+      var os_box = opacity_slider
+          .append("rect")
           .attr("id","opacity-slider-drag")
-          .style("fill","red")
-          .attr("r",5)
-          .attr("cx",0)
-          .attr("cy",startpoint)
+          //.style("fill","red")
+          .attr("width",box_side)
+          .attr("height",box_side)
+          .attr("x",-box_side/2)
+          .attr("y",opacity_y)
           .call(d3.drag()
             .on("start",dragstarted)
             .on("drag", dragged)
@@ -90,24 +95,21 @@ function Homes(){
       }
 
       function dragged(d) {
-        var y_value = d3.max([0, d3.min([d3.event.y,max_y])]);
+        opacity_y = d3.max([0, d3.min([d3.event.y,max_y])]);
+        curve_opacity = os_curve_scale(opacity_y)
           //log_y_value = Math.exp(y_value);
         // change value of invisible slider rect
-        d3.select(this).attr("cy", d.y = y_value);
+        d3.select(this).attr("y", d.y = opacity_y);
         d3.selectAll("#lines path")
-          .style("opacity",os_curve_scale(y_value))
+          .style("opacity",curve_opacity)
 
         d3.selectAll(".smartDefaultBars")
-          .style("opacity",os_bar_scale(y_value))
+          .style("opacity",os_bar_scale(opacity_y))
       }
 
       function dragended(d) {
-        d3.select(this).style("fill", "red");
+        d3.select(this).style("fill", d3.rgb(253,208,162,0.20));
       }
-
-
-
-
 
       // create scales for each smart default
       var legendScale = d3.scaleOrdinal()
@@ -214,7 +216,7 @@ function Homes(){
             .attr("fill","none")
             .attr("stroke",choroplethScale(wmoVintage2energy[key][units]))
             .attr("stroke-width",0.25)
-            .style("opacity",0.01)
+            .style("opacity",os_curve_scale(opacity_y))
 
         // end map
         })
@@ -243,7 +245,7 @@ function Homes(){
             .attr("height",d => smartDefaultBars_yAxis(d.count))
             .attr("fill","gray")
             .attr("stroke","gray")
-            .attr("opacity",0.4);
+            .attr("opacity",os_bar_scale(opacity_y));
         })
         //vintage2defaultCounts[year]
       // end updateSmartDefaultLines
@@ -287,11 +289,22 @@ function Homes(){
     choroplethScale = c;
     return chart;
   };
-  chart.bar_opacity = function(b) {
-    if (!arguments.length) { return bar_opacity; }
-    bar_opacity = b;
+  chart.opacity_y = function(o) {
+    if (!arguments.length) { return opacity_y; }
+    opacity_y = o;
     return chart;
   };
+  chart.curve_opacity = function(c) {
+    if (!arguments.length) { return curve_opacity; }
+    curve_opacity = c;
+    return chart;
+  };
+  chart.change = function(c) {
+    if (!arguments.length) { return change; }
+    change = c;
+    return chart;
+  };
+
   // end Homes
   return chart
 }

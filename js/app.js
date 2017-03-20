@@ -25,7 +25,7 @@
 
   var polygon_fill_opacity = 0.60;
 
-  var change = d3.dispatch("year_change","unit_change");
+  var change = d3.dispatch("year_change","unit_change","opacity_change");
   var units = "KWH";
 
   function runApp(error,us,usaf,postalcode2wmo,energy,wmoVintage2smartDefaults,smartDefaults,vintage2defaultCounts){
@@ -100,6 +100,7 @@
     var gLegend = GradientLegend();
     // update legend settings
     gLegend.stop_opacity(polygon_fill_opacity)
+    gLegend.change(change)
     // a container nested under svg
     var svg = d3.select("#viz-container")
         .attr("height",svg_height)
@@ -112,7 +113,7 @@
 
     // create an instance of YearSlider
     var iHomes = Homes();
-
+    iHomes.change(change);
     // create a new container for each viz
     // gradient legend
 
@@ -161,10 +162,12 @@
         vMap.units(units)
         //update legend scale
         gLegend.units(units)
-        //update legend color??????????????????
         //update home lines
         iHomes.units(units)
     })
-
+      change.on("opacity_change",function(){
+        //update curve opacity for hover reset
+        gLegend.curve_opacity(iHomes.curve_opacity())
+    })
   }
 }())

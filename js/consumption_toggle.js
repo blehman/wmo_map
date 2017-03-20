@@ -50,7 +50,7 @@ function ConsumptionToggle(){
       var kWh = viz_g.append("text")
           .attr("id","KWH")
           .classed("toggles active-toggle",true)
-          .attr("x",7)
+          .attr("x",9)
           .attr("y",15)
           .text("Electric");
 

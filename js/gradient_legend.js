@@ -1,6 +1,7 @@
 function GradientLegend(){
 
   var id = "gradient-legend";
+  var change;
 
   var height = 7
     , width = 510;
@@ -10,7 +11,8 @@ function GradientLegend(){
     , consumption_extent
     , units = 'KWH'
     , dispatch_updateLegendScale = d3.dispatch("updateLegendScale")
-    , filterYear="1980";
+    , filterYear="1980"
+    , curve_opacity;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -87,6 +89,8 @@ function GradientLegend(){
 
         // REMOVE POINTER FROM LEGEND
         d3.selectAll(".voronoi").on('mouseout', function(d){
+            change.call("opacity_change");
+
             d3.select("#pointer_line")
               .classed("hide",true)
               .classed("show",false)
@@ -94,7 +98,7 @@ function GradientLegend(){
             //sd lines go back to normal
             d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
               .style("stroke-width",0.25)
-              .style("opacity",0.01);
+              .style("opacity",curve_opacity);
         })
         // SHOW POINTER
         d3.selectAll(".voronoi").on('mouseover', function(d){
@@ -111,9 +115,11 @@ function GradientLegend(){
               .attr("x1",xValue)
               .attr("x2",xValue)
           // sd lines expand
-            d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
+            var sel = d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear);
+              sel.raise()
               .style("stroke-width",6.0)
               .style("opacity",1.0);
+              //sel.remove()
         })
       //end updateLegendScale
       }
@@ -162,9 +168,19 @@ function GradientLegend(){
     return chart;
   };
   chart.filterYear = function(f) {
-    if (!arguments.length) { return filterYeart; }
+    if (!arguments.length) { return filterYear; }
     filterYear=f;
     dispatch_updateLegendScale.call("updateLegendScale")
+    return chart;
+  };
+  chart.curve_opacity = function(c) {
+    if (!arguments.length) { return curve_opacity; }
+    curve_opacity=c;
+    return chart;
+  };
+  chart.change = function(c) {
+    if (!arguments.length) { return change; }
+    change=c;
     return chart;
   };
 

@@ -141,9 +141,15 @@ text.toggles.inactive-toggle {
   stroke-width: 2px;
   stroke: black;
   stroke-opacity:0.50
-
 }
 
+#opacity-slider-drag{
+  fill: rgba(253,208,162,0.20);
+  stroke-width: 2px;
+  stroke: black;
+  stroke-opacity:0.50
+
+}
 .slider.text {
   font-family: monospace;
   font-size: 18px;
