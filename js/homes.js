@@ -31,8 +31,84 @@ function Homes(){
           .domain([0,220])
           .range([1,bar_height])
       console.log(vintage2defaultCounts)
+      // create container for this section
       var homes = d3.select("#"+id)
           .attr("transform","translate(640,115)");
+
+      var opacity_slider = homes.append("g")
+          .attr("transform","translate(275,"+multiplier+")")
+          .classed("opacity-slider",true);
+
+      var line_path = d3.line()
+          .x(d => d.x)
+          .y(d=> d.y);
+
+      var max_y = multiplier*6,
+      slider_line_points = [{"x":0,"y":0},{"x":0,"y":max_y}]
+
+      var os_line = opacity_slider
+          .selectAll(".opacity-slider-line")
+          .data([slider_line_points])
+          .enter()
+        .append("path")
+          .classed("opacity-slider-line",true)
+          .style("stroke","black")
+          .style("stroke-width","0.25px")
+          .attr("d",line_path);
+
+      var os_curve_scale = d3.scalePow()
+          .exponent(4)
+          .domain([0,max_y])
+          .range([0.01,1]);
+      var os_bar_scale = d3.scaleLinear()
+          .domain([0,max_y])
+          .range([1,0.1]);
+
+      var startpoint = max_y/2
+
+      d3.selectAll(".smartDefaultBars")
+          .style("opacity",os_bar_scale(startpoint))
+
+      d3.selectAll(".lines path")
+          .style("opacity",os_curve_scale(startpoint))
+
+      var os_point = opacity_slider
+          .append("circle")
+          .attr("id","opacity-slider-drag")
+          .style("fill","red")
+          .attr("r",5)
+          .attr("cx",0)
+          .attr("cy",startpoint)
+          .call(d3.drag()
+            .on("start",dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+
+      function dragstarted(d) {
+        d3.select(this).style("fill","green");
+      }
+
+      function dragged(d) {
+        var y_value = d3.max([0, d3.min([d3.event.y,max_y])]);
+          //log_y_value = Math.exp(y_value);
+        // change value of invisible slider rect
+        d3.select(this).attr("cy", d.y = y_value);
+        d3.selectAll("#lines path")
+          .style("opacity",os_curve_scale(y_value))
+
+        d3.selectAll(".smartDefaultBars")
+          .style("opacity",os_bar_scale(y_value))
+      }
+
+      function dragended(d) {
+        d3.select(this).style("fill", "red");
+      }
+
+
+
+
+
       // create scales for each smart default
       var legendScale = d3.scaleOrdinal()
           .domain(["less","more"])
@@ -145,15 +221,11 @@ function Homes(){
 
         // BUILD BARS
         d3.selectAll(".smartDefaultBars").remove()
-        console.log(filterYear)
         var bars = homes.append("g")
           .classed("bars",true);
 
         smartDefaultNames.map(function(default_name,i){
-          //console.log(["year"+filterYear,default_name])
           var data = vintage2defaultCounts["year"+filterYear][default_name];
-          //console.log(data)
-          //console.log(default_name)
           // make rects
           bars.selectAll("."+default_name+"-bars")
             .data(data)

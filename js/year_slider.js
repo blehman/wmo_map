@@ -148,7 +148,7 @@ function YearSlider(){
           .attr("y",-23)
           .text("Vintage");
       function dragstarted(d) {
-        d3.select("#slider_highlight").raise().classed("active", true);
+        d3.select("#slider_highlight").classed("active", true);
       }
 
       function dragged(d) {
