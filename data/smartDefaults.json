@@ -47,13 +47,13 @@
         "0.15"
     ],
     "roofConstructionName": [
-        "Attic_and_Other_R_20_Roof",
-        "Attic_and_Other_R_38_Roof",
         "L200EX_Roof",
         "BeOpt_Roof_R13",
         "BeOpt_Roof_R19",
+        "Attic_and_Other_R_20_Roof",
         "BeOpt_Roof_R30",
         "BeOpt_Roof_R38",
+        "Attic_and_Other_R_38_Roof",
         "BeOpt_Roof_R49"
     ],
     "wallConstructionName": [

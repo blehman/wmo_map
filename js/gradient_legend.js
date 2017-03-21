@@ -20,7 +20,7 @@ function GradientLegend(){
       var wmoVintage2smartDefaults = data["wmoVintage2smartDefaults"]
 
       var legend = d3.select(this)
-          .attr("transform","translate(85,115)");
+          .attr("transform","translate(85,550)");
 
       // create some definitions
       var defs = legend.append("defs");

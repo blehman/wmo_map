@@ -25,7 +25,15 @@ function ConsumptionToggle(){
       var viz_g = d3.select("#viz-container")
           .append("g")
           .classed(container_id,true)
-          .attr("transform","translate(85,80)");
+          .attr("transform","translate(85,135)");
+
+      var fuel_type = viz_g.append("text")
+          .attr("id","fuel-type")
+          .classed("heading",true)
+          .attr("x",0)
+          .attr("y",-15)
+          .text("Select Fuel Type")
+          .style("text-anchor","start");
 
       var added_width = 35;
       var plus_some = 35;

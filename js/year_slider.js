@@ -3,7 +3,7 @@ function YearSlider(){
   var id = "year-slider";
 
   var height = 10
-    , width = 765
+    , width = 500
 
   var rectWidth = 30
     , rectHeight = 25;
@@ -23,7 +23,7 @@ function YearSlider(){
   function chart(selection) {
     selection.each(function(map_data) {
       var slider = d3.select(this)
-          .attr("transform","translate(85,490)");
+          .attr("transform","translate(261,143)");
       var dates = years.map(d => parseDate(d));
       var date_range = d3.extent(dates);
       // create axis
@@ -135,24 +135,23 @@ function YearSlider(){
       // create main title
       slider.append("text")
           .attr("id","chart-title")
-          .classed("slider text",true)
-          .attr("x",-15)
-          .attr("y",-460)
+          .attr("x",300)
+          .attr("y",-100)
           .text(title[0].replace("YEAR",filterYear));
       // create sub title
       slider.append("text")
           .attr("id","chart-title")
           .classed("slider text",true)
           .attr("x",300)
-          .attr("y",-425)
+          .attr("y",-55)
           .text(title[1]);
       // label slider
       slider.append("text")
-          .attr("id","slider-label")
+          .attr("id","ball-label")
           .classed("slider text",true)
           .attr("x",xScale(parseDate(filterYear))+1)
           .attr("y",-23)
-          .text("Vintage");
+          .text("Choose Vintage");
       function dragstarted(d) {
         d3.select("#slider_highlight").classed("active", true);
       }
@@ -164,7 +163,7 @@ function YearSlider(){
         // change xValue of slider image
         d3.selectAll("#slider_img").attr("x", x_value);
         // change xValue of slider label
-        d3.selectAll("#slider-label").attr("x", x_value+16);
+        d3.selectAll("#ball-label").attr("x", x_value+16);
         // change xValue of circle behind image
         d3.selectAll("#slider_highlight").attr("cx", 15 + x_value);
         // change xValue of large center circle

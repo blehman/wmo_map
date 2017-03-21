@@ -6,7 +6,7 @@ function Homes(){
   var height = 10
     , width = 500
     , lineWidth = 100
-    , multiplier=47
+    , multiplier=48.2
     , bar_height = multiplier *0.80;
 
   var posX = 85
@@ -37,10 +37,10 @@ function Homes(){
       console.log(vintage2defaultCounts)
       // create container for this section
       var homes = d3.select("#"+id)
-          .attr("transform","translate(640,115)");
+          .attr("transform","translate(720,165)");
 
       var opacity_slider = homes.append("g")
-          .attr("transform","translate(275,"+multiplier+")")
+          .attr("transform","translate(-70,"+multiplier+")")
           .classed("opacity-slider",true);
 
       var line_path = d3.line()
@@ -64,9 +64,9 @@ function Homes(){
           .attr("id","curves")
           .attr("xlink:href","img/bars.png")
           .attr("x",-png_width/2)
-          .attr("y",-multiplier*0.55)
+          .attr("y",-multiplier*0.43)
           .attr("opacity",1)
-          .attr("width",png_width)
+          .attr("width",png_width*0.80)
 
       var os_line = opacity_slider
           .selectAll(".opacity-slider-line")
@@ -167,6 +167,7 @@ function Homes(){
         //d3.select(this).style("fill", d3.rgb(0,0,0,0.50));
         d3.select("#opacity-inner-box").style("opacity",0);
       }
+/*
       // opacity slider text
       var opacitySliderBarsText = opacity_slider
           .append("text")
@@ -174,7 +175,7 @@ function Homes(){
           .classed("opacitySliderText",true)
           .attr("text-anchor","middle")
           .style("fill",d3.rgb(0,0,0,0.50))
-          .text("National Sums");
+          .text("Total Regions per Efficiency Bucket");
 
       var opacitySliderCurvesText = opacity_slider
           .append("text")
@@ -182,23 +183,24 @@ function Homes(){
           .classed("opacitySliderText",true)
           .attr("text-anchor","middle")
           .style("fill",d3.rgb(0,0,0,0.50))
-          .text("Energy Profile");
-
+          .text("Regional Efficiency Profile");
+*/
       // create scales for each smart default
       var legendScale = d3.scaleOrdinal()
           .domain(["less","more"])
           .range([0,lineWidth]);
 
       var smartDefaultLegend = homes.append("g")
-          .classed("smartDefaultText",true);
+          .classed("smartDefaultText",true)
+          .attr("transform","translate(0,"+multiplier*8+")");
 
       var smartDefaulLegendText = smartDefaultLegend
           .append("text")
           .attr("transform","translate(50,"+-5+")")
-          .classed("smartDefaulText",true)
+          .classed("heading",true)
          //.attr("x",20)
          //.attr("y",1)
-          .attr("fill","black")
+          //.attr("fill","black")
           .text("Efficiency");
 
       var smartDefaultLegendAxis = smartDefaultLegend
@@ -278,9 +280,9 @@ function Homes(){
                 return linear_value;
               })
               .y(function(d,i){return (i+1)*multiplier})
-              //.curve(d3.curveCardinal.tension(0.5));
+              .curve(d3.curveCardinal.tension(0.5));
               //.curve(d3.curveBundle.beta(1));
-              .curve(d3.curveCatmullRom.alpha(1));
+              //.curve(d3.curveCatmullRom.alpha(1));
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])
             .enter().append("path")

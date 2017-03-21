@@ -48,7 +48,7 @@ function NewMap(){
       })
       // create container for map elements
       var viz_g = d3.select("#"+id)
-          .attr("transform","translate(100,150)");
+          .attr("transform","translate(100,200)");
       // BUILD DEFS FOR CLIPING
 
       //var tVoronoi = geoVoronoi(wmo, geoDelaunay(wmo)).geometries;

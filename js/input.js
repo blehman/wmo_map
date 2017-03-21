@@ -10,7 +10,7 @@ function NewInput(){
         .attr("autofocus","autofocus")
         .attr("id",input_id)
         .attr("type","text")
-        .attr("placeholder","Find Region by Zipcode")
+        .attr("placeholder","Type Zipcode")
         .attr("maxlength",5)
         .attr("size",23)
         .attr("autocomplete","off")
@@ -18,6 +18,19 @@ function NewInput(){
         .on("change",color_map)
         .on("cut", function() { setTimeout(color_map, 10); })
         .on("paste", function() { setTimeout(color_map, 10); });
+
+     var input_container = d3.select("#viz-container")
+        .append("g")
+          .attr("transform","translate(800,123)")
+          .classed("input-text",true);
+     var input_heading = input_container
+         .append("text")
+          .attr("id","weather-region")
+          .classed("heading",true)
+          .attr("x",0)
+          .attr("y",0)
+          .text("Find Weather Region")
+          .style("text-anchor","start");
 
       function color_map(d,i){
         d3.event.preventDefault()
