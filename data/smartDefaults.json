@@ -3,10 +3,8 @@
   "BeOpt_Floor_BasementUnfinished_Uninsulated",
   "BeOpt_Floor_Slab_Uninsulated",
   "BeOpt_Floor_BasementFinished_Uninsulated",
-  "BeOpt_Floor_Slab_Exterior_R5",
   "BeOpt_Floor_Crawlspace_R13",
   "BeOpt_Floor_BasementUnfinished_R13",
-  "BeOpt_Floor_BasementFinished_R5",
   "BeOpt_Floor_Crawlspace_R19",
   "BeOpt_Floor_BasementUnfinished_R19",
   "L200EX_Floor",
@@ -61,23 +59,3 @@
   "L250EX_Window"
  ]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

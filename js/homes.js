@@ -228,7 +228,7 @@ function Homes(){
         ];
 
       smartDefaultNames.forEach(function(d,i){
-
+/*
         var s1 = d3.scaleOrdinal()
           .domain(smart_default_domains[d])
           .range(d3.range(0,smart_default_domains[d].length));
@@ -236,13 +236,14 @@ function Homes(){
         var s2 = d3.scaleLinear()
           .domain(d3.extent(s1.range()))
           .range([0,lineWidth]);
-
+*/
         console.log(smart_default_domains[d])
         var band = d3.scaleBand()
           .domain(smart_default_domains[d])
           .range([0,lineWidth])
 
-        smartDefaultScales[d] = {"ordinal":s1,"linear":s2,"band":band};
+        //smartDefaultScales[d] = {"ordinal":s1,"linear":s2,"band":band};
+        smartDefaultScales[d] = {"band":band};
 
       })
       // add axes
@@ -299,6 +300,7 @@ function Homes(){
               //.curve(d3.curveBundle.beta(1));
               //.curve(d3.curveCatmullRom.alpha(1));
           // Draw line
+          console.log(sd)
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])
             .enter().append("path")

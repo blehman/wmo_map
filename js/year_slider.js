@@ -9,7 +9,7 @@ function YearSlider(){
     , rectHeight = 25;
 
   //var years = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
-  var years = [1900,1920,1930,1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
+  var years = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
 
   var parseDate = d3.timeParse("%Y")
   var consumption_extent
@@ -28,7 +28,7 @@ function YearSlider(){
       var date_range = d3.extent(dates);
       // create axis
       var xScale = d3.scaleTime()
-          .domain([parseDate("1896"),parseDate("2014")])
+          .domain([parseDate("1936"),parseDate("2016")])
           .range([0,width]);
 
       var ticks = xScale.ticks(5);
@@ -178,7 +178,8 @@ function YearSlider(){
           .attr("x2", x_value+2)
         // change title
         var year = xScale.invert(x_value).getFullYear();
-        var rounded_year = (year>2000)? 2000:Math.round(year/10)*10;
+        var rounded_year = Math.round(year/10)*10;
+        //var rounded_year = (year>2000)? 2000:Math.round(year/10)*10;
         d3.select("#chart-title")
           .text(title[0].replace("YEAR",rounded_year));
         if (previous_year != rounded_year){
