@@ -9,7 +9,7 @@ function YearSlider(){
     , rectHeight = 25;
 
   //var years = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
-  var years = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2009];
+  var years = [1900,1920,1930,1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010];
 
   var parseDate = d3.timeParse("%Y")
   var consumption_extent
@@ -28,7 +28,7 @@ function YearSlider(){
       var date_range = d3.extent(dates);
       // create axis
       var xScale = d3.scaleTime()
-          .domain([parseDate("1936"),parseDate("2004")])
+          .domain([parseDate("1896"),parseDate("2014")])
           .range([0,width]);
 
       var ticks = xScale.ticks(5);

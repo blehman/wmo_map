@@ -103,6 +103,7 @@ function Homes(){
           .attr("id","opacity-background-box")
           .attr("class","slider-box")
           .style("fill","white")
+          .style("rx","5px")
           .attr("width",box_side)
           .attr("height",box_side)
           .attr("x",-box_side/2)
@@ -121,7 +122,8 @@ function Homes(){
           .attr("width",box_side*0.60)
           .attr("height",box_side*0.60)
           .attr("x",(-box_side/2)*0.60)
-          .attr("y",opacity_y+5);
+          .attr("y",opacity_y+5)
+          .style("cursor","pointer");
 
       var os_box = opacity_slider
           .append("rect")
@@ -209,22 +211,21 @@ function Homes(){
       var smartDefaultScales = {};
 
       var smartDefaultNames = [
-        "hvac-cooling-age"
-        , 'hvac-heating-age'
+        "roofConstructionName"
+        , "windowConstructionName"
+        , "wallConstructionName"
         , "floorConstructionName"
-        , 'roofConstructionName'
-        , 'wallConstructionName'
-        , 'windowConstructionName'
-        , 'infiltration'];
+        , "infiltration"
+        , "setup-home-sqft"];
 
       var smartDefaultLabels = [
-        'HVAC Cooling Age'
-        , 'HVAC Heating Age'
-        , 'Floor Type'
-        , 'Roof Type'
-        , 'Wall Type'
-        , 'Window Type'
-        , 'Infiltration'];
+        "Roof Rvalue"
+        , "Window Rvalue"
+        , "Wall Rvalue"
+        , "Floor Rvalue"
+        , "Leakiness Rating"
+        , "Efficient Size"
+        ];
 
       smartDefaultNames.forEach(function(d,i){
 
@@ -236,7 +237,12 @@ function Homes(){
           .domain(d3.extent(s1.range()))
           .range([0,lineWidth]);
 
-        smartDefaultScales[d] = {"ordinal":s1,"linear":s2};
+        console.log(smart_default_domains[d])
+        var band = d3.scaleBand()
+          .domain(smart_default_domains[d])
+          .range([0,lineWidth])
+
+        smartDefaultScales[d] = {"ordinal":s1,"linear":s2,"band":band};
 
       })
       // add axes
@@ -249,7 +255,8 @@ function Homes(){
         .each(function(d,i){
           var gAxis = d3.select("#"+"scale_"+d)
             .attr("transform","translate(0,"+((i+1)*multiplier)+")");
-          var gScale = smartDefaultScales[d]["linear"];
+          //var gScale = smartDefaultScales[d]["linear"];
+          var gScale = smartDefaultScales[d]["band"];
           gAxis.call(d3.axisBottom(gScale).ticks(3))
         });
       // remove all the axes ticks & labels
@@ -266,23 +273,32 @@ function Homes(){
         // tbd
       // add lines to axes
       function updateSmartDefaultLines(){
+        // remove all lines
         homes.selectAll("#lines").remove();
         var homeLines = homes.append("g").attr("id","lines");
         Object.keys(wmoVintage2smartDefaults).filter(d=>+d.split(", ")[1].replace(")","")==filterYear).map(function(key){
           var s = key.split(", ")
             , wmo = s[0].replace("(","")
             , year = s[1].replace(")","");
+          // each home feature has one (name,value) as a point on each scale
           var sd = wmoVintage2smartDefaults[key];
+          // create a line function for each wmoVintage combo
           var line = d3.line()
               .x(function(d,i){
-                var ordinal_value = smartDefaultScales[d.name]["ordinal"](d.value);
-                var linear_value =  smartDefaultScales[d.name]["linear"](ordinal_value);
-                return linear_value;
+                //var ordinal_value = smartDefaultScales[d.name]["ordinal"](d.value);
+                //var linear_value =  smartDefaultScales[d.name]["linear"](ordinal_value);
+                //return linear_value;
+                var band_width = smartDefaultScales[d.name]["band"].bandwidth();
+                var line_x_value =  smartDefaultScales[d.name]["band"](d.value);
+                var bar_midpoint = line_x_value + (band_width/2);
+                return bar_midpoint;
+
               })
               .y(function(d,i){return (i+1)*multiplier})
               .curve(d3.curveCardinal.tension(0.5));
               //.curve(d3.curveBundle.beta(1));
               //.curve(d3.curveCatmullRom.alpha(1));
+          // Draw line
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])
             .enter().append("path")
@@ -293,7 +309,7 @@ function Homes(){
             .attr("stroke-width",0.25)
             .style("opacity",os_curve_scale(opacity_y))
 
-        // end map
+        // end mapping for lines
         })
 
         // BUILD BARS
@@ -310,13 +326,15 @@ function Homes(){
             .attr("class",default_name+"-bars")
             .classed("smartDefaultBars",true)
             .attr("x",function(d,i){
-              var ordinal_value = smartDefaultScales[default_name]["ordinal"](d.value);
-              var linear_value =  smartDefaultScales[default_name]["linear"](ordinal_value);
-              return linear_value
+              //var ordinal_value = smartDefaultScales[default_name]["ordinal"](d.value);
+              //var linear_value =  smartDefaultScales[default_name]["linear"](ordinal_value);
+              //return linear_value
+              var line_x_value =  smartDefaultScales[default_name]["band"](d.name);
+              return line_x_value;
             })
             //.attr("y",d => (1+i)*multiplier)
             .attr("y",d => (1+i)*multiplier-smartDefaultBars_yAxis(d.count))
-            .attr("width",5)
+            .attr("width",d => smartDefaultScales[default_name]["band"].bandwidth())
             .attr("height",d => smartDefaultBars_yAxis(d.count))
             .attr("fill","gray")
             .attr("stroke","gray")

@@ -163,6 +163,7 @@ text.toggles.inactive-toggle {
   stroke-opacity:0.50;
   opacity:0.50;
   rx: 5px;
+  cursor:pointer;
 
 }
 
