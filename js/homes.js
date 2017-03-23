@@ -356,10 +356,10 @@ function Homes(){
         , "setup-home-sqft"];
 
       var smartDefaultLabels = [
-        "Roof Rvalue"
-        , "Window Rvalue"
-        , "Wall Rvalue"
-        , "Floor Rvalue"
+        "Roof R-value"
+        , "Window R-value"
+        , "Wall R-value"
+        , "Floor R-value"
         , "Leakiness Rating"
         , "Efficient Size"
         ];
