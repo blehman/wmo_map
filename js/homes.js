@@ -47,7 +47,7 @@ function Homes(){
           .x(d => d.x)
           .y(d=> d.y);
 
-      var max_y = multiplier*6,
+      var max_y = multiplier*5,
       slider_line_points = [{"x":0,"y":0},{"x":0,"y":max_y}]
 
       // insert curves img
@@ -75,9 +75,9 @@ function Homes(){
           .enter()
         .append("path")
           .classed("opacity-slider-line",true)
-          .style("stroke","black")
+          .style("stroke","gray")
           .style("opacity","0.50")
-          .style("stroke-width","0.25px")
+          .style("stroke-width","0.50px")
           .attr("d",line_path);
 
       var os_curve_scale = d3.scalePow()
@@ -285,8 +285,9 @@ function Homes(){
        .enter().append("text")
         .classed("smartDefaultText",true)
         .attr("id",d => "text_"+d)
-        .attr("transform",function(d,i){return "translate(108,"+(((i+1)*multiplier)+6)+")";})
-        .text(d=>d)
+        .style("fill",d3.rgb(255, 255, 255))
+        .attr("transform",function(d,i){return "translate(108,"+(((i+1)*multiplier))+")";})
+        .text(d=>d);
       // add circels to axes
         // tbd
       // add lines to axes
