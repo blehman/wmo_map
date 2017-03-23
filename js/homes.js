@@ -43,6 +43,7 @@ function Homes(){
           .attr("transform","translate(-70,"+multiplier+")")
           .classed("opacity-slider",true);
 
+
       var line_path = d3.line()
           .x(d => d.x)
           .y(d=> d.y);
@@ -91,12 +92,59 @@ function Homes(){
       opacity_y = max_y/2;
       curve_opacity = os_curve_scale(opacity_y);
 
+      // build markers
+      var defs = opacity_slider.append("defs");
+      // create right arrow marker
+      defs.append("marker")
+        .attr("id", "oslider_arrow_right")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 0)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+       .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("stroke-width","2px")
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("stroke",d3.rgb(255, 255, 255))
+      // create right arrow
+      opacity_slider.append("line")// attach a line
+        .attr("id","oslider_arrow_right")
+        .style("opacity",1)
+        .attr("x1", 0)
+        .attr("y1", opacity_y-3)
+        .attr("x2", 0)
+        .attr("y2", opacity_y-3.1)
+        .attr("marker-end","url(#oslider_arrow_right)");
+      // create left arrow marker
+      defs.append("marker")
+        .attr("id", "oslider_arrow_left")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 0)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+       .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("stroke",d3.rgb(255, 255, 255))       // create arrow
+      opacity_slider.append("line")// attach a line
+        .attr("id","oslider_arrow_left")
+        .style("opacity",1)
+        .attr("x1", 0)
+        .attr("y1", opacity_y+3+box_side)
+        .attr("x2", 0)
+        .attr("y2", opacity_y+3.1+box_side)
+        .attr("marker-end","url(#oslider_arrow_left)");
+
+      // build dragger
       d3.selectAll(".smartDefaultBars")
           .style("opacity",os_bar_scale(opacity_y))
 
       d3.selectAll(".lines path")
           .style("opacity",curve_opacity)
-
 
       var os_background_box = opacity_slider
           .append("rect")
@@ -140,7 +188,6 @@ function Homes(){
             .on("drag", dragged)
             .on("end", dragended));
 
-
       function dragstarted(d) {
         d3.select("#opacity-inner-box").style("opacity",0.50);
       }
@@ -158,12 +205,18 @@ function Homes(){
         d3.selectAll(".smartDefaultBars")
           .style("opacity",os_bar_scale(opacity_y))
 
+        d3.selectAll("#oslider_arrow_right")
+          .attr("y1",opacity_y-3)
+          .attr("y2",opacity_y-3.1);
+        d3.selectAll("#oslider_arrow_left")
+          .attr("y1",opacity_y+box_side+3)
+          .attr("y2",opacity_y+box_side+3.1);
         d3.selectAll("#opacity-slider-drag")
-          .attr("y",opacity_y)
+          .attr("y",opacity_y);
         d3.selectAll("#opacity-background-box")
-          .attr("y",opacity_y)
+          .attr("y",opacity_y);
         d3.selectAll("#opacity-inner-box")
-          .attr("y",opacity_y+5)
+          .attr("y",opacity_y+5);
       }
 
       function dragended(d) {
