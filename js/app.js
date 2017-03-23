@@ -18,7 +18,7 @@
 
   var margin = { top: 0.10, right: 0.10, bottom: 0.10, left: 0.10 }
   , svg_width = 960
-  , svg_height = 600
+  , svg_height = 900
   , map_size = {"width": svg_width * 0.5, "height":svg_height * 0.5}
   , startYear = "1980"
   , consumption_extent = {"THM":[118,2000],"KWH":[5152,15454], "THERMS_JOULES":[118,1300]};
@@ -63,8 +63,11 @@
       //.style("background-color","#ebf4f9")
       //.style("background-color",d3.rgb(158,202,225,0.10).toString())
       //.style("background-color",d3.rgb(0,0,0,0.10).toString())
-      .style("background-color",d3.rgb(253,208,162,0.40).toString())
+      //.style("background-color",d3.rgb(253,208,162,0.40).toString())
+      //.style("background-color",d3.rgb(109, 110, 113))
+      .style("background-color",d3.rgb(43, 48, 51))
       //.style("background-color",d3.hsl(56,0.53,0.75))
+
 
     // create non-svg elements
     var input = NewInput();
@@ -105,6 +108,15 @@
     var svg = d3.select("#viz-container")
         .attr("height",svg_height)
         .attr("width",svg_width)
+
+    // add styling instance
+    var style = Styling();
+    // insert style
+    svg.selectAll("#"+style.id())
+      .data(map_data)
+     .enter().append("g")
+      .attr("id",style.id())
+      .call(style);
 
     // create an instance of YearSlider
     var ySlider = YearSlider();

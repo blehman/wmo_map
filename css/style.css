@@ -38,9 +38,9 @@ input#zip{
   border: 1px dotted #ccc;
   background: white;
   font-family: monospace;
-  padding: 5px 0px;
+  padding: 0px 0px;
   font-size: 11px;
-  margin: 135px 0px 0px 800px;
+  margin: 142px 0px 0px 363px;
   color: rgba(0,0,0,1);  /* change [input cursor color] */
   text-shadow: rgba(0,0,0,0.5); /* change [input font] */
   /*opacity:0.7;*/
@@ -138,7 +138,7 @@ text.toggles.inactive-toggle {
 
 #slider_bug{
   fill: rgba(0,0,0,0.50);
-  stroke-width: 2px;
+  stroke-width: 3px;
   stroke: black;
   stroke-opacity:0.50;
   opacity:0.50;
@@ -164,16 +164,15 @@ text.toggles.inactive-toggle {
   opacity:0.50;
   rx: 5px;
   cursor:pointer;
-
 }
 
 #chart-title {
   font-family: monospace;
-  font-size: 18px;
-  fill: rgba(0,0,0,0.5);
-  text-align: center;
+  font-size: 40px;
+  fill: rgb(255, 255, 255);
+  text-align: left;
   position: absolute;
-  text-anchor: middle;
+  text-anchor: start;
 }
 
 .slider.text {
@@ -225,9 +224,21 @@ text.toggles.inactive-toggle {
 
 .heading{
   font-family: monospace;
-  font-size: 11px;
-  fill: rgba(0,0,0,0.5);
+  font-size: 20px;
+  fill: rgb(255, 255, 255);
   text-align: left;
   position: absolute;
-  text-anchor: middle;
+  text-anchor: start;
 }
+
+.tick text {
+  fill:rgb(255, 255, 255);
+  font-size: 18px
+}
+.tick line {
+  stroke:rgb(255, 255, 255);
+}
+#xAxis path {
+  stroke:rgb(255, 255, 255);
+}
+

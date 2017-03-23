@@ -12,7 +12,9 @@ function NewInput(){
         .attr("type","text")
         .attr("placeholder","Type Zipcode")
         .attr("maxlength",5)
-        .attr("size",23)
+        .attr("size",10)
+        .style("width","133px")
+        .style("height","18px")
         .attr("autocomplete","off")
         .on("keyup",color_map)
         .on("change",color_map)
@@ -21,8 +23,32 @@ function NewInput(){
 
      var input_container = d3.select("#viz-container")
         .append("g")
-          .attr("transform","translate(800,123)")
+          .attr("transform","translate(360,126)")
           .classed("input-text",true);
+
+      var background_rect = input_container.append("rect")
+          .classed("toggles background-rect",true)
+          .attr("width",140)
+          .attr("height","24px")
+          .attr("x",0.5)
+          .attr("y",14.3);
+
+      var track_rect = input_container.append("rect")
+          .classed("toggles track-rect",true)
+          .attr("width",136)
+          .attr("height","20px")
+          .attr("transform","translate(2,1.8)")
+          .attr("x",0.5)
+          .attr("y",14.3);
+/*(
+     var tr_rect = input_container.append("rect")
+          .classed("toggles track-rect",true)
+          .attr("width","140px")
+          .attr("height","24px")
+          .attr("x",-1)
+          .attr("y",15)
+          ;
+*/
      var input_heading = input_container
          .append("text")
           .attr("id","weather-region")

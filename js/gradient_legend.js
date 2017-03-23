@@ -20,7 +20,7 @@ function GradientLegend(){
       var wmoVintage2smartDefaults = data["wmoVintage2smartDefaults"]
 
       var legend = d3.select(this)
-          .attr("transform","translate(85,550)");
+          .attr("transform","translate(85,240)");
 
       // create some definitions
       var defs = legend.append("defs");
@@ -33,6 +33,8 @@ function GradientLegend(){
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
         .attr("orient", "auto")
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("stroke",d3.rgb(255, 255, 255))
        .append("path")
         .attr("d", "M0,-5L10,0L0,5");
         // create arrow
@@ -47,9 +49,10 @@ function GradientLegend(){
         .style("opacity",0);
       // add units
       legend.append("text")
-        .attr("x",485)
+        .attr("x",500)
         .attr("y",17)
         .attr("id","legend_units")
+        .style("stroke",d3.rgb(255, 255, 255))
         .text("(kWh)");
 
       var xAxis = legend.append("g")

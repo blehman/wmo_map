@@ -23,7 +23,6 @@ function NewMap(){
     ,units;
   function chart(selection) {
     selection.each(function(map_data) {
-      // updatable vars
       // set var
       var us = map_data["us"]
         , usaf = map_data["usaf"]
@@ -48,7 +47,7 @@ function NewMap(){
       })
       // create container for map elements
       var viz_g = d3.select("#"+id)
-          .attr("transform","translate(100,200)");
+          .attr("transform","translate(100,220)");
       // BUILD DEFS FOR CLIPING
 
       //var tVoronoi = geoVoronoi(wmo, geoDelaunay(wmo)).geometries;
@@ -156,6 +155,13 @@ function NewMap(){
 
       dispatch_updateVoronoiColor.on("updateVoronoiColor", updateVoronoiColor)
 
+      viz_g.append("g")
+        .attr("id","map-text")
+        .append("text")
+        .classed("heading",true)
+        .attr("x",-12)
+        .attr("y",5)
+        .text("Hover Map for Results")
     //end selection
     })
   // end chart

@@ -6,7 +6,7 @@ function Homes(){
   var height = 10
     , width = 500
     , lineWidth = 100
-    , multiplier=48.2
+    , multiplier=54.5
     , bar_height = multiplier *0.80;
 
   var posX = 85
@@ -34,10 +34,10 @@ function Homes(){
       var smartDefaultBars_yAxis = d3.scaleLinear()
           .domain([0,220])
           .range([1,bar_height])
-      console.log(vintage2defaultCounts)
+      //console.log(vintage2defaultCounts)
       // create container for this section
       var homes = d3.select("#"+id)
-          .attr("transform","translate(720,165)");
+          .attr("transform","translate(720,270)");
 
       var opacity_slider = homes.append("g")
           .attr("transform","translate(-70,"+multiplier+")")
@@ -51,6 +51,7 @@ function Homes(){
       slider_line_points = [{"x":0,"y":0},{"x":0,"y":max_y}]
 
       // insert curves img
+      /*
       var png_width = 50;
       opacity_slider.insert("image",":first-child")
           .attr("id","curves")
@@ -67,7 +68,7 @@ function Homes(){
           .attr("y",-multiplier*0.43)
           .attr("opacity",1)
           .attr("width",png_width*0.80)
-
+      */
       var os_line = opacity_slider
           .selectAll(".opacity-slider-line")
           .data([slider_line_points])
@@ -82,7 +83,7 @@ function Homes(){
       var os_curve_scale = d3.scalePow()
           .exponent(4)
           .domain([0,max_y-box_side])
-          .range([0.01,1]);
+          .range([0.004,1]);
       var os_bar_scale = d3.scaleLinear()
           .domain([0,max_y-box_side])
           .range([1,0.1]);
@@ -188,6 +189,12 @@ function Homes(){
           .text("Regional Efficiency Profile");
 */
       // create scales for each smart default
+      //
+
+
+
+//DECIDE WHERE THIS GOES
+/*
       var legendScale = d3.scaleOrdinal()
           .domain(["less","more"])
           .range([0,lineWidth]);
@@ -204,9 +211,9 @@ function Homes(){
          //.attr("y",1)
           //.attr("fill","black")
           .text("Efficiency");
-
       var smartDefaultLegendAxis = smartDefaultLegend
           .call(d3.axisBottom(legendScale).ticks(1))
+*/
 
       var smartDefaultScales = {};
 
@@ -227,6 +234,16 @@ function Homes(){
         , "Efficient Size"
         ];
 
+      d3.selectAll(".btab").on("click",function(){
+        console.log("CLICK B")
+        var aTab = d3.select(".atab").parentNode;
+        console.log(this.parentNode)
+      })
+
+      d3.selectAll(".atab").on("click",function(){
+        console.log("CLICK A")
+      })
+
       smartDefaultNames.forEach(function(d,i){
 /*
         var s1 = d3.scaleOrdinal()
@@ -237,7 +254,7 @@ function Homes(){
           .domain(d3.extent(s1.range()))
           .range([0,lineWidth]);
 */
-        console.log(smart_default_domains[d])
+        //console.log(smart_default_domains[d])
         var band = d3.scaleBand()
           .domain(smart_default_domains[d])
           .range([0,lineWidth])
@@ -261,7 +278,7 @@ function Homes(){
           gAxis.call(d3.axisBottom(gScale).ticks(3))
         });
       // remove all the axes ticks & labels
-      d3.selectAll(".pointPlots .tick").style("opacity",0)
+      d3.selectAll(".pointPlots .tick").remove()
       // add text to axes
       homes.selectAll(".pointPlotLabels")
         .data(smartDefaultLabels)
@@ -300,7 +317,6 @@ function Homes(){
               //.curve(d3.curveBundle.beta(1));
               //.curve(d3.curveCatmullRom.alpha(1));
           // Draw line
-          console.log(sd)
           homeLines.selectAll(".sd_lines_"+wmo+"_"+year)
             .data([sd])
             .enter().append("path")
@@ -339,7 +355,8 @@ function Homes(){
             .attr("width",d => smartDefaultScales[default_name]["band"].bandwidth())
             .attr("height",d => smartDefaultBars_yAxis(d.count))
             .attr("fill","gray")
-            .attr("stroke","gray")
+            .attr("stroke","white")
+            .attr("stroke-width","0.25px")
             .attr("opacity",os_bar_scale(opacity_y));
         })
         //vintage2defaultCounts[year]

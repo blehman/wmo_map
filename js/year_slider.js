@@ -3,7 +3,7 @@ function YearSlider(){
   var id = "year-slider";
 
   var height = 10
-    , width = 500
+    , width = 850
 
   var rectWidth = 30
     , rectHeight = 25;
@@ -15,7 +15,8 @@ function YearSlider(){
   var consumption_extent
     , choroplethScale;
   var filterYear;
-  var title = "Year-End Energy Consumption & Feature Efficiency Ratings for a YEAR's Home | by Weather Region".split("|");
+  //var title = "Year-End Energy Consumption & Feature Efficiency Ratings for a YEAR's Home | by Weather Region".split("|");
+  var title = "Consumption & Efficiency: YEAR's";
 
   var change;
   var previous_year = filterYear;
@@ -23,12 +24,12 @@ function YearSlider(){
   function chart(selection) {
     selection.each(function(map_data) {
       var slider = d3.select(this)
-          .attr("transform","translate(261,143)");
+          .attr("transform","translate(85,650)");
       var dates = years.map(d => parseDate(d));
       var date_range = d3.extent(dates);
       // create axis
       var xScale = d3.scaleTime()
-          .domain([parseDate("1936"),parseDate("2016")])
+          .domain([parseDate("1936"),parseDate("2004")])
           .range([0,width]);
 
       var ticks = xScale.ticks(5);
@@ -52,9 +53,9 @@ function YearSlider(){
         .attr("orient", "auto")
        .append("path")
         .attr("d", "M0,-5L10,0L0,5")
-        .attr("fill","black")
         .attr("stroke-width","2px")
-        .attr("stroke","black");
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("stroke",d3.rgb(255, 255, 255))
         // create right arrow
       slider.append("line")// attach a line
         .attr("id","arrow_right")
@@ -78,9 +79,9 @@ function YearSlider(){
        .append("path")
         .attr("d", "M0,-5L10,0L0,5")
         .attr("fill","black")
-        .attr("stroke-width","2px")
-        .attr("stroke","black");
-        // create arrow
+        .attr("stroke","black")
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("stroke",d3.rgb(255, 255, 255))       // create arrow
       slider.append("line")// attach a line
         .attr("id","arrow_left")
         .style("opacity",1)
@@ -105,8 +106,11 @@ function YearSlider(){
               .on("drag", dragged)
               .on("end", dragended))
       // create small inner circle.
-      slider.append("circle")
+      slider.insert("circle",":first-child")
           .attr("id","slider_highlight")
+          .attr("fill",d3.rgb(255, 255, 255))
+          .attr("stroke","black")
+          .attr("stroke-width",1)
           .attr("r",5)
           .attr("cx",xStart+15)
           .attr("cy",-11);
@@ -135,23 +139,34 @@ function YearSlider(){
       // create main title
       slider.append("text")
           .attr("id","chart-title")
-          .attr("x",300)
-          .attr("y",-100)
-          .text(title[0].replace("YEAR",filterYear));
+          .attr("x",0)
+          .attr("y",-580)
+          //.text(title);
+          .text(title.replace("YEAR",filterYear));
+/*
       // create sub title
       slider.append("text")
           .attr("id","chart-title")
           .classed("slider text",true)
-          .attr("x",300)
-          .attr("y",-55)
+          .attr("x",440)
+          .attr("y",-460)
           .text(title[1]);
+*/
+      slider.append("text")
+          .attr("id","slider-heading")
+          .classed("heading",true)
+          .attr("x",0)
+          .attr("y",-35)
+          .text("Slide Vintage");
       // label slider
+/*
       slider.append("text")
           .attr("id","ball-label")
           .classed("slider text",true)
           .attr("x",xScale(parseDate(filterYear))+1)
           .attr("y",-23)
           .text("Choose Vintage");
+*/
       function dragstarted(d) {
         d3.select("#slider_highlight").classed("active", true);
       }
@@ -181,7 +196,7 @@ function YearSlider(){
         var rounded_year = Math.round(year/10)*10;
         //var rounded_year = (year>2000)? 2000:Math.round(year/10)*10;
         d3.select("#chart-title")
-          .text(title[0].replace("YEAR",rounded_year));
+          .text(title.replace("YEAR",rounded_year));
         if (previous_year != rounded_year){
           change.call("year_change",this,rounded_year)
           previous_year = rounded_year;

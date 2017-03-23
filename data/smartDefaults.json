@@ -15,8 +15,6 @@
   "1.25",
   "1.0",
   "0.75",
-  "0.7",
-  "0.6",
   "0.5",
   "0.4",
   "0.35",
@@ -37,7 +35,6 @@
  "setup-home-sqft": [
    "5000"
    , "3000"
-   ,  "2278"
    , "2000"
    , "1000"],
  "wallConstructionName": [
@@ -52,10 +49,8 @@
  "windowConstructionName": [
   "BeOpt_Window_ClearSingleMetal",
   "BeOpt_Window_ClearSingleNonMetal",
-  "L200EX_Window",
   "BeOpt_Window_ClearDoubleMetalAir",
   "BeOpt_Window_ClearDoubleNonMetalAir",
-  "BeOpt_Window_LowE_Double",
-  "L250EX_Window"
+  "BeOpt_Window_LowE_Double"
  ]
 }

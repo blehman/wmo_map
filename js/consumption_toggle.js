@@ -25,7 +25,7 @@ function ConsumptionToggle(){
       var viz_g = d3.select("#viz-container")
           .append("g")
           .classed(container_id,true)
-          .attr("transform","translate(85,135)");
+          .attr("transform","translate(85,140)");
 
       var fuel_type = viz_g.append("text")
           .attr("id","fuel-type")
