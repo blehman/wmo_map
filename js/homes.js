@@ -129,7 +129,8 @@ function Homes(){
        .append("path")
         .attr("d", "M0,-5L10,0L0,5")
         .style("fill",d3.rgb(255, 255, 255))
-        .style("stroke",d3.rgb(255, 255, 255))       // create arrow
+        .style("stroke",d3.rgb(255, 255, 255))
+      // create arrow
       opacity_slider.append("line")// attach a line
         .attr("id","oslider_arrow_left")
         .style("opacity",1)
@@ -139,6 +140,36 @@ function Homes(){
         .attr("y2", opacity_y+3.1+box_side)
         .attr("marker-end","url(#oslider_arrow_left)");
 
+      //slider text
+      opacity_slider.append("text")
+        .attr("id","oslider_main_label")
+        .classed("smartDefaultText oslider-labels",true)
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("text-anchor","end")
+        .attr("x",-box_side/2-2)
+        .attr("y",opacity_y+box_side/2+2)
+        .style("opacity",0)
+        .text("opacity");
+      // bars
+      opacity_slider.append("text")
+        .attr("id","oslider_bar_label")
+        .classed("smartDefaultText oslider-labels",true)
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("text-anchor","middle")
+        .attr("x",0)
+        .attr("y",-10)
+        .attr("opacity",0)
+        .text("bars: LEVEL%".replace("LEVEL",Math.round(os_bar_scale(opacity_y)*100)));
+      // curves
+      opacity_slider.append("text")
+        .attr("id","oslider_curve_label")
+        .classed("smartDefaultText oslider-labels",true)
+        .style("fill",d3.rgb(255, 255, 255))
+        .style("text-anchor","middle")
+        .attr("x",0)
+        .attr("y",max_y+box_side/2+2)
+        .attr("opacity",0)
+        .text("curves: LEVEL%".replace("LEVEL",Math.round(os_curve_scale(opacity_y)*100)));
       // build dragger
       d3.selectAll(".smartDefaultBars")
           .style("opacity",os_bar_scale(opacity_y))
@@ -191,8 +222,8 @@ function Homes(){
           .attr("class","slider-box")
           .style("fill",d3.rgb(255, 255, 255))
           .style("stroke","black")
-          .style("stroke-width","0.25px")
-          .style("rx","1px")
+          .style("stroke-width","1px")
+          .style("rx","2px")
           .style("opacity",1.0)
           .attr("width",box_side*0.40)
           .attr("height",box_side*0.40)
@@ -217,8 +248,12 @@ function Homes(){
             .on("start",dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
+
       function dragstarted(d) {
         d3.select("#opacity-inner-box").style("opacity",0.50);
+        d3.select(".oslider-labels").style("opacity",1);
+        d3.select("#oslider_bar_label").style("opacity",1);
+        d3.select("#oslider_curve_label").style("opacity",1);
       }
 
       function dragged(d) {
@@ -234,6 +269,9 @@ function Homes(){
         d3.selectAll(".smartDefaultBars")
           .style("opacity",os_bar_scale(opacity_y))
 
+        d3.selectAll("#oslider_main_label")
+          .attr("y",opacity_y+box_side/2+2)
+
         d3.selectAll("#oslider_arrow_right")
           .attr("y1",opacity_y-3)
           .attr("y2",opacity_y-3.1);
@@ -248,11 +286,19 @@ function Homes(){
           .attr("y",opacity_y+5);
         d3.selectAll("#opacity-small-inner-box")
           .attr("y",opacity_y+7);
+        d3.selectAll("#oslider_bar_label")
+          .text("bars: LEVEL%".replace("LEVEL",Math.round(os_bar_scale(opacity_y)*100)));
+        d3.selectAll("#oslider_curve_label")
+          .text("curves: LEVEL%".replace("LEVEL",Math.round(os_curve_scale(opacity_y)*100)));
+
       }
 
       function dragended(d) {
         //d3.select(this).style("fill", d3.rgb(0,0,0,0.50));
+        d3.select(".oslider-labels").style("opacity",0);
         d3.select("#opacity-inner-box").style("opacity",0);
+        d3.select("#oslider_bar_label").style("opacity",0);
+        d3.select("#oslider_curve_label").style("opacity",0);
       }
 /*
       // opacity slider text
