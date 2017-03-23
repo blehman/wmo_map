@@ -199,13 +199,12 @@ text.toggles.inactive-toggle {
   opacity:0.50;
 }
 .smartDefaultText{
-  stroke: black;
+  /*stroke: rgb(255, 255, 255);*/
   stroke-width:0.25px;
   font-family: monospace;
   font-size: 11px;
-  /*fill: black;*/
+  fill: rgb(255, 255, 255)
   /*opacity:0.50;*/
-  opacity:0.6;
   text-align: center;
   position: absolute;
 }
@@ -241,4 +240,9 @@ text.toggles.inactive-toggle {
 #xAxis path {
   stroke:rgb(255, 255, 255);
 }
+
+#year-slider path {
+  stroke:rgb(255, 255, 255);
+}
+
 
