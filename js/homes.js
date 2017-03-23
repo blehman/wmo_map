@@ -188,6 +188,21 @@ function Homes(){
             .on("drag", dragged)
             .on("end", dragended));
 
+      var os_small_inner_box = opacity_slider
+          .append("rect")
+          //.attr("id","opacity-slider-drag")
+          .attr("id","opacity-small-inner-box")
+          .attr("class","slider-box")
+          .style("fill",d3.rgb(255, 255, 255))
+          .style("stroke","black")
+          .style("stroke-width","0.25px")
+          .style("rx","1px")
+          .style("opacity",1.0)
+          .attr("width",box_side*0.40)
+          .attr("height",box_side*0.40)
+          .attr("x",(-box_side/2)*0.40)
+          .attr("y",opacity_y+7)
+          .style("cursor","pointer");
       function dragstarted(d) {
         d3.select("#opacity-inner-box").style("opacity",0.50);
       }
@@ -217,6 +232,8 @@ function Homes(){
           .attr("y",opacity_y);
         d3.selectAll("#opacity-inner-box")
           .attr("y",opacity_y+5);
+        d3.selectAll("#opacity-small-inner-box")
+          .attr("y",opacity_y+7);
       }
 
       function dragended(d) {
