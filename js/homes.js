@@ -318,32 +318,44 @@ function Homes(){
           .style("fill",d3.rgb(0,0,0,0.50))
           .text("Regional Efficiency Profile");
 */
-      // create scales for each smart default
-      //
-
-
-
-//DECIDE WHERE THIS GOES
-/*
+      // Smart Default Legend
       var legendScale = d3.scaleOrdinal()
           .domain(["less","more"])
           .range([0,lineWidth]);
 
       var smartDefaultLegend = homes.append("g")
+          .attr("id","smart-default-legend")
           .classed("smartDefaultText",true)
-          .attr("transform","translate(0,"+multiplier*8+")");
+          .attr("transform","translate(0,"+-30+")");
 
       var smartDefaulLegendText = smartDefaultLegend
           .append("text")
-          .attr("transform","translate(50,"+-5+")")
+          .attr("transform","translate(-5,"+-15+")")
           .classed("heading",true)
          //.attr("x",20)
          //.attr("y",1)
           //.attr("fill","black")
+          .style("fill",d3.rgb(255, 255, 255))
           .text("Efficiency");
+
+      var legendRectLarge = smartDefaultLegend.append("rect")
+          .attr("id","smart-default-legend-background")
+          .classed("background-rect",true)
+          .attr("width",lineWidth)
+          .attr("y",45)
+          .attr("height",317)
+          .attr("fill",d3.rgb(255, 255, 255))
+          .attr("opacity",0.05)
+
+      var legendRectSmall = smartDefaultLegend.append("rect")
+          .attr("id","smart-default-legend-background")
+          .classed("background-rect",true)
+          .attr("width",lineWidth)
+          .attr("height",10)
+          .attr("fill",d3.rgb(255, 255, 255))
+          .attr("opacity",0.05)
       var smartDefaultLegendAxis = smartDefaultLegend
           .call(d3.axisBottom(legendScale).ticks(1))
-*/
 
       var smartDefaultScales = {};
 
