@@ -182,11 +182,7 @@ function Homes(){
           .attr("width",box_side)
           .attr("height",box_side)
           .attr("x",-box_side/2)
-          .attr("y",opacity_y)
-          .call(d3.drag()
-            .on("start",dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
+          .attr("y",opacity_y);
 
       var os_small_inner_box = opacity_slider
           .append("rect")
@@ -203,6 +199,24 @@ function Homes(){
           .attr("x",(-box_side/2)*0.40)
           .attr("y",opacity_y+7)
           .style("cursor","pointer");
+
+      var os_invisible_box = opacity_slider
+          .append("rect")
+          .attr("id","invisible-slider-box")
+          .attr("class","invisible-slider-box")
+          //.style("fill","red")
+          .attr("width",box_side)
+          .attr("height",box_side)
+          .attr("x",-box_side/2)
+          .attr("y",opacity_y)
+          .style("fill","red")
+          .style("cursor","pointer")
+          //.style("fill",d3.rgb(255, 255, 255))
+          .attr("opacity",0.00)
+          .call(d3.drag()
+            .on("start",dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
       function dragstarted(d) {
         d3.select("#opacity-inner-box").style("opacity",0.50);
       }
