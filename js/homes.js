@@ -37,7 +37,7 @@ function Homes(){
       //console.log(vintage2defaultCounts)
       // create container for this section
       var homes = d3.select("#"+id)
-          .attr("transform","translate(700,270)");
+          .attr("transform","translate(680,270)");
 
       var opacity_slider = homes.append("g")
           .attr("transform","translate(-70,"+multiplier+")")
@@ -400,8 +400,8 @@ function Homes(){
         , "Window R-value"
         , "Wall R-value"
         , "Floor R-value"
-        , "Leakiness Rating"
-        , "Efficient Size"
+        , "Leakiness Score"
+        , "Size Efficiency"
         ];
 
       var hover_text_boxes = homes.append("g")
