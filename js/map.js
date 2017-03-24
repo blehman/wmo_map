@@ -161,7 +161,7 @@ function NewMap(){
         .classed("heading",true)
         .attr("x",-12)
         .attr("y",5)
-        .text("Hover Map for Results")
+        .text("Hover Map for Consumption Results")
     //end selection
     })
   // end chart

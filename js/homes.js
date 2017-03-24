@@ -367,6 +367,34 @@ function Homes(){
         , "infiltration"
         , "setup-home-sqft"];
 
+      var smartDefaultTxt = {
+        "roofConstructionName":
+          ["* R-value is the insulation rating"
+            , "* X-axis is roof efficiency (R13-R40)"
+            , "* Bar heights are counts of regions"]
+        , "windowConstructionName":
+          ["* R-value is the insulation rating"
+            , "* X-axis is glass efficiency (R7-R19)"
+            , "* Bar heights are counts of regions"]
+        , "wallConstructionName":
+          ["* R-value is the insulation rating"
+            , "* X-axis is wall efficiency (R7-R19)"
+            , "* Bar heights are counts of regions"]
+        , "floorConstructionName":
+          ["* R-value is the insulation rating"
+            , "* X-axis is floor efficiency (R13-R19)"
+            , "* Bar heights are counts of regions"]
+        , "infiltration":
+          ["* Flow rate of outside air into home"
+            , "* X-axis is home efficiency (1.25-0.0)"
+            , "* Bar heights are counts of regions"]
+        , "setup-home-sqft":
+          ["* Larger homes are less efficient"
+            , "* X-axis is home sqft (5,000-1,000)"
+            , "* Bar heights are counts of regions"]
+      };
+
+
       var smartDefaultLabels = [
         "Roof R-value"
         , "Window R-value"
@@ -376,15 +404,20 @@ function Homes(){
         , "Efficient Size"
         ];
 
-      d3.selectAll(".btab").on("click",function(){
-        console.log("CLICK B")
-        var aTab = d3.select(".atab").parentNode;
-        console.log(this.parentNode)
-      })
+      var hover_text_boxes = homes.append("g")
+          .attr("id","hover-boxes",true)
+          .attr("transform","translate(-45,-160)");
 
-      d3.selectAll(".atab").on("click",function(){
-        console.log("CLICK A")
-      })
+      var txt_box = hover_text_boxes
+          .append("rect")
+          .classed("hover-rect",true)
+          .attr("width",245)
+          .attr("height",50)
+          .style("opacity",0.0)
+          .style("rx","5px")
+          .style("stroke",d3.rgb(255, 255, 255))
+          .style("stroke-width",0.25)
+          .style("fill",d3.rgb(255,69,0));
 
       smartDefaultNames.forEach(function(d,i){
 /*
@@ -403,6 +436,18 @@ function Homes(){
 
         //smartDefaultScales[d] = {"ordinal":s1,"linear":s2,"band":band};
         smartDefaultScales[d] = {"band":band};
+
+        //create texts for hovering on the value
+        hover_text_boxes.selectAll("#hover-text-"+d)
+          .data(smartDefaultTxt[d])
+         .enter().append("text")
+          .attr("class","hover-text-"+d)
+          .text(d => d)
+          .classed("hover-text",true)
+          .attr("x",0)
+          .attr("y",function(d,i) {return 10+15*i})
+          .style("opacity",0)
+          .style("fill",d3.rgb(255, 255, 255))
 
       })
       // add axes
@@ -478,6 +523,10 @@ function Homes(){
         var bars = homes.append("g")
           .classed("bars",true);
 
+        var hoverRects = homes.append("g")
+          .attr("id","hover-rects");
+
+
         smartDefaultNames.map(function(default_name,i){
           var data = vintage2defaultCounts["year"+filterYear][default_name];
           // make rects
@@ -501,6 +550,29 @@ function Homes(){
             .attr("stroke","white")
             .attr("stroke-width","0.25px")
             .attr("opacity",os_bar_scale(opacity_y));
+
+          // HOVER action;
+          hoverRects.append("rect")
+            .classed("face-hover-rect "+default_name,true)
+            .attr("x",0)
+            .attr("y",multiplier*i)
+            .attr("width",215)
+            .attr("height",multiplier)
+            .style("fill",d3.rgb(255, 255, 255))
+            .style("opacity",0.0)
+            .style("cursor","pointer")
+            .on("mouseover",function(){
+                d3.selectAll(".hover-text-"+default_name)
+                  .style("opacity",1);
+                d3.selectAll(".hover-rect")
+                  .style("opacity",0.10);
+            })
+            .on("mouseout",function(){
+                d3.selectAll(".hover-text-"+default_name)
+                  .style("opacity",0);
+                d3.selectAll(".hover-rect")
+                  .style("opacity",0);
+            })
         })
         //vintage2defaultCounts[year]
       // end updateSmartDefaultLines

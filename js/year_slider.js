@@ -29,7 +29,7 @@ function YearSlider(){
       var date_range = d3.extent(dates);
       // create axis
       var xScale = d3.scaleTime()
-          .domain([parseDate("1936"),parseDate("2004")])
+          .domain([parseDate("1946"),parseDate("2004")])
           .range([0,width]);
 
       var ticks = xScale.ticks(5);
