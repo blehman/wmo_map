@@ -3,7 +3,7 @@ function YearSlider(){
   var id = "year-slider";
 
   var height = 10
-    , width = 660
+    , width = 770
 
   var rectWidth = 30
     , rectHeight = 25;
