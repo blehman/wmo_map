@@ -87,13 +87,14 @@ function Styling(){
           .append("path")
           .attr("d","M650,100L650,650")
           .attr("stroke","red");
-*/
+
       var margin_line = styling
           .append("g")
           .classed("margin-line",true)
           .append("path")
           .attr("d","M795,0L795,700")
           .attr("stroke","red");
+*/
       //rectangle
       var title_rect = styling.append("g")
           .attr("id","title-rect")
