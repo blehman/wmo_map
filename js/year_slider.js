@@ -16,7 +16,8 @@ function YearSlider(){
     , choroplethScale;
   var filterYear;
   //var title = "Year-End Energy Consumption & Feature Efficiency Ratings for a YEAR's Home | by Weather Region".split("|");
-  var title = "Consumption & Efficiency: YEAR's";
+  var title = "50 Years of Consumption & Efficiency"
+  var slider_heading_title = "Slide Vintage: YEAR";
 
   var change;
   var previous_year = filterYear;
@@ -141,8 +142,8 @@ function YearSlider(){
           .attr("id","chart-title")
           .attr("x",0)
           .attr("y",-580)
-          //.text(title);
-          .text(title.replace("YEAR",filterYear));
+          .text(title);
+          //.text(title.replace("YEAR",filterYear));
 /*
       // create sub title
       slider.append("text")
@@ -157,7 +158,7 @@ function YearSlider(){
           .classed("heading",true)
           .attr("x",0)
           .attr("y",-35)
-          .text("Slide Vintage");
+          .text(slider_heading_title.replace("YEAR",filterYear));
       // label slider
 /*
       slider.append("text")
@@ -195,8 +196,8 @@ function YearSlider(){
         var year = xScale.invert(x_value).getFullYear();
         var rounded_year = Math.round(year/10)*10;
         //var rounded_year = (year>2000)? 2000:Math.round(year/10)*10;
-        d3.select("#chart-title")
-          .text(title.replace("YEAR",rounded_year));
+        d3.select("#slider-heading")
+          .text(slider_heading_title.replace("YEAR",rounded_year));
         if (previous_year != rounded_year){
           change.call("year_change",this,rounded_year)
           previous_year = rounded_year;
