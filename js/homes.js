@@ -18,7 +18,7 @@ function Homes(){
   , dispatch_updateSmartDefaultLines = d3.dispatch("updateSmartDefaultLines")
 
   var opacity_y
-  , curve_opacity;
+  , curve_opacity
 
   var choroplethScale;
 
@@ -37,7 +37,7 @@ function Homes(){
       //console.log(vintage2defaultCounts)
       // create container for this section
       var homes = d3.select("#"+id)
-          .attr("transform","translate(720,270)");
+          .attr("transform","translate(700,270)");
 
       var opacity_slider = homes.append("g")
           .attr("transform","translate(-70,"+multiplier+")")
@@ -145,8 +145,8 @@ function Homes(){
         .attr("id","oslider_main_label")
         .classed("smartDefaultText oslider-labels",true)
         .style("fill",d3.rgb(255, 255, 255))
-        .style("text-anchor","end")
-        .attr("x",-box_side/2-2)
+        .style("text-anchor","start")
+        .attr("x",box_side/2 + 2)
         .attr("y",opacity_y+box_side/2+2)
         .style("opacity",0)
         .text("opacity");
