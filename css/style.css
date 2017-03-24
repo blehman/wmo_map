@@ -26,6 +26,7 @@ path {
   stroke-width: 0.0px;
   fill-opacity: 0.0;
   stroke-opacity: 0.9;
+  cursor: pointer;
 }
 /*
 .voronoi:hover .voroni{
@@ -260,6 +261,14 @@ text.toggles.inactive-toggle {
 }
 text{
   font-family: monospace, Helvetica, Arial, Sans-Serif;
+  cursor: default;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 
