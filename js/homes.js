@@ -412,7 +412,7 @@ function Homes(){
           .append("rect")
           .classed("hover-rect",true)
           .attr("width",252)
-          .attr("height",50)
+          .attr("height",55)
           .style("opacity",0.0)
           .style("rx","5px")
           .style("stroke",d3.rgb(255, 255, 255))
@@ -445,7 +445,7 @@ function Homes(){
           .text(d => d)
           .classed("hover-text",true)
           .attr("x",2)
-          .attr("y",function(d,i) {return 13+15*i})
+          .attr("y",function(d,i) {return 15+15*i})
           .style("opacity",0)
           .style("fill",d3.rgb(255, 255, 255))
 
