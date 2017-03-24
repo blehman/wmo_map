@@ -37,10 +37,10 @@ function Homes(){
       //console.log(vintage2defaultCounts)
       // create container for this section
       var homes = d3.select("#"+id)
-          .attr("transform","translate(680,270)");
+          .attr("transform","translate(580,270)");
 
       var opacity_slider = homes.append("g")
-          .attr("transform","translate(-70,"+multiplier+")")
+          .attr("transform","translate(-35,"+multiplier+")")
           .classed("opacity-slider",true);
 
 
@@ -49,7 +49,7 @@ function Homes(){
           .y(d=> d.y);
 
       var max_y = multiplier*5,
-      slider_line_points = [{"x":0,"y":0},{"x":0,"y":max_y}]
+      slider_line_points = [{"x":0,"y":-40},{"x":0,"y":max_y}]
 
       // insert curves img
       /*
@@ -83,10 +83,10 @@ function Homes(){
 
       var os_curve_scale = d3.scalePow()
           .exponent(4)
-          .domain([0,max_y-box_side])
+          .domain([-35,max_y-box_side])
           .range([0.004,1]);
       var os_bar_scale = d3.scaleLinear()
-          .domain([0,max_y-box_side])
+          .domain([-35,max_y-box_side])
           .range([1,0.1]);
 
       opacity_y = max_y/2;
@@ -145,8 +145,8 @@ function Homes(){
         .attr("id","oslider_main_label")
         .classed("smartDefaultText oslider-labels",true)
         .style("fill",d3.rgb(255, 255, 255))
-        .style("text-anchor","start")
-        .attr("x",box_side/2 + 2)
+        .style("text-anchor","end")
+        .attr("x",-box_side/2 - 2)
         .attr("y",opacity_y+box_side/2+2)
         .style("opacity",0)
         .text("opacity");
@@ -157,7 +157,7 @@ function Homes(){
         .style("fill",d3.rgb(255, 255, 255))
         .style("text-anchor","middle")
         .attr("x",0)
-        .attr("y",-10)
+        .attr("y",-45)
         .attr("opacity",0)
         .text("bars: LEVEL%".replace("LEVEL",Math.round(os_bar_scale(opacity_y)*100)));
       // curves
@@ -257,7 +257,7 @@ function Homes(){
       }
 
       function dragged(d) {
-        opacity_y = d3.max([0, d3.min([d3.event.y,max_y-box_side])]);
+        opacity_y = d3.max([-35, d3.min([d3.event.y,max_y-box_side])]);
         curve_opacity = os_curve_scale(opacity_y)
         //log_y_value = Math.exp(y_value);
         // change value of invisible slider rect
@@ -411,7 +411,7 @@ function Homes(){
       var txt_box = hover_text_boxes
           .append("rect")
           .classed("hover-rect",true)
-          .attr("width",245)
+          .attr("width",252)
           .attr("height",50)
           .style("opacity",0.0)
           .style("rx","5px")
@@ -444,8 +444,8 @@ function Homes(){
           .attr("class","hover-text-"+d)
           .text(d => d)
           .classed("hover-text",true)
-          .attr("x",0)
-          .attr("y",function(d,i) {return 10+15*i})
+          .attr("x",2)
+          .attr("y",function(d,i) {return 13+15*i})
           .style("opacity",0)
           .style("fill",d3.rgb(255, 255, 255))
 

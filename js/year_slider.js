@@ -3,7 +3,7 @@ function YearSlider(){
   var id = "year-slider";
 
   var height = 10
-    , width = 695
+    , width = 660
 
   var rectWidth = 30
     , rectHeight = 25;
@@ -25,7 +25,7 @@ function YearSlider(){
   function chart(selection) {
     selection.each(function(map_data) {
       var slider = d3.select(this)
-          .attr("transform","translate(85,650)");
+          .attr("transform","translate(20,650)");
       var dates = years.map(d => parseDate(d));
       var date_range = d3.extent(dates);
       // create axis
@@ -140,7 +140,7 @@ function YearSlider(){
       // create main title
       slider.append("text")
           .attr("id","chart-title")
-          .attr("x",-30)
+          .attr("x",-10)
           .attr("y",-580)
           .text(title);
           //.text(title.replace("YEAR",filterYear));

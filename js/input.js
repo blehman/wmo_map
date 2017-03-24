@@ -23,7 +23,7 @@ function NewInput(){
 
      var input_container = d3.select("#viz-container")
         .append("g")
-          .attr("transform","translate(360,126)")
+          .attr("transform","translate(275,126)")
           .classed("input-text",true);
 
       var background_rect = input_container.append("rect")

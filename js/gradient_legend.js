@@ -4,7 +4,7 @@ function GradientLegend(){
   var change;
 
   var height = 7
-    , width = 510;
+    , width = 480;
   var stop_opacity = 0.60
 
   var choroplethScale
@@ -20,7 +20,7 @@ function GradientLegend(){
       var wmoVintage2smartDefaults = data["wmoVintage2smartDefaults"]
 
       var legend = d3.select(this)
-          .attr("transform","translate(85,240)");
+          .attr("transform","translate(20,240)");
 
       // create some definitions
       var defs = legend.append("defs");
@@ -49,7 +49,7 @@ function GradientLegend(){
         .style("opacity",0);
       // add units
       legend.append("text")
-        .attr("x",500)
+        .attr("x",470)
         .attr("y",17)
         .attr("id","legend_units")
         .style("stroke",d3.rgb(255, 255, 255))

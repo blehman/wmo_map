@@ -40,7 +40,7 @@ input#zip{
   font-family: monospace;
   padding: 0px 0px;
   font-size: 11px;
-  margin: 142px 0px 0px 363px;
+  margin: 142px 0px 0px 278px;
   color: rgba(0,0,0,1);  /* change [input cursor color] */
   text-shadow: rgba(0,0,0,0.5); /* change [input font] */
   /*opacity:0.7;*/
@@ -168,7 +168,7 @@ text.toggles.inactive-toggle {
 
 #chart-title {
   font-family: monospace;
-  font-size: 38px;
+  font-size: 36px;
   fill: rgb(255, 255, 255);
   text-align: left;
   position: absolute;
