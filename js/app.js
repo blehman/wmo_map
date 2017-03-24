@@ -19,7 +19,7 @@
     .await(runApp);
 
   var margin = { top: 0.10, right: 0.10, bottom: 0.10, left: 0.10 }
-  , svg_width = 960
+  , svg_width = 795
   , svg_height = 700
   , map_size = {"width": 480, "height":450}
   , startYear = "1980"

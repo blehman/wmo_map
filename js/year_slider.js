@@ -140,7 +140,7 @@ function YearSlider(){
       // create main title
       slider.append("text")
           .attr("id","chart-title")
-          .attr("x",-10)
+          .attr("x",0)
           .attr("y",-580)
           .text(title);
           //.text(title.replace("YEAR",filterYear));
