@@ -25,7 +25,7 @@ function YearSlider(){
   function chart(selection) {
     selection.each(function(map_data) {
       var slider = d3.select(this)
-          .attr("transform","translate(20,520)");
+          .attr("transform","translate("+((795/2)-100)+",520)");
       var dates = years.map(d => parseDate(d));
       var date_range = d3.extent(dates);
       // create axis
@@ -156,7 +156,7 @@ function YearSlider(){
       slider.append("text")
           .attr("id","slider-heading")
           .classed("heading",true)
-          .attr("x",50)
+          .attr("x",58)
           .attr("y",-35)
           .text(slider_heading_title.replace("YEAR",filterYear));
       // label slider

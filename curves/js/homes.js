@@ -37,7 +37,7 @@ function Homes(){
       //console.log(vintage2defaultCounts)
       // create container for this section
       var homes = d3.select("#"+id)
-          .attr("transform","translate(110,100)");
+          .attr("transform","translate("+795/2+",100)");
 
       var opacity_slider = homes.append("g")
           .attr("transform","translate(-35,"+multiplier+")")
