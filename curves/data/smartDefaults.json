@@ -1,0 +1,61 @@
+{"floorConstructionName": [
+  "BeOpt_Floor_Crawlspace_Uninsulated",
+  "BeOpt_Floor_BasementUnfinished_Uninsulated",
+  "BeOpt_Floor_Slab_Uninsulated",
+  "BeOpt_Floor_BasementFinished_Uninsulated",
+  "BeOpt_Floor_Crawlspace_R13",
+  "BeOpt_Floor_BasementUnfinished_R13",
+  "BeOpt_Floor_Crawlspace_R19",
+  "BeOpt_Floor_BasementUnfinished_R19",
+  "L200EX_Floor",
+  "BeOpt_Floor_BasementFinished_R10",
+  "BeOpt_Floor_BasementFinished_R15"
+],
+ "infiltration": [
+  "1.25",
+  "1.0",
+  "0.75",
+  "0.7",
+  "0.6",
+  "0.5",
+  "0.4",
+  "0.35",
+  "0.3",
+  "0.25",
+  "0.15"
+ ],
+ "roofConstructionName": [
+  "L200EX_Roof",
+  "BeOpt_Roof_R13",
+  "Attic_and_Other_R_20_Roof",
+  "BeOpt_Roof_R19",
+  "BeOpt_Roof_R30",
+  "Attic_and_Other_R_38_Roof",
+  "BeOpt_Roof_R38",
+  "BeOpt_Roof_R49"
+ ],
+ "setup-home-sqft": [
+   "5000"
+   , "3000"
+   , "2278"
+   , "2000"
+   , "1000"],
+ "wallConstructionName": [
+  "BeOpt_Wall_Uninsulated",
+  "L200EX_Wall",
+  "BeOpt_Wall_R7",
+  "BeOpt_Wall_R11",
+  "BeOpt_Wall_R15",
+  "Composite_2x4_Wood_Stud_R11",
+  "BeOpt_Wall_R19"
+ ],
+ "windowConstructionName": [
+  "BeOpt_Window_ClearSingleMetal",
+  "BeOpt_Window_ClearSingleNonMetal",
+  "L200EX_Window",
+  "BeOpt_Window_ClearDoubleMetalAir",
+  "BeOpt_Window_ClearDoubleNonMetalAir",
+  "BeOpt_Window_LowE_Double",
+  "L250EX_Window"
+ ]
+}
