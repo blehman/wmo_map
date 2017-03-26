@@ -22,7 +22,7 @@
   , svg_width = 795
   , svg_height = 700
   , map_size = {"width": 480, "height":450}
-  , startYear = "1980"
+  , startYear = "1990"
   , consumption_extent = {"THM":[118,2000],"KWH":[5152,15454], "THERMS_JOULES":[118,1300]};
 
   var polygon_fill_opacity = 0.60;

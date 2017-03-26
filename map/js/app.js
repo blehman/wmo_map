@@ -164,9 +164,10 @@
     home.call(iHomes)
 
     // REMOVE UNECESSARY ITEMS
-    d3.selectAll("#"+vMap.id()).remove()
-    d3.selectAll("#"+gLegend.id()).remove()
-    d3.selectAll("#"+input.div_id()).remove()
+    //d3.selectAll("#"+vMap.id()).remove()
+    //d3.selectAll("#"+gLegend.id()).remove()
+    d3.selectAll("#homes").remove()
+    d3.selectAll("#"+input.container_id()).remove()
     d3.selectAll("."+cToggle.container_id()).remove()
     d3.selectAll(".input-text").remove()
     d3.selectAll("#chart-title").remove()

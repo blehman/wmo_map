@@ -3,19 +3,19 @@
   // get data
   d3.queue()
     //.defer(d3.json, "https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/us.json")
-    .defer(d3.json, "data/us.json")
-    .defer(d3.csv,"data/wmo2latlon.csv")
+    .defer(d3.json, "../data/us.json")
+    .defer(d3.csv,"../data/wmo2latlon.csv")
     //.defer(d3.csv,"https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/wmo2latlon.csv")
     //.defer(d3.csv,"https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/postalcode2wmo.csv")
-    .defer(d3.csv,"data/postalcode2wmo.csv")
+    .defer(d3.csv,"../data/postalcode2wmo.csv")
     //.defer(d3.json,"https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/wmoVintage2energy_v7_wy2016.json")
-    .defer(d3.json,"data/wmoVintage2energy_v7_wy2016.json")
+    .defer(d3.json,"../data/wmoVintage2energy_v7_wy2016.json")
     //.defer(d3.json,"https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/wmoVintage2smartDefaults_v7_wy2016.json")
-    .defer(d3.json,"data/wmoVintage2smartDefaults_v7_wy2016.json")
+    .defer(d3.json,"../data/wmoVintage2smartDefaults_v7_wy2016.json")
     //.defer(d3.json,"https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/smartDefaults.json")
-    .defer(d3.json,"data/smartDefaults.json")
+    .defer(d3.json,"../data/smartDefaults.json")
     //.defer(d3.json,"https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/vintage2defaultCounts_v7_wy2016.json")
-    .defer(d3.json,"data/vintage2defaultCounts_v7_wy2016.json")
+    .defer(d3.json,"../data/vintage2defaultCounts_v7_wy2016.json")
     .await(runApp);
 
   var margin = { top: 0.10, right: 0.10, bottom: 0.10, left: 0.10 }
