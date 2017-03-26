@@ -17,7 +17,7 @@ function YearSlider(){
   var filterYear;
   //var title = "Year-End Energy Consumption & Feature Efficiency Ratings for a YEAR's Home | by Weather Region".split("|");
   var title = "50 Years of Consumption & Efficiency"
-  var slider_heading_title = "Slide Vintage: YEAR";
+  var slider_heading_title = "Home Vintage: YEAR";
 
   var change;
   var previous_year = filterYear;
