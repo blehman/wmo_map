@@ -47,7 +47,7 @@ function NewMap(){
       })
       // create container for map elements
       var viz_g = d3.select("#"+id)
-          .attr("transform","translate(180,55)");
+          .attr("transform","translate(170,55)");
       // BUILD DEFS FOR CLIPING
 
       //var tVoronoi = geoVoronoi(wmo, geoDelaunay(wmo)).geometries;
@@ -159,7 +159,7 @@ function NewMap(){
         .attr("id","map-text")
         .append("text")
         .classed("heading",true)
-        .attr("x",42)
+        .attr("x",36)
         .attr("y",5)
         .text("Hover Map for Consumption Results")
     //end selection
