@@ -7,7 +7,7 @@ function NewInput(){
     selection.each(function(data){
       var text_input = d3.select(this)
        .append("input")
-        .attr("autofocus","autofocus")
+        //.attr("autofocus","autofocus")
         .attr("id",input_id)
         .attr("type","text")
         .attr("placeholder","Type Zipcode")
