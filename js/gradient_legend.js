@@ -11,7 +11,7 @@ function GradientLegend(){
     , consumption_extent
     , units = 'KWH'
     , dispatch_updateLegendScale = d3.dispatch("updateLegendScale")
-    , filterYear="1980"
+    , filterYear="1990"
     , curve_opacity;
 
   function chart(selection) {
@@ -110,15 +110,21 @@ function GradientLegend(){
               .classed("show",true)
               .style("opacity",1);
             var key = "("+d.wmo_id.split("_")[2]+", "+filterYear+")";
+            console.log(key)
             var wmo_consumption = wmoVintage2energy[key][units];
+            console.log(wmo_consumption)
             var xValue = x(wmo_consumption);
+            console.log(xValue)
             var smartDefaults = wmoVintage2smartDefaults[key];
+            console.log(smartDefaults)
           //console.log(smartDefaults)
             d3.select("#pointer_line")
               .attr("x1",xValue)
               .attr("x2",xValue)
           // sd lines expand
             var sel = d3.select(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear);
+            console.log(sel)
+            console.log(".sd_lines_"+d.wmo_id.split("_")[2]+"_"+filterYear)
               sel.raise()
               .style("stroke-width",6.0)
               .style("opacity",1.0);
