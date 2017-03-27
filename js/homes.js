@@ -166,7 +166,7 @@ function Homes(){
         .classed("smartDefaultText oslider-labels",true)
         .style("fill",d3.rgb(255, 255, 255))
         .style("text-anchor","middle")
-        .attr("x",0)
+        .attr("x",-6)
         .attr("y",max_y+box_side/2+2)
         .attr("opacity",0)
         .text("curves: LEVEL%".replace("LEVEL",Math.round(os_curve_scale(opacity_y)*100)));
