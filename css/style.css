@@ -271,4 +271,7 @@ text{
                                   supported by Chrome and Opera */
 }
 
+.legend {
+  opacity: 0.8;
+}
 
