@@ -41,7 +41,9 @@ input#zip{
   font-family: monospace;
   padding: 0px 0px;
   font-size: 11px;
-  margin: 142px 0px 0px 278px;
+  left: 39%;
+  top: 36%;
+  /* margin: 142px 0px 0px 278px; */
   color: rgba(0,0,0,1);  /* change [input cursor color] */
   text-shadow: rgba(0,0,0,0.5); /* change [input font] */
   /*opacity:0.7;*/
@@ -274,4 +276,5 @@ text{
 .legend {
   opacity: 0.8;
 }
+
 
