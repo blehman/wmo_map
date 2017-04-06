@@ -1,44 +1,23 @@
 (function() {
   
-  function onResize() {
+  function resizeInput() {
     const dimensions = document.getElementById('unique-new-york').getClientRects();
     const zipInputD3 = d3.select('#zip');
-    const inputHeight = dimensions[0].bottom - dimensions[0].top -1;
-    console.log(dimensions[0].bottom - dimensions[0].top);
+    const inputHeight = dimensions[0].bottom - dimensions[0].top;
+    const inputWidth = dimensions[0].width;
+    const inputLeft = dimensions[0].left;
+    const inputTop = dimensions[0].top;
     
     zipInputD3
-      .style('width', dimensions[0].width + 'px')
-      .style('top', dimensions[0].top + 'px')
-      .style('left', dimensions[0].left + 'px')
+      .style('width', inputWidth + 'px')
+      .style('top', inputTop + 'px')
+      .style('left', inputLeft + 'px')
       .style('height', inputHeight + 'px')
-      // .style('padding', '100px')
-      // .style("width","10vw")
-      // .style("height","2vw")
-    //input id is #zip
-    //
-    // console.log(dimensions[0].width + 50);
   }
-  function onLoad() {
-    const dimensions = document.getElementById('unique-new-york').getClientRects();
-    // const zipInputD3 = d3.select('#zip');
-    // const inputHeight = dimensions[0].bottom - dimensions[0].top -1;
-    console.log(dimensions[0].bottom - dimensions[0].top);
-    
-    // zipInputD3
-    //   .style('width', dimensions[0].width + 'px')
-    //   .style('top', dimensions[0].top + 'px')
-    //   .style('left', dimensions[0].left + 'px')
-    //   .style('height', inputHeight + 'px')
-      // .style('padding', '100px')
-      // .style("width","10vw")
-      // .style("height","2vw")
-    //input id is #zip
-    //
-    // console.log(dimensions[0].width + 50);
-  }
-  d3.select(window).on('resize', onResize);
+
+  d3.select(window).on('resize', resizeInput);
   
-  // setTimeout(d3.select(window).on("load", onLoad), 2000)
+  d3.timeout( resizeInput, 500)
   // get data
   d3.queue()
     //.defer(d3.json, "https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/us.json")
