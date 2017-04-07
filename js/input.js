@@ -13,8 +13,6 @@ function NewInput(){
         .attr("placeholder","Type Zipcode")
         .attr("maxlength",5)
         .attr("size",10)
-        .style("width","133px")
-        .style("height","18px")
         .attr("autocomplete","off")
         .on("keyup",color_map)
         .on("change",color_map)
@@ -28,6 +26,7 @@ function NewInput(){
 
       var background_rect = input_container.append("rect")
           .classed("toggles background-rect",true)
+          .attr('id', 'unique-new-york')
           .attr("width",140)
           .attr("height","24px")
           .attr("x",0.5)

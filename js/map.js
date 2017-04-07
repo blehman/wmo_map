@@ -162,6 +162,40 @@ function NewMap(){
         .attr("x",-12)
         .attr("y",5)
         .text("Hover Map for Consumption Results")
+      
+      var bardefs = viz_g.append("defs");
+      
+      var linearGradient = bardefs.append("linearGradient")
+        .attr("id", "linear-gradient");
+
+      linearGradient
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "0%");
+      
+      //Set the color for the start (0%)
+      linearGradient.append("stop") 
+        .attr("offset", "0%")   
+        .attr("stop-color", "rgb(14, 50, 90)"); 
+      
+      //Set the color for the middle (50%)
+      linearGradient.append("stop") 
+        .attr("offset", "50%")   
+        .attr("stop-color", "#fff"); 
+  
+      //Set the color for the end (100%)
+      linearGradient.append("stop") 
+        .attr("offset", "100%")   
+        .attr("stop-color", "rgb(90, 9, 34)"); 
+
+      viz_g.append("rect")
+        .classed("legend",true)
+        .attr("x",-9)
+        .attr("y",21)
+        .attr("width", 479)
+      	.attr("height", 5)
+      	.style("fill", "url(#linear-gradient)");
     //end selection
     })
   // end chart
