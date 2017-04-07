@@ -13,8 +13,6 @@ function NewInput(){
         .attr("placeholder","Type Zipcode")
         .attr("maxlength",5)
         .attr("size",10)
-        // .style("width","10vw")
-        // .style("height","2vw")
         .attr("autocomplete","off")
         .on("keyup",color_map)
         .on("change",color_map)
