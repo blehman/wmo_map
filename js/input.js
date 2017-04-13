@@ -26,7 +26,7 @@ function NewInput(){
 
       var background_rect = input_container.append("rect")
           .classed("toggles background-rect",true)
-          .attr('id', 'unique-new-york')
+          .attr('id', 'zipcode-input-field')
           .attr("width",140)
           .attr("height","24px")
           .attr("x",0.5)

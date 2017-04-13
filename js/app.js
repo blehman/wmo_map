@@ -1,12 +1,12 @@
 (function() {
   
   function resizeInput() {
-    const dimensions = document.getElementById('unique-new-york').getClientRects();
+    const dimensions = document.getElementById('zipcode-input-field').getBoundingClientRect();
     const zipInputD3 = d3.select('#zip');
-    const inputHeight = dimensions[0].bottom - dimensions[0].top;
-    const inputWidth = dimensions[0].width;
-    const inputLeft = dimensions[0].left;
-    const inputTop = dimensions[0].top;
+    const inputHeight = dimensions.bottom - dimensions.top;
+    const inputWidth = dimensions.width;
+    const inputLeft = dimensions.left;
+    const inputTop = dimensions.top;
     
     zipInputD3
       .style('width', inputWidth + 'px')
