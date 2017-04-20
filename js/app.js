@@ -1,5 +1,23 @@
 (function() {
+  
+  function resizeInput() {
+    const dimensions = document.getElementById('zipcode-input-field').getBoundingClientRect();
+    const zipInputD3 = d3.select('#zip');
+    const inputHeight = dimensions.bottom - dimensions.top;
+    const inputWidth = dimensions.width;
+    const inputLeft = dimensions.left;
+    const inputTop = dimensions.top;
+    
+    zipInputD3
+      .style('width', inputWidth + 'px')
+      .style('top', inputTop + 'px')
+      .style('left', inputLeft + 'px')
+      .style('height', inputHeight + 'px')
+  }
 
+  d3.select(window).on('resize', resizeInput);
+  
+  d3.timeout( resizeInput, 500)
   // get data
   d3.queue()
     //.defer(d3.json, "https://raw.githubusercontent.com/blehman/wmo_map/gh-pages/data/us.json")
@@ -108,8 +126,8 @@
     gLegend.change(change)
     // a container nested under svg
     var svg = d3.select("#viz-container")
-        .attr("height",svg_height)
-        .attr("width",svg_width)
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", '0 0' +', '+ svg_width +', '+ svg_height)
 
     // add styling instance
     var style = Styling();
