@@ -108,8 +108,8 @@
     gLegend.change(change)
     // a container nested under svg
     var svg = d3.select("#viz-container")
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", '0 0' +', '+ svg_width +', '+ svg_height)
+        .attr("height",svg_height)
+        .attr("width",svg_width)
 
     // add styling instance
     var style = Styling();
